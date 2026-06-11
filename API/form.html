@@ -42,7 +42,7 @@
 <div class="container mt-5">
     <div class="card shadow p-4 order-card">
         <h3 id="formTitle" class="fw-bold mb-1" style="color: #212529;">Place Order</h3>
-        <p id="carDetails" class="text-muted small mb-4">Car: Mitsubishi Lancer Evo | Price: $8500</p>
+        <p id="carDetails" class="text-muted small mb-4"></p>
 
         <form id="userForm">
             <input type="hidden" id="userId">
@@ -157,6 +157,16 @@ document.getElementById("userForm").addEventListener("submit", async function(e)
         displayAlert("Server error. Make sure API endpoint is reachable.", "danger");
     }
 });
+</script>
+
+<script>
+  // 1. Read the car name and price from the browser URL address bar
+  const urlParams = new URLSearchParams(window.location.search);
+  const carName = urlParams.get('car') || "Selected Car";
+  const carPrice = urlParams.get('price') || "0";
+
+  // 2. Put those details dynamically into the HTML element we created above
+  document.getElementById("car-details").innerText = `Car: ${carName} | Price: $${carPrice}`;
 </script>
 
 </body>
