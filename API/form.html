@@ -165,8 +165,8 @@ document.getElementById("userForm").addEventListener("submit", async function(e)
   const carName = urlParams.get('car') || "Selected Car";
   const carPrice = urlParams.get('price') || "0";
 
-  // 2. Put those details dynamically into the HTML element we created above
-  document.getElementById("car-details").innerText = `Car: ${carName} | Price: $${carPrice}`;
+  // 2. FIXED: Changed "car-details" to "carDetails" to match your HTML ID perfectly!
+  document.getElementById("carDetails").innerText = `Car: ${carName} | Price: $${carPrice}`;
 </script>
 
 </body>
