@@ -157,6 +157,10 @@ img {
 /* ============================================
    NAVBAR
    ============================================ */
+.navbar {
+  background: #111 !important;
+}
+
 .navbar-brand {
   position: absolute;
   top: 50%;
@@ -300,6 +304,9 @@ section {
    FOOTER
    ============================================ */
 footer {
+  background: #111;
+  color: #a0a0a0;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
   padding: clamp(1rem, 2vw, 2rem) 1rem;
 }
 
