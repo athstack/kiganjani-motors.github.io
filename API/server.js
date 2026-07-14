@@ -262,8 +262,9 @@ app.post("/api/parts/orders", (req, res) => {
     if (!name || !email || !phone || !items) {
         return res.status(400).json({ message: "Name, email, phone, and items are required" });
     }
+    var itemsJson = typeof items === 'string' ? items : JSON.stringify(items);
     const sql = "INSERT INTO part_orders (name, email, phone, items, total) VALUES (?, ?, ?, ?, ?)";
-    db.query(sql, [name, email, phone, JSON.stringify(items), total], (err, result) => {
+    db.query(sql, [name, email, phone, itemsJson, total || 0], (err, result) => {
         if (err) return res.status(500).json({ message: err.message });
         res.json({ message: "Order placed successfully" });
     });
