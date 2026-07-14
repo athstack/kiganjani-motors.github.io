@@ -288,6 +288,38 @@ section {
 }
 
 /* ============================================
+   ABOUT PAGE
+   ============================================ */
+.about-hero {
+  position: relative;
+}
+
+.about-hero::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.about-hero .container {
+  position: relative;
+  z-index: 1;
+}
+
+.stat-item h2 {
+  font-size: clamp(1.5rem, 3vw, 2.2rem);
+}
+
+.value-card {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.value-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+}
+
+/* ============================================
    SOCIAL LINKS
    ============================================ */
 .social-links {
