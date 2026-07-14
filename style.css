@@ -169,6 +169,12 @@ img {
   white-space: nowrap;
 }
 
+/* Add this to your header title to make it pop */
+.header-title {
+  color: #ffffff;
+  text-shadow: 0px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
 /* --- Hamburger Button (hidden on desktop) --- */
 .hamburger-btn {
   min-width: 44px;
