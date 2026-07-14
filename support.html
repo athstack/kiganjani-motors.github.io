@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Kiganjani Motors - Customer Support</title>
 <link rel="stylesheet" href="KAYOMBO/bootstrap-5.0.2-dist/css/bootstrap.min.css">
-<link rel="stylesheet" href="style.css?v=11">
+<link rel="stylesheet" href="style.css?v=13">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
 <script src="KAYOMBO/bootstrap-5.0.2-dist/js/bootstrap.bundle.min.js"></script>
 </head>
@@ -283,14 +283,64 @@ function toggleSidebar() {
 }
 function submitTicket(e) {
   e.preventDefault();
+  var form = document.getElementById("ticketForm");
   var resultDiv = document.getElementById("ticketResult");
+  var errors = [];
+
+  var name = document.getElementById("ticketName");
+  var email = document.getElementById("ticketEmail");
+  var phone = document.getElementById("ticketPhone");
+  var dept = document.getElementById("ticketDept");
+  var subject = document.getElementById("ticketSubject");
+  var message = document.getElementById("ticketMessage");
+
+  form.querySelectorAll(".is-invalid").forEach(function(el) { el.classList.remove("is-invalid"); });
+  form.querySelectorAll(".invalid-feedback").forEach(function(el) { el.remove(); });
+
+  function markInvalid(field, msg) {
+    field.classList.add("is-invalid");
+    var div = document.createElement("div");
+    div.className = "invalid-feedback";
+    div.textContent = msg;
+    field.parentNode.appendChild(div);
+    errors.push(msg);
+  }
+
+  if (!name.value.trim()) markInvalid(name, "Full name is required.");
+  if (!email.value.trim()) {
+    markInvalid(email, "Email is required.");
+  } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value)) {
+    markInvalid(email, "Please enter a valid email address.");
+  }
+  if (!phone.value.trim()) {
+    markInvalid(phone, "Phone number is required.");
+  } else if (!/^[0-9+\-\s]{7,15}$/.test(phone.value)) {
+    markInvalid(phone, "Please enter a valid phone number.");
+  }
+  if (!dept.value) markInvalid(dept, "Please select a department.");
+  if (!subject.value.trim()) {
+    markInvalid(subject, "Subject is required.");
+  } else if (subject.value.trim().length < 5) {
+    markInvalid(subject, "Subject must be at least 5 characters.");
+  }
+  if (!message.value.trim()) {
+    markInvalid(message, "Message is required.");
+  } else if (message.value.trim().length < 10) {
+    markInvalid(message, "Message must be at least 10 characters.");
+  }
+
+  if (errors.length > 0) {
+    resultDiv.innerHTML = '<div class="alert alert-danger"><i class="bi bi-exclamation-triangle-fill me-2"></i>Please fix ' + errors.length + ' error(s) above.</div>';
+    return;
+  }
+
   var data = {
-    name: document.getElementById("ticketName").value,
-    email: document.getElementById("ticketEmail").value,
-    phone: document.getElementById("ticketPhone").value,
-    department: document.getElementById("ticketDept").value,
-    subject: document.getElementById("ticketSubject").value,
-    message: document.getElementById("ticketMessage").value
+    name: name.value.trim(),
+    email: email.value.trim(),
+    phone: phone.value.trim(),
+    department: dept.value,
+    subject: subject.value.trim(),
+    message: message.value.trim()
   };
   resultDiv.innerHTML = '<div class="text-center"><div class="spinner-border text-success" role="status"></div></div>';
   fetch("https://petty-directory-frigidly.ngrok-free.dev/api/tickets", {
@@ -300,11 +350,11 @@ function submitTicket(e) {
   })
     .then(function(r) { return r.json(); })
     .then(function(resp) {
-      resultDiv.innerHTML = '<div class="alert alert-success">Ticket submitted successfully! We will get back to you soon.</div>';
-      document.getElementById("ticketForm").reset();
+      resultDiv.innerHTML = '<div class="alert alert-success"><i class="bi bi-check-circle-fill me-2"></i>Ticket submitted successfully! We will get back to you soon.</div>';
+      form.reset();
     })
     .catch(function() {
-      resultDiv.innerHTML = '<div class="alert alert-danger">Error submitting ticket. Please try again later.</div>';
+      resultDiv.innerHTML = '<div class="alert alert-danger"><i class="bi bi-exclamation-triangle-fill me-2"></i>Error submitting ticket. Please try again later.</div>';
     });
 }
 document.getElementById("sidebarOverlay").addEventListener("click", closeSidebar);
