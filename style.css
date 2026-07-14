@@ -303,14 +303,14 @@ section {
 /* ============================================
    FOOTER
    ============================================ */
-footer {
-  background: #111;
-  color: #a0a0a0;
+.custom-footer {
+  background-color: #111111 !important;
+  color: #a0a0a0 !important;
   border-top: 1px solid rgba(255, 255, 255, 0.05);
-  padding: clamp(1rem, 2vw, 2rem) 1rem;
+  padding: 20px 0;
 }
 
-footer small {
+.custom-footer small {
   font-size: clamp(0.7rem, 1.5vw, 0.9rem);
 }
 
