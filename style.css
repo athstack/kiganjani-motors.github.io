@@ -322,6 +322,44 @@ footer small {
    RESPONSIVE BREAKPOINTS
    ============================================ */
 
+/* --- Desktop (>= 992px): clean header row above hero --- */
+@media (min-width: 992px) {
+  .navbar {
+    min-height: 64px;
+    position: relative;
+    z-index: 10;
+  }
+
+  .navbar-brand {
+    position: relative;
+    top: auto;
+    left: auto;
+    transform: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: 0;
+  }
+
+  .header-title {
+    color: #ffffff;
+    text-shadow: none;
+  }
+
+  .navbar h2 {
+    font-size: clamp(1rem, 1.5vw, 1.4rem);
+  }
+
+  .hamburger-btn {
+    display: none !important;
+  }
+
+  .content {
+    margin-left: 220px;
+  }
+}
+
 /* --- Desktop XL (>= 1400px) --- */
 @media (min-width: 1400px) {
   #carList {
