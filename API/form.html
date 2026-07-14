@@ -141,7 +141,7 @@ document.getElementById("userForm").addEventListener("submit", function(e) {
     var location = document.getElementById("location").value;
 
     var isEditing = id !== "";
-    var baseUrl = "https://kiganjani-api.vercel.app/api/users";
+    var baseUrl = "http://localhost:3000/api/users";
     var targetUrl = isEditing ? baseUrl + "/" + id : baseUrl;
     var targetMethod = isEditing ? "PUT" : "POST";
 
