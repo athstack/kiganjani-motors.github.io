@@ -8,46 +8,47 @@
 <link rel="stylesheet" href="KAYOMBO/bootstrap-5.0.2-dist/css/bootstrap.min.css">
 <link rel="stylesheet" href="style.css">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
-<script src="Bootstrap/js/bootstrap.bundle.min.js"></script> 
-
+<script src="KAYOMBO/bootstrap-5.0.2-dist/js/bootstrap.bundle.min.js"></script>
 </head>
 <body>
 
-<!--sidebar-->
-<div id="sidebar" class="sidebar">
+<!-- Sidebar Overlay -->
+<div id="sidebarOverlay" class="sidebar-overlay" aria-hidden="true"></div>
+
+<!-- Sidebar -->
+<nav id="sidebar" class="sidebar" role="navigation" aria-label="Main navigation">
   <div class="logo-container text-center py-3">
-    <a href="index.html">
+    <a href="index.html" aria-label="Home - Kiganjani Motors">
       <img src="IMAGES/logo.png" alt="Kiganjani Motors Logo" class="sidebar-logo">
     </a>
     <h5 class="fw-bold text-success text-center logo-text">KM</h5>
   </div>
-  
-  
 
-  <a href="index.html" class="nav-link active">
+  <a href="index.html" class="nav-link active" aria-current="page">
     <i class="bi bi-house"></i> <span>Home</span>
   </a>
   <a href="about.html" class="nav-link">
     <i class="bi bi-info-circle"></i> <span>About Us</span>
   </a>
-</div>
+</nav>
 
 <div id="content" class="content">
 <!-- Top Bar -->
-<nav class="navbar navbar-dark bg-dark position-relative shadow-sm">
+<nav class="navbar navbar-dark bg-dark position-relative shadow-sm" role="banner">
   <div class="container-fluid">
-    <button class="btn btn-outline-success" onclick="toggleSidebar()">☰</button>
+    <button class="btn btn-outline-success hamburger-btn" onclick="toggleSidebar()" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="sidebar">☰</button>
   </div>
-  <span class="navbar-brand position-absolute top-50 start-50 translate-middle text-success fw-bold">
+  <span class="navbar-brand text-success fw-bold">
     <h2 class="mb-0">Kiganjani Motors</h2>
   </span>
 </nav>
+
 <!-- Home Section -->
- <section id="home" class="text-white text-center p-5"
+<section id="home" class="text-white text-center"
 style="background:url('IMAGES/top_nav.jpg') center/cover;">
   <div class="container">
     <h1>Drive Your Dream Car</h1>
-    <p>Affordable • Reliable • Trusted</p>
+    <p>Affordable &bull; Reliable &bull; Trusted</p>
   </div>
 </section>
 
@@ -55,24 +56,24 @@ style="background:url('IMAGES/top_nav.jpg') center/cover;">
 <div class="container">
 <h2 class="text-center mb-4 fw-bold text-dark">Available Cars</h2>
 
-<div class="text-center mb-4">
-  <button class="btn btn-success m-1" onclick="filterCars('all')">All</button>
-  <button class="btn btn-outline-success m-1" onclick="filterCars('sedan')">Sedan</button>
-  <button class="btn btn-outline-success m-1" onclick="filterCars('suv')">SUV</button>
-  <button class="btn btn-outline-success m-1" onclick="filterCars('Sports')">Sports</button>
-  <button class="btn btn-outline-success m-1" onclick="filterCars('Tesla')">Tesla</button>
-  <button class="btn btn-outline-success m-1" onclick="filterCars('Truck')">Truck</button>
-  <button class="btn btn-outline-success m-1" onclick="filterCars('Minivan')">Minivan</button>
-  <button class="btn btn-outline-success m-1" onclick="filterCars('Luxury')">Luxury</button>
-  <button class="btn btn-outline-success m-1" onclick="filterCars('Hatchback')">Hatchback</button>
-  <button class="btn btn-outline-success m-1" onclick="filterCars('Convertible')">Convertible</button>
+<div class="filter-buttons">
+  <button class="btn btn-success" onclick="filterCars('all')">All</button>
+  <button class="btn btn-outline-success" onclick="filterCars('sedan')">Sedan</button>
+  <button class="btn btn-outline-success" onclick="filterCars('suv')">SUV</button>
+  <button class="btn btn-outline-success" onclick="filterCars('Sports')">Sports</button>
+  <button class="btn btn-outline-success" onclick="filterCars('Tesla')">Tesla</button>
+  <button class="btn btn-outline-success" onclick="filterCars('Truck')">Truck</button>
+  <button class="btn btn-outline-success" onclick="filterCars('Minivan')">Minivan</button>
+  <button class="btn btn-outline-success" onclick="filterCars('Luxury')">Luxury</button>
+  <button class="btn btn-outline-success" onclick="filterCars('Hatchback')">Hatchback</button>
+  <button class="btn btn-outline-success" onclick="filterCars('Convertible')">Convertible</button>
 </div>
 
-<div class="row" id="carList">
-  
-  <div class="col-md-4 car sedan">
-    <div class="card shadow-sm border-0 mb-4">
-      <img src="IMAGES/sedan2.jpg" class="card-img-top">
+<div id="carList">
+
+  <div class="car sedan">
+    <div class="card shadow-sm border-0">
+      <img src="IMAGES/sedan2.jpg" class="card-img-top" alt="Mitsubishi Lancer Evo">
       <div class="card-body text-center">
         <h5 class="fw-bold">Mitsubishi Lancer Evo</h5>
         <p class="text-muted small mb-3">$45,000</p>
@@ -81,9 +82,9 @@ style="background:url('IMAGES/top_nav.jpg') center/cover;">
     </div>
   </div>
 
-  <div class="col-md-4 car suv">
-    <div class="card shadow-sm border-0 mb-4">
-      <img src="IMAGES/suv2.jpg" class="card-img-top">
+  <div class="car suv">
+    <div class="card shadow-sm border-0">
+      <img src="IMAGES/suv2.jpg" class="card-img-top" alt="Range Rover">
       <div class="card-body text-center">
         <h5 class="fw-bold">Range Rover</h5>
         <p class="text-muted small mb-3">$25,000</p>
@@ -92,9 +93,9 @@ style="background:url('IMAGES/top_nav.jpg') center/cover;">
     </div>
   </div>
 
-  <div class="col-md-4 car Sports">
-    <div class="card shadow-sm border-0 mb-4">
-      <img src="IMAGES/sports car1.jpg" class="card-img-top">
+  <div class="car Sports">
+    <div class="card shadow-sm border-0">
+      <img src="IMAGES/sports car1.jpg" class="card-img-top" alt="Ferrari 296 GTP">
       <div class="card-body text-center">
         <h5 class="fw-bold">Ferrari 296 GTP</h5>
         <p class="text-muted small mb-3">$300,000</p>
@@ -103,9 +104,9 @@ style="background:url('IMAGES/top_nav.jpg') center/cover;">
     </div>
   </div>
 
-  <div class="col-md-6 car Tesla">
-    <div class="card shadow-sm border-0 mb-4">
-      <img src="IMAGES/tesla3.jpg" class="card-img-top">
+  <div class="car Tesla">
+    <div class="card shadow-sm border-0">
+      <img src="IMAGES/tesla3.jpg" class="card-img-top" alt="Tesla Model S">
       <div class="card-body text-center">
         <h5 class="fw-bold">Tesla Model S</h5>
         <p class="text-muted small mb-3">$101,630</p>
@@ -114,9 +115,9 @@ style="background:url('IMAGES/top_nav.jpg') center/cover;">
     </div>
   </div>
 
-   <div class="col-md-6 car Tesla">
-    <div class="card shadow-sm border-0 mb-4">
-      <img src="IMAGES/tesla2.jpg" class="card-img-top">
+   <div class="car Tesla">
+    <div class="card shadow-sm border-0">
+      <img src="IMAGES/tesla2.jpg" class="card-img-top" alt="Tesla Model X">
       <div class="card-body text-center">
         <h5 class="fw-bold">Tesla Model X</h5>
         <p class="text-muted small mb-3">$160,000</p>
@@ -125,9 +126,9 @@ style="background:url('IMAGES/top_nav.jpg') center/cover;">
     </div>
   </div>
 
-  <div class="col-md-4 car Truck">
-    <div class="card shadow-sm border-0 mb-4">
-      <img src="IMAGES/truck.jpg" class="card-img-top">
+  <div class="car Truck">
+    <div class="card shadow-sm border-0">
+      <img src="IMAGES/truck.jpg" class="card-img-top" alt="Ford F-150 Raptor">
       <div class="card-body text-center">
         <h5 class="fw-bold">Ford F-150 Raptor</h5>
         <p class="text-muted small mb-3">$110,000</p>
@@ -136,9 +137,9 @@ style="background:url('IMAGES/top_nav.jpg') center/cover;">
     </div>
   </div>
 
-  <div class="col-md-4 car Minivan">
-    <div class="card shadow-sm border-0 mb-4">
-      <img src="IMAGES/minivan.jpg" class="card-img-top">
+  <div class="car Minivan">
+    <div class="card shadow-sm border-0">
+      <img src="IMAGES/minivan.jpg" class="card-img-top" alt="Renault Espace">
       <div class="card-body text-center">
         <h5 class="fw-bold">Renault Espace</h5>
         <p class="text-muted small mb-3">$55,000</p>
@@ -147,9 +148,9 @@ style="background:url('IMAGES/top_nav.jpg') center/cover;">
     </div>
   </div>
 
-  <div class="col-md-4 car Hatchback">
-    <div class="card shadow-sm border-0 mb-4">
-      <img src="IMAGES/hatchback.jpg" class="card-img-top">
+  <div class="car Hatchback">
+    <div class="card shadow-sm border-0">
+      <img src="IMAGES/hatchback.jpg" class="card-img-top" alt="Mercedes-Benz A">
       <div class="card-body text-center">
         <h5 class="fw-bold">Mercedes-Benz A</h5>
         <p class="text-muted small mb-3">$70,000</p>
@@ -158,9 +159,9 @@ style="background:url('IMAGES/top_nav.jpg') center/cover;">
     </div>
   </div>
 
-  <div class="col-md-6 car Luxury">
-    <div class="card shadow-sm border-0 mb-4">
-      <img src="IMAGES/luxury.jpg" class="card-img-top">
+  <div class="car Luxury">
+    <div class="card shadow-sm border-0">
+      <img src="IMAGES/luxury.jpg" class="card-img-top" alt="Marcedes-AMG C63 Cabriolet">
       <div class="card-body text-center">
         <h5 class="fw-bold">Marcedes-AMG C63 Cabriolet</h5>
         <p class="text-muted small mb-3">$100,000</p>
@@ -169,9 +170,9 @@ style="background:url('IMAGES/top_nav.jpg') center/cover;">
     </div>
   </div>
 
-  <div class="col-md-6 car Luxury">
-    <div class="card shadow-sm border-0 mb-4">
-      <img src="IMAGES/bmw.jpg" class="card-img-top">
+  <div class="car Luxury">
+    <div class="card shadow-sm border-0">
+      <img src="IMAGES/bmw.jpg" class="card-img-top" alt="BMW 8 Series">
       <div class="card-body text-center">
         <h5 class="fw-bold">BMW 8 Series</h5>
         <p class="text-muted small mb-3">$95,000</p>
@@ -180,9 +181,9 @@ style="background:url('IMAGES/top_nav.jpg') center/cover;">
     </div>
   </div>
 
-  <div class="col-md-4 car Convertible">
-    <div class="card shadow-sm border-0 mb-4">
-      <img src="IMAGES/bmw.jpg" class="card-img-top">
+  <div class="car Convertible">
+    <div class="card shadow-sm border-0">
+      <img src="IMAGES/bmw.jpg" class="card-img-top" alt="Mercedes-Benz E">
       <div class="card-body text-center">
         <h5 class="fw-bold">Mercedes-Benz E</h5>
         <p class="text-muted small mb-3">$85,000</p>
@@ -190,9 +191,9 @@ style="background:url('IMAGES/top_nav.jpg') center/cover;">
       </div>
     </div>
   </div>
-  <div class="col-md-4 car Convertible">
-    <div class="card shadow-sm border-0 mb-4">
-      <img src="IMAGES/convertible2.jpg" class="card-img-top">
+  <div class="car Convertible">
+    <div class="card shadow-sm border-0">
+      <img src="IMAGES/convertible2.jpg" class="card-img-top" alt="Marcedes-Benz SLC">
       <div class="card-body text-center">
         <h5 class="fw-bold">Marcedes-Benz SLC</h5>
         <p class="text-muted small mb-3">$35,000</p>
@@ -200,9 +201,9 @@ style="background:url('IMAGES/top_nav.jpg') center/cover;">
       </div>
     </div>
   </div>
-  <div class="col-md-4 car Convertible">
-    <div class="card shadow-sm border-0 mb-4">
-      <img src="IMAGES/convertible3.jpg" class="card-img-top">
+  <div class="car Convertible">
+    <div class="card shadow-sm border-0">
+      <img src="IMAGES/convertible3.jpg" class="card-img-top" alt="Ford Thunderbird">
       <div class="card-body text-center">
         <h5 class="fw-bold">Ford Thunderbird</h5>
         <p class="text-muted small mb-3">$60,000</p>
@@ -218,26 +219,66 @@ style="background:url('IMAGES/top_nav.jpg') center/cover;">
 <section id="contact" class="py-5 text-center bg-light">
   <div class="container">
     <h2 class="fw-bold">Contact Us</h2>
-    <p class="mb-1">📍 Mbeya, Tanzania</p>
+    <p class="mb-1">&#x1F4CD; Mbeya, Tanzania</p>
     <p class="text-success fw-bold">+255 782 303 971</p>
   </div>
 </section>
 
 <footer class="bg-dark text-white-50 text-center p-4">
-  <small>© 2026 Kiganjani Motors | Quality You Can Trust</small>
+  <small>&copy; 2026 Kiganjani Motors | Quality You Can Trust</small>
 </footer>
 
 </div>
 
 <script>
+function isMobile() {
+  return window.innerWidth < 992;
+}
+
+function openSidebar() {
+  var sidebar = document.getElementById("sidebar");
+  var overlay = document.getElementById("sidebarOverlay");
+  var hamburger = document.querySelector(".hamburger-btn");
+
+  sidebar.classList.add("mobile-open");
+  sidebar.classList.remove("collapsed");
+  overlay.classList.add("active");
+  overlay.setAttribute("aria-hidden", "false");
+  hamburger.setAttribute("aria-expanded", "true");
+  document.body.style.overflow = "hidden";
+
+  sidebar.focus();
+}
+
+function closeSidebar() {
+  var sidebar = document.getElementById("sidebar");
+  var overlay = document.getElementById("sidebarOverlay");
+  var hamburger = document.querySelector(".hamburger-btn");
+
+  sidebar.classList.remove("mobile-open");
+  overlay.classList.remove("active");
+  overlay.setAttribute("aria-hidden", "true");
+  hamburger.setAttribute("aria-expanded", "false");
+  document.body.style.overflow = "";
+}
+
 function toggleSidebar() {
-  document.getElementById("sidebar").classList.toggle("collapsed");
-  document.getElementById("content").classList.toggle("full");
+  if (isMobile()) {
+    var sidebar = document.getElementById("sidebar");
+    if (sidebar.classList.contains("mobile-open")) {
+      closeSidebar();
+    } else {
+      openSidebar();
+    }
+  } else {
+    document.getElementById("sidebar").classList.toggle("collapsed");
+    document.getElementById("content").classList.toggle("full");
+  }
 }
 
 function filterCars(category) {
-  let cars = document.querySelectorAll(".car");
-  cars.forEach(car => {
+  var cars = document.querySelectorAll(".car");
+  cars.forEach(function(car) {
     if (category === "all") {
       car.style.display = "block";
     } else {
@@ -245,6 +286,29 @@ function filterCars(category) {
     }
   });
 }
+
+document.getElementById("sidebarOverlay").addEventListener("click", closeSidebar);
+
+document.addEventListener("keydown", function(e) {
+  if (e.key === "Escape" && document.getElementById("sidebar").classList.contains("mobile-open")) {
+    closeSidebar();
+    document.querySelector(".hamburger-btn").focus();
+  }
+});
+
+window.addEventListener("resize", function() {
+  if (!isMobile()) {
+    closeSidebar();
+  }
+});
+
+document.querySelectorAll("#sidebar .nav-link").forEach(function(link) {
+  link.addEventListener("click", function() {
+    if (isMobile()) {
+      closeSidebar();
+    }
+  });
+});
 </script>
 
 </body>

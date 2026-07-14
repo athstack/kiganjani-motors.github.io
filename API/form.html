@@ -8,13 +8,22 @@
     <link rel="stylesheet" href="../KAYOMBO/bootstrap-5.0.2-dist/css/bootstrap.min.css">
     
     <style>
-        /* Exact color match styling from the reference design */
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
+
+        body {
+            overflow-x: hidden;
+        }
+
         .btn-submit-order {
             background-color: #198754 !important;
             border-color: #198754 !important;
             color: #ffffff !important;
-            padding: 10px;
+            padding: 12px;
+            min-height: 48px;
             font-weight: 500;
+            font-size: clamp(0.9rem, 2vw, 1rem);
         }
         .btn-submit-order:hover {
             background-color: #146c43 !important;
@@ -23,17 +32,34 @@
             background-color: #6c757d !important;
             border-color: #6c757d !important;
             color: #ffffff !important;
-            padding: 10px;
+            padding: 12px;
+            min-height: 48px;
             font-weight: 500;
+            font-size: clamp(0.9rem, 2vw, 1rem);
         }
         .btn-cancel-order:hover {
             background-color: #5a6268 !important;
         }
         .order-card {
             max-width: 500px;
+            width: 100%;
             margin: 0 auto;
             border-radius: 8px;
             border: none;
+        }
+        .form-control {
+            min-height: 48px;
+            font-size: clamp(0.85rem, 2vw, 1rem);
+        }
+
+        @media (max-width: 576px) {
+            .container {
+                padding-left: 1rem;
+                padding-right: 1rem;
+            }
+            .order-card {
+                max-width: 100%;
+            }
         }
     </style>
 </head>
@@ -74,21 +100,16 @@
 </div>
 
 <script>
-// Helper function to show a status message that disappears after 4 seconds
 function displayAlert(text, type) {
-    const messageDiv = document.getElementById("message");
-    messageDiv.innerHTML = `
-        <div class="alert alert-${type} py-2 small">
-            ${text}
-        </div>
-    `;
-    setTimeout(() => {
+    var messageDiv = document.getElementById("message");
+    messageDiv.innerHTML = '<div class="alert alert-' + type + ' py-2 small">' + text + '</div>';
+    setTimeout(function() {
         messageDiv.innerHTML = "";
     }, 4000);
 }
 
-// Refactored to seamlessly switch the standalone modal container into Edit Mode
-function startEdit(id, name, email, phoneNo, location = "") {
+function startEdit(id, name, email, phoneNo, location) {
+    location = location || "";
     document.getElementById("userId").value = id;
     document.getElementById("name").value = name;
     document.getElementById("email").value = email;
@@ -97,76 +118,60 @@ function startEdit(id, name, email, phoneNo, location = "") {
 
     document.getElementById("formTitle").innerText = "Update Order Details";
     
-    document.getElementById("formActions").innerHTML = `
-        <button type="submit" class="btn btn-info text-white p-2 w-100 fw-bold">Update Order</button>
-        <button type="button" class="btn btn-cancel-order w-100" onclick="resetFormState()">Cancel</button>
-    `;
+    document.getElementById("formActions").innerHTML = '<button type="submit" class="btn btn-info text-white p-2 w-100 fw-bold" style="min-height:48px;">Update Order</button><button type="button" class="btn btn-cancel-order w-100" onclick="resetFormState()">Cancel</button>';
 
     window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-// Restores the form state layout securely back to standard submission mode
 function resetFormState() {
     document.getElementById("userForm").reset();
     document.getElementById("userId").value = "";
     document.getElementById("formTitle").innerText = "Place Order";
     
-    document.getElementById("formActions").innerHTML = `
-        <button type="submit" id="submitBtn" class="btn btn-submit-order w-100">Submit Order</button>
-        <button type="button" class="btn btn-cancel-order w-100" onclick="window.location.href='../index.html'">Cancel</button>
-    `;
+    document.getElementById("formActions").innerHTML = '<button type="submit" id="submitBtn" class="btn btn-submit-order w-100">Submit Order</button><button type="button" class="btn btn-cancel-order w-100" onclick="window.location.href=\'../index.html\'">Cancel</button>';
 }
 
-// Unified form submission managing both creating (POST) and updating (PUT) targets securely
-document.getElementById("userForm").addEventListener("submit", async function(e) {
+document.getElementById("userForm").addEventListener("submit", function(e) {
     e.preventDefault();
 
-    const id = document.getElementById("userId").value;
-    const name = document.getElementById("name").value;
-    const email = document.getElementById("email").value;
-    const phoneNo = document.getElementById("phoneNo").value;
-    const location = document.getElementById("location").value;
+    var id = document.getElementById("userId").value;
+    var name = document.getElementById("name").value;
+    var email = document.getElementById("email").value;
+    var phoneNo = document.getElementById("phoneNo").value;
+    var location = document.getElementById("location").value;
 
-    const isEditing = id !== "";/*
-    const targetUrl = isEditing ? `http://localhost:3000/api/users/${id}` : "http://localhost:3000/api/users";
-    const targetMethod = isEditing ? "PUT" : "POST";*/
-    const baseUrl = "https://kiganjani-api.vercel.app/api/users";
-    const targetUrl = isEditing ? `${baseUrl}/${id}` : baseUrl;
+    var isEditing = id !== "";
+    var baseUrl = "https://kiganjani-api.vercel.app/api/users";
+    var targetUrl = isEditing ? baseUrl + "/" + id : baseUrl;
+    var targetMethod = isEditing ? "PUT" : "POST";
 
-    const targetMethod = isEditing ? "PUT" : "POST";
-
-    try {
-        const response = await fetch(targetUrl, {
-            method: targetMethod,
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({ name, email, phoneNo, location })
+    fetch(targetUrl, {
+        method: targetMethod,
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ name: name, email: email, phoneNo: phoneNo, location: location })
+    }).then(function(response) {
+        return response.json().then(function(data) {
+            if (response.ok) {
+                displayAlert(data.message || "Order processed successfully!", "success");
+                resetFormState();
+            } else {
+                displayAlert(data.message || "An error occurred.", "danger");
+            }
         });
-
-        const data = await response.json();
-
-        if (response.ok) {
-            displayAlert(data.message || "Order processed successfully!", "success");
-            resetFormState();
-        } else {
-            displayAlert(data.message || "An error occurred.", "danger");
-        }
-
-    } catch (error) {
+    }).catch(function(error) {
         displayAlert("Server error. Make sure API endpoint is reachable.", "danger");
-    }
+    });
 });
 </script>
 
 <script>
-  // 1. Read the car name and price from the browser URL address bar
-  const urlParams = new URLSearchParams(window.location.search);
-  const carName = urlParams.get('car') || "Selected Car";
-  const carPrice = urlParams.get('price') || "0";
+  var urlParams = new URLSearchParams(window.location.search);
+  var carName = urlParams.get('car') || "Selected Car";
+  var carPrice = urlParams.get('price') || "0";
 
-  // 2. FIXED: Changed "car-details" to "carDetails" to match your HTML ID perfectly!
-  document.getElementById("carDetails").innerText = `Car: ${carName} | Price: $${carPrice}`;
+  document.getElementById("carDetails").innerText = "Car: " + carName + " | Price: $" + carPrice;
 </script>
 
 </body>

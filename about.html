@@ -8,97 +8,51 @@
 <link rel="stylesheet" href="KAYOMBO/bootstrap-5.0.2-dist/css/bootstrap.min.css">
 <link rel="stylesheet" href="style.css">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
-<script src="Bootstrap/js/bootstrap.bundle.min.js"></script> 
+<script src="KAYOMBO/bootstrap-5.0.2-dist/js/bootstrap.bundle.min.js"></script>
 </head>
 <body>
 
-<!--sidebar-->
-<div id="sidebar" class="sidebar">
+<!-- Sidebar Overlay -->
+<div id="sidebarOverlay" class="sidebar-overlay" aria-hidden="true"></div>
+
+<!-- Sidebar -->
+<nav id="sidebar" class="sidebar" role="navigation" aria-label="Main navigation">
   <div class="logo-container text-center py-3">
-    <a href="index.html">
+    <a href="index.html" aria-label="Home - Kiganjani Motors">
       <img src="IMAGES/logo.png" alt="Kiganjani Motors Logo" class="sidebar-logo">
     </a>
     <h5 class="fw-bold text-success text-center logo-text">KM</h5>
   </div>
-  
-  
 
   <a href="index.html" class="nav-link">
     <i class="bi bi-house"></i> <span>Home</span>
   </a>
-  <a href="about.html" class="nav-link active">
+  <a href="about.html" class="nav-link active" aria-current="page">
     <i class="bi bi-info-circle"></i> <span>About Us</span>
   </a>
-</div>
+</nav>
 
 <div id="content" class="content">
 <!-- Top Bar -->
-<nav class="navbar navbar-dark bg-dark position-relative shadow-sm">
+<nav class="navbar navbar-dark bg-dark position-relative shadow-sm" role="banner">
   <div class="container-fluid">
-    <button class="btn btn-outline-success" onclick="toggleSidebar()">☰</button>
+    <button class="btn btn-outline-success hamburger-btn" onclick="toggleSidebar()" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="sidebar">☰</button>
   </div>
-  <span class="navbar-brand position-absolute top-50 start-50 translate-middle text-success fw-bold">
+  <span class="navbar-brand text-success fw-bold">
     <h2 class="mb-0">Kiganjani Motors</h2>
   </span>
 </nav>
-<!-- Home Section -->
- <section id="home" class="text-white text-center p-5"
+
+<!-- Hero Section -->
+<section id="home" class="text-white text-center"
 style="background:url('https://images.unsplash.com/photo-1503376780353-7e6692767b70') center/cover;">
   <div class="container">
     <h1>Drive Your Dream Car</h1>
-    <p>Affordable • Reliable • Trusted</p>
+    <p>Affordable &bull; Reliable &bull; Trusted</p>
   </div>
-</section><!--
+</section>
 
-<section id="inventory" class="py-5">
-<div class="container">
-<h2 class="text-center mb-4 fw-bold text-dark">Available Cars</h2>
-
-<div class="text-center mb-4">
-  <button class="btn btn-success m-1" onclick="filterCars('all')">All</button>
-  <button class="btn btn-outline-success m-1" onclick="filterCars('sedan')">Sedan</button>
-  <button class="btn btn-outline-success m-1" onclick="filterCars('suv')">SUV</button>
-  <button class="btn btn-outline-success m-1" onclick="filterCars('pickup')">Pickup</button>
-</div>
-
-<div class="row" id="carList">
-  
-  <div class="col-md-4 car sedan">
-    <div class="card shadow-sm border-0 mb-4">
-      <img src="https://images.unsplash.com/photo-1552519507-da3b142c6e3d" class="card-img-top">
-      <div class="card-body text-center">
-        <h5 class="fw-bold">Toyota Corolla</h5>
-        <p class="text-muted small mb-3">$8,500</p>
-        <a href="https://wa.me/255782303971" class="btn btn-success w-100">WhatsApp</a>
-      </div>
-    </div>
-  </div>
-
-  <div class="col-md-4 car suv">
-    <div class="card shadow-sm border-0 mb-4">
-      <img src="https://images.unsplash.com/photo-1549924231-f129b911e442" class="card-img-top">
-      <div class="card-body text-center">
-        <h5 class="fw-bold">Nissan X-Trail</h5>
-        <p class="text-muted small mb-3">$12,000</p>
-        <a href="https://wa.me/255782303971" class="btn btn-success w-100">WhatsApp</a>
-      </div>
-    </div>
-  </div>
-
-  <div class="col-md-4 car pickup">
-    <div class="card shadow-sm border-0 mb-4">
-      <img src="https://images.unsplash.com/photo-1502877338535-766e1452684a" class="card-img-top">
-      <div class="card-body text-center">
-        <h5 class="fw-bold">Toyota Hilux</h5>
-        <p class="text-muted small mb-3">$18,500</p>
-        <a href="https://wa.me/255782303971" class="btn btn-success w-100">WhatsApp</a>
-      </div>
-    </div>
-  </div>
-</div>
-</div>
-</section>-->
-<!-- About Section Update -->
+<!-- About Section -->
 <section id="about" class="py-5 text-center bg-white">
   <div class="container">
     <h2 class="fw-bold text-success">About Us</h2>
@@ -106,30 +60,71 @@ style="background:url('https://images.unsplash.com/photo-1503376780353-7e6692767
     <p class="text-secondary mt-3">Kiganjani Motors provides quality vehicles and trusted automotive services in Tanzania.</p>
   </div>
 </section>
+
 <!-- Contact Section -->
 <section id="contact" class="py-5 text-center bg-light">
   <div class="container">
     <h2 class="fw-bold">Contact Us</h2>
-    <p class="mb-1">📍 Mbeya, Tanzania</p>
+    <p class="mb-1">&#x1F4CD; Mbeya, Tanzania</p>
     <p class="text-success fw-bold">+255 782 303 971</p>
   </div>
 </section>
 
 <footer class="bg-dark text-white-50 text-center p-4">
-  <small>© 2026 Kiganjani Motors | Quality You Can Trust</small>
+  <small>&copy; 2026 Kiganjani Motors | Quality You Can Trust</small>
 </footer>
 
 </div>
 
 <script>
+function isMobile() {
+  return window.innerWidth < 992;
+}
+
+function openSidebar() {
+  var sidebar = document.getElementById("sidebar");
+  var overlay = document.getElementById("sidebarOverlay");
+  var hamburger = document.querySelector(".hamburger-btn");
+
+  sidebar.classList.add("mobile-open");
+  sidebar.classList.remove("collapsed");
+  overlay.classList.add("active");
+  overlay.setAttribute("aria-hidden", "false");
+  hamburger.setAttribute("aria-expanded", "true");
+  document.body.style.overflow = "hidden";
+
+  sidebar.focus();
+}
+
+function closeSidebar() {
+  var sidebar = document.getElementById("sidebar");
+  var overlay = document.getElementById("sidebarOverlay");
+  var hamburger = document.querySelector(".hamburger-btn");
+
+  sidebar.classList.remove("mobile-open");
+  overlay.classList.remove("active");
+  overlay.setAttribute("aria-hidden", "true");
+  hamburger.setAttribute("aria-expanded", "false");
+  document.body.style.overflow = "";
+}
+
 function toggleSidebar() {
-  document.getElementById("sidebar").classList.toggle("collapsed");
-  document.getElementById("content").classList.toggle("full");
+  if (isMobile()) {
+    var sidebar = document.getElementById("sidebar");
+    if (sidebar.classList.contains("mobile-open")) {
+      closeSidebar();
+    } else {
+      openSidebar();
+    }
+  } else {
+    document.getElementById("sidebar").classList.toggle("collapsed");
+    document.getElementById("content").classList.toggle("full");
+  }
 }
 
 function filterCars(category) {
-  let cars = document.querySelectorAll(".car");
-  cars.forEach(car => {
+  var cars = document.querySelectorAll(".car");
+  cars.forEach(function(car) {
     if (category === "all") {
       car.style.display = "block";
     } else {
@@ -137,6 +132,29 @@ function filterCars(category) {
     }
   });
 }
+
+document.getElementById("sidebarOverlay").addEventListener("click", closeSidebar);
+
+document.addEventListener("keydown", function(e) {
+  if (e.key === "Escape" && document.getElementById("sidebar").classList.contains("mobile-open")) {
+    closeSidebar();
+    document.querySelector(".hamburger-btn").focus();
+  }
+});
+
+window.addEventListener("resize", function() {
+  if (!isMobile()) {
+    closeSidebar();
+  }
+});
+
+document.querySelectorAll("#sidebar .nav-link").forEach(function(link) {
+  link.addEventListener("click", function() {
+    if (isMobile()) {
+      closeSidebar();
+    }
+  });
+});
 </script>
 
 </body>

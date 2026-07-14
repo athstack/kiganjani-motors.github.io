@@ -1,23 +1,52 @@
-body {
-  overflow-x: hidden;
+/* ============================================
+   KIGANJANI MOTORS - RESPONSIVE STYLESHEET
+   ============================================ */
+
+/* --- Reset & Base --- */
+*, *::before, *::after {
+  box-sizing: border-box;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  overflow-x: hidden;
+  margin: 0;
+  padding: 0;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  object-fit: cover;
+}
+
+/* --- Sidebar (Desktop: permanent, Mobile: off-canvas drawer) --- */
 .sidebar {
   height: 100vh;
   position: fixed;
+  top: 0;
+  left: 0;
   width: 220px;
   background: #111;
   color: white;
-  transition: 0.3s;
+  transition: transform 0.3s ease;
+  z-index: 1050;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 .sidebar a {
-  color: #ccc; 
-  display: block;
+  color: #ccc;
+  display: flex;
+  align-items: center;
+  gap: 10px;
   padding: 12px 20px;
   text-decoration: none;
+  min-height: 48px;
 }
-
 
 .sidebar a:hover,
 .sidebar a.active {
@@ -33,52 +62,394 @@ body {
   display: none;
 }
 
+/* Sidebar overlay for mobile */
+.sidebar-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1040;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.sidebar-overlay.active {
+  display: block;
+  opacity: 1;
+}
+
+/* --- Content Area --- */
 .content {
   margin-left: 220px;
-  transition: 0.3s;
+  transition: margin-left 0.3s ease;
+  min-height: 100vh;
 }
 
 .content.full {
   margin-left: 70px;
 }
 
-@media (max-width: 768px) {
-  .sidebar { display: none; }
-  .content { margin-left: 0; }
-}
-
+/* --- Sidebar Logo --- */
 .sidebar img {
-    border-radius: 50%; /* Optional: makes the logo circular if it's square */
-    padding: 5px;
+  border-radius: 50%;
+  padding: 5px;
 }
-/* Container for the logo */
+
 .logo-container {
-    transition: all 0.3s ease;
-    overflow: hidden;
+  transition: all 0.3s ease;
+  overflow: hidden;
 }
 
-/* The actual logo image */
 .sidebar-logo {
-    width: 98%;          /* Uses 80% of sidebar width */
-    height: auto;        /* Maintains aspect ratio (no squeezing!) */
-    max-width: 170px;    /* Prevents it from getting too huge */
-    transition: all 0.3s ease;
-    display: block;
-    margin: 0 auto;
+  width: 98%;
+  height: auto;
+  max-width: 170px;
+  transition: all 0.3s ease;
+  display: block;
+  margin: 0 auto;
 }
 
-/* Adjustments for when sidebar is COLLAPSED */
 .sidebar.collapsed .sidebar-logo {
-    width: 40px;         /* Small icon size for collapsed mode */
-    padding: 0;
+  width: 40px;
+  padding: 0;
 }
 
-/* Hide the text "Kiganjani Motors" when collapsed */
 .sidebar.collapsed .logo-text {
-    display: none;
+  display: none;
 }
 
-/* Optional: Add a slight glow to the logo to make it pop against the black */
 .sidebar-logo:hover {
-    filter: drop-shadow(0 0 5px rgba(25, 135, 84, 0.5));
+  filter: drop-shadow(0 0 5px rgba(25, 135, 84, 0.5));
+}
+
+/* --- Navbar --- */
+.navbar-brand {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.navbar h2 {
+  font-size: clamp(1rem, 2vw, 1.5rem);
+  white-space: nowrap;
+}
+
+/* --- Hero Section --- */
+#home {
+  min-height: 50vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#home h1 {
+  font-size: clamp(1.5rem, 4vw, 3rem);
+}
+
+#home p {
+  font-size: clamp(0.9rem, 2vw, 1.25rem);
+}
+
+/* --- Responsive Typography --- */
+h1 { font-size: clamp(1.8rem, 4vw, 3rem); }
+h2 { font-size: clamp(1.4rem, 3vw, 2rem); }
+h3 { font-size: clamp(1.2rem, 2.5vw, 1.75rem); }
+h5 { font-size: clamp(1rem, 2vw, 1.25rem); }
+p  { font-size: clamp(0.9rem, 1.5vw, 1rem); }
+
+/* --- Section Spacing --- */
+section {
+  padding-left: clamp(1rem, 3vw, 3rem);
+  padding-right: clamp(1rem, 3vw, 3rem);
+}
+
+/* --- Filter Buttons --- */
+.filter-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+}
+
+.filter-buttons .btn {
+  min-height: 44px;
+  min-width: 44px;
+  padding: 8px 14px;
+  font-size: clamp(0.75rem, 1.5vw, 0.9rem);
+  white-space: nowrap;
+}
+
+/* --- Car Cards Grid --- */
+#carList {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  padding: 0;
+}
+
+#carList .car {
+  display: block;
+}
+
+#carList .car[style*="display: none"] {
+  display: none !important;
+}
+
+#carList .card {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+#carList .card-img-top {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+
+#carList .card-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+/* --- Cards Touch Targets --- */
+#carList .btn {
+  min-height: 44px;
+  font-size: clamp(0.8rem, 1.5vw, 0.95rem);
+}
+
+/* --- Form Responsive (Order page) --- */
+.order-card {
+  width: 100%;
+}
+
+.form-control {
+  min-height: 48px;
+}
+
+/* --- Footer --- */
+footer {
+  padding: clamp(1rem, 2vw, 2rem) 1rem;
+}
+
+footer small {
+  font-size: clamp(0.7rem, 1.5vw, 0.9rem);
+}
+
+/* --- Contact Section --- */
+#contact h2 {
+  font-size: clamp(1.3rem, 3vw, 2rem);
+}
+
+#contact p {
+  font-size: clamp(0.85rem, 1.5vw, 1rem);
+}
+
+/* --- Hamburger Button --- */
+.hamburger-btn {
+  min-width: 44px;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+  padding: 8px 12px;
+}
+
+/* ============================================
+   RESPONSIVE BREAKPOINTS
+   ============================================ */
+
+/* --- Desktop XL (>= 1400px) --- */
+@media (min-width: 1400px) {
+  #carList {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* --- Desktop LG (1200px - 1399px) --- */
+@media (min-width: 1200px) and (max-width: 1399px) {
+  #carList {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* --- Tablet / Small Desktop (992px - 1199px) --- */
+@media (max-width: 1199px) {
+  .sidebar {
+    transform: translateX(-100%);
+  }
+
+  .sidebar.mobile-open {
+    transform: translateX(0);
+  }
+
+  .sidebar.collapsed {
+    width: 220px;
+  }
+
+  .sidebar.collapsed a span {
+    display: inline;
+  }
+
+  .sidebar.collapsed .sidebar-logo {
+    width: 98%;
+    max-width: 170px;
+    padding: 5px;
+  }
+
+  .sidebar.collapsed .logo-text {
+    display: block;
+  }
+
+  .content {
+    margin-left: 0;
+  }
+
+  .content.full {
+    margin-left: 0;
+  }
+
+  #carList {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* --- Tablet (768px - 991px) --- */
+@media (max-width: 991px) {
+  #carList {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .navbar h2 {
+    font-size: clamp(0.9rem, 2.5vw, 1.3rem);
+  }
+}
+
+/* --- Mobile (< 768px) --- */
+@media (max-width: 767px) {
+  .sidebar {
+    width: 260px;
+    transform: translateX(-100%);
+  }
+
+  .sidebar.mobile-open {
+    transform: translateX(0);
+  }
+
+  .sidebar.collapsed {
+    width: 260px;
+  }
+
+  .sidebar.collapsed a span {
+    display: inline;
+  }
+
+  .sidebar.collapsed .sidebar-logo {
+    width: 98%;
+    max-width: 170px;
+    padding: 5px;
+  }
+
+  .sidebar.collapsed .logo-text {
+    display: block;
+  }
+
+  .content,
+  .content.full {
+    margin-left: 0;
+  }
+
+  #carList {
+    grid-template-columns: 1fr;
+  }
+
+  #carList .card-img-top {
+    height: 180px;
+  }
+
+  #home {
+    min-height: 40vh;
+    padding: 2rem 1rem;
+  }
+
+  .filter-buttons .btn {
+    padding: 10px 12px;
+    font-size: 0.8rem;
+  }
+
+  .navbar h2 {
+    font-size: 0.95rem;
+  }
+
+  .order-card {
+    margin: 0 auto;
+  }
+
+  section {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+}
+
+/* --- Small Mobile (<= 576px) --- */
+@media (max-width: 576px) {
+  .navbar h2 {
+    font-size: 0.85rem;
+  }
+
+  #home {
+    min-height: 35vh;
+  }
+
+  #home h1 {
+    font-size: 1.5rem;
+  }
+
+  #home p {
+    font-size: 0.85rem;
+  }
+
+  .filter-buttons .btn {
+    padding: 8px 10px;
+    font-size: 0.75rem;
+  }
+}
+
+/* --- Very Small Mobile (<= 400px) --- */
+@media (max-width: 400px) {
+  .navbar h2 {
+    font-size: 0.78rem;
+  }
+
+  .sidebar {
+    width: 240px;
+  }
+
+  .filter-buttons {
+    gap: 4px;
+  }
+
+  .filter-buttons .btn {
+    padding: 8px 8px;
+    font-size: 0.7rem;
+    min-height: 44px;
+  }
+}
+
+/* --- Print --- */
+@media print {
+  .sidebar, .sidebar-overlay, .hamburger-btn {
+    display: none !important;
+  }
+  .content {
+    margin-left: 0 !important;
+  }
 }
