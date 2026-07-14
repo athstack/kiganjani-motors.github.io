@@ -1,0 +1,4 @@
+node_modules/
+API/node_modules/
+API/.env
+API/ngrok.exe

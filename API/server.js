@@ -5,7 +5,13 @@ const cors = require("cors");
 
 const app = express();
 app.use(express.json());
-app.use(cors());
+app.use(cors({
+    origin: [
+        "https://athstack.github.io",
+        "https://petty-directory-frigidly.ngrok-free.dev",
+        "http://localhost:8080"
+    ]
+}));
 
 // ==========================================
 // ☁️ CLOUD DATABASE POOL CONFIGURATION 
