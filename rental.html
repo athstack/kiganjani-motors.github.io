@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kiganjani Motors - Car Rental</title>
+<link rel="stylesheet" href="KAYOMBO/bootstrap-5.0.2-dist/css/bootstrap.min.css">
+<link rel="stylesheet" href="style.css">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+<script src="KAYOMBO/bootstrap-5.0.2-dist/js/bootstrap.bundle.min.js"></script>
+</head>
+<body>
+
+<div id="sidebarOverlay" class="sidebar-overlay" aria-hidden="true"></div>
+
+<nav id="sidebar" class="sidebar" role="navigation" aria-label="Main navigation">
+  <div class="logo-container text-center py-3">
+    <a href="index.html" aria-label="Home - Kiganjani Motors">
+      <img src="IMAGES/logo.png" alt="Kiganjani Motors Logo" class="sidebar-logo">
+    </a>
+    <h5 class="fw-bold text-success text-center logo-text">KM</h5>
+  </div>
+  <a href="index.html" class="nav-link"><i class="bi bi-house"></i> <span>Home</span></a>
+  <a href="about.html" class="nav-link"><i class="bi bi-info-circle"></i> <span>About Us</span></a>
+  <a href="rental.html" class="nav-link active" aria-current="page"><i class="bi bi-car-front"></i> <span>Car Rental</span></a>
+  <a href="services.html" class="nav-link"><i class="bi bi-tools"></i> <span>Services</span></a>
+  <a href="booking.html" class="nav-link"><i class="bi bi-calendar-check"></i> <span>Book Appointment</span></a>
+  <a href="finance.html" class="nav-link"><i class="bi bi-calculator"></i> <span>Finance</span></a>
+  <a href="parts.html" class="nav-link"><i class="bi bi-gear"></i> <span>Spare Parts</span></a>
+  <a href="blog.html" class="nav-link"><i class="bi bi-journal-text"></i> <span>Blog</span></a>
+  <a href="reviews.html" class="nav-link"><i class="bi bi-star"></i> <span>Reviews</span></a>
+  <a href="support.html" class="nav-link"><i class="bi bi-headset"></i> <span>Support</span></a>
+</nav>
+
+<div id="content" class="content">
+<nav class="navbar navbar-dark bg-dark position-relative shadow-sm" role="banner">
+  <div class="container-fluid">
+    <button class="btn btn-outline-success hamburger-btn" onclick="toggleSidebar()" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="sidebar">&#9776;</button>
+  </div>
+  <span class="navbar-brand text-success fw-bold">
+    <h2 class="mb-0">Kiganjani Motors</h2>
+  </span>
+</nav>
+
+<section id="home" class="text-white text-center" style="background:url('IMAGES/top_nav.jpg') center/cover;">
+  <div class="container">
+    <h1>Car Rental</h1>
+    <p>Affordable Rentals for Every Journey</p>
+  </div>
+</section>
+
+<section class="py-5">
+<div class="container">
+<h2 class="text-center mb-4 fw-bold text-dark">Our Rental Fleet</h2>
+
+<div class="filter-buttons">
+  <button class="btn btn-success" onclick="filterRental('all')">All</button>
+  <button class="btn btn-outline-success" onclick="filterRental('economy')">Economy</button>
+  <button class="btn btn-outline-success" onclick="filterRental('suv')">SUV</button>
+  <button class="btn btn-outline-success" onclick="filterRental('luxury')">Luxury</button>
+  <button class="btn btn-outline-success" onclick="filterRental('van')">Van</button>
+</div>
+
+<div id="rentalList" style="display:grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem;">
+
+  <div class="rental economy">
+    <div class="card shadow-sm border-0">
+      <img src="IMAGES/sedan2.jpg" class="card-img-top" alt="Toyota Corolla">
+      <div class="card-body text-center">
+        <h5 class="fw-bold">Toyota Corolla</h5>
+        <p class="text-muted small mb-2">Economy Class</p>
+        <p class="fw-bold text-success">$40 / day</p>
+        <ul class="list-unstyled small text-muted mb-3">
+          <li><i class="bi bi-check-circle text-success"></i> Manual / Automatic</li>
+          <li><i class="bi bi-check-circle text-success"></i> Bluetooth Audio</li>
+          <li><i class="bi bi-check-circle text-success"></i> 5 Seats</li>
+          <li><i class="bi bi-check-circle text-success"></i> 35 MPG</li>
+        </ul>
+        <a href="booking.html" class="btn btn-success w-100">Reserve Now</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="rental economy">
+    <div class="card shadow-sm border-0">
+      <img src="IMAGES/sedan2.jpg" class="card-img-top" alt="Nissan Versa">
+      <div class="card-body text-center">
+        <h5 class="fw-bold">Nissan Versa</h5>
+        <p class="text-muted small mb-2">Economy Class</p>
+        <p class="fw-bold text-success">$35 / day</p>
+        <ul class="list-unstyled small text-muted mb-3">
+          <li><i class="bi bi-check-circle text-success"></i> Manual / Automatic</li>
+          <li><i class="bi bi-check-circle text-success"></i> Bluetooth Audio</li>
+          <li><i class="bi bi-check-circle text-success"></i> 5 Seats</li>
+          <li><i class="bi bi-check-circle text-success"></i> 38 MPG</li>
+        </ul>
+        <a href="booking.html" class="btn btn-success w-100">Reserve Now</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="rental suv">
+    <div class="card shadow-sm border-0">
+      <img src="IMAGES/suv2.jpg" class="card-img-top" alt="Honda CR-V">
+      <div class="card-body text-center">
+        <h5 class="fw-bold">Honda CR-V</h5>
+        <p class="text-muted small mb-2">SUV Class</p>
+        <p class="fw-bold text-success">$65 / day</p>
+        <ul class="list-unstyled small text-muted mb-3">
+          <li><i class="bi bi-check-circle text-success"></i> Automatic</li>
+          <li><i class="bi bi-check-circle text-success"></i> Apple CarPlay</li>
+          <li><i class="bi bi-check-circle text-success"></i> 5 Seats</li>
+          <li><i class="bi bi-check-circle text-success"></i> All-Wheel Drive</li>
+        </ul>
+        <a href="booking.html" class="btn btn-success w-100">Reserve Now</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="rental suv">
+    <div class="card shadow-sm border-0">
+      <img src="IMAGES/suv2.jpg" class="card-img-top" alt="Ford Explorer">
+      <div class="card-body text-center">
+        <h5 class="fw-bold">Ford Explorer</h5>
+        <p class="text-muted small mb-2">SUV Class</p>
+        <p class="fw-bold text-success">$85 / day</p>
+        <ul class="list-unstyled small text-muted mb-3">
+          <li><i class="bi bi-check-circle text-success"></i> Automatic</li>
+          <li><i class="bi bi-check-circle text-success"></i> Apple CarPlay</li>
+          <li><i class="bi bi-check-circle text-success"></i> 7 Seats</li>
+          <li><i class="bi bi-check-circle text-success"></i> All-Wheel Drive</li>
+        </ul>
+        <a href="booking.html" class="btn btn-success w-100">Reserve Now</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="rental luxury">
+    <div class="card shadow-sm border-0">
+      <img src="IMAGES/luxury.jpg" class="card-img-top" alt="Mercedes C-Class">
+      <div class="card-body text-center">
+        <h5 class="fw-bold">Mercedes C-Class</h5>
+        <p class="text-muted small mb-2">Luxury Class</p>
+        <p class="fw-bold text-success">$120 / day</p>
+        <ul class="list-unstyled small text-muted mb-3">
+          <li><i class="bi bi-check-circle text-success"></i> Automatic</li>
+          <li><i class="bi bi-check-circle text-success"></i> Leather Interior</li>
+          <li><i class="bi bi-check-circle text-success"></i> 5 Seats</li>
+          <li><i class="bi bi-check-circle text-success"></i> Navigation</li>
+        </ul>
+        <a href="booking.html" class="btn btn-success w-100">Reserve Now</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="rental luxury">
+    <div class="card shadow-sm border-0">
+      <img src="IMAGES/bmw.jpg" class="card-img-top" alt="BMW 5 Series">
+      <div class="card-body text-center">
+        <h5 class="fw-bold">BMW 5 Series</h5>
+        <p class="text-muted small mb-2">Luxury Class</p>
+        <p class="fw-bold text-success">$150 / day</p>
+        <ul class="list-unstyled small text-muted mb-3">
+          <li><i class="bi bi-check-circle text-success"></i> Automatic</li>
+          <li><i class="bi bi-check-circle text-success"></i> Leather Interior</li>
+          <li><i class="bi bi-check-circle text-success"></i> 5 Seats</li>
+          <li><i class="bi bi-check-circle text-success"></i> Premium Sound</li>
+        </ul>
+        <a href="booking.html" class="btn btn-success w-100">Reserve Now</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="rental van">
+    <div class="card shadow-sm border-0">
+      <img src="IMAGES/minivan.jpg" class="card-img-top" alt="Toyota Sienna">
+      <div class="card-body text-center">
+        <h5 class="fw-bold">Toyota Sienna</h5>
+        <p class="text-muted small mb-2">Van Class</p>
+        <p class="fw-bold text-success">$75 / day</p>
+        <ul class="list-unstyled small text-muted mb-3">
+          <li><i class="bi bi-check-circle text-success"></i> Automatic</li>
+          <li><i class="bi bi-check-circle text-success"></i> 8 Seats</li>
+          <li><i class="bi bi-check-circle text-success"></i> Rear Entertainment</li>
+          <li><i class="bi bi-check-circle text-success"></i> Slide Doors</li>
+        </ul>
+        <a href="booking.html" class="btn btn-success w-100">Reserve Now</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="rental van">
+    <div class="card shadow-sm border-0">
+      <img src="IMAGES/minivan.jpg" class="card-img-top" alt="Ford Transit">
+      <div class="card-body text-center">
+        <h5 class="fw-bold">Ford Transit</h5>
+        <p class="text-muted small mb-2">Van Class</p>
+        <p class="fw-bold text-success">$90 / day</p>
+        <ul class="list-unstyled small text-muted mb-3">
+          <li><i class="bi bi-check-circle text-success"></i> Automatic</li>
+          <li><i class="bi bi-check-circle text-success"></i> 12 Seats</li>
+          <li><i class="bi bi-check-circle text-success"></i> Cargo Space</li>
+          <li><i class="bi bi-check-circle text-success"></i> Diesel Engine</li>
+        </ul>
+        <a href="booking.html" class="btn btn-success w-100">Reserve Now</a>
+      </div>
+    </div>
+  </div>
+
+</div>
+</div>
+</section>
+
+<section id="contact" class="py-5 text-center bg-light">
+  <div class="container">
+    <h2 class="fw-bold">Contact Us</h2>
+    <p class="mb-1">&#x1F4CD; Mbeya, Tanzania</p>
+    <p class="text-success fw-bold">+255 782 303 971</p>
+  </div>
+</section>
+
+<footer class="bg-dark text-white-50 text-center p-4">
+  <small>&copy; 2026 Kiganjani Motors | Quality You Can Trust</small>
+</footer>
+
+</div>
+
+<script>
+function isMobile() { return window.innerWidth < 992; }
+function openSidebar() {
+  var sidebar = document.getElementById("sidebar");
+  var overlay = document.getElementById("sidebarOverlay");
+  var hamburger = document.querySelector(".hamburger-btn");
+  sidebar.classList.add("mobile-open");
+  sidebar.classList.remove("collapsed");
+  overlay.classList.add("active");
+  overlay.setAttribute("aria-hidden", "false");
+  hamburger.setAttribute("aria-expanded", "true");
+  document.body.style.overflow = "hidden";
+  sidebar.focus();
+}
+function closeSidebar() {
+  var sidebar = document.getElementById("sidebar");
+  var overlay = document.getElementById("sidebarOverlay");
+  var hamburger = document.querySelector(".hamburger-btn");
+  sidebar.classList.remove("mobile-open");
+  overlay.classList.remove("active");
+  overlay.setAttribute("aria-hidden", "true");
+  hamburger.setAttribute("aria-expanded", "false");
+  document.body.style.overflow = "";
+}
+function toggleSidebar() {
+  if (isMobile()) {
+    var sidebar = document.getElementById("sidebar");
+    if (sidebar.classList.contains("mobile-open")) { closeSidebar(); } else { openSidebar(); }
+  } else {
+    document.getElementById("sidebar").classList.toggle("collapsed");
+    document.getElementById("content").classList.toggle("full");
+  }
+}
+function filterRental(category) {
+  var rentals = document.querySelectorAll(".rental");
+  rentals.forEach(function(r) {
+    if (category === "all") { r.style.display = "block"; }
+    else { r.style.display = r.classList.contains(category) ? "block" : "none"; }
+  });
+}
+document.getElementById("sidebarOverlay").addEventListener("click", closeSidebar);
+document.addEventListener("keydown", function(e) {
+  if (e.key === "Escape" && document.getElementById("sidebar").classList.contains("mobile-open")) {
+    closeSidebar(); document.querySelector(".hamburger-btn").focus();
+  }
+});
+window.addEventListener("resize", function() { if (!isMobile()) { closeSidebar(); } });
+document.querySelectorAll("#sidebar .nav-link").forEach(function(link) {
+  link.addEventListener("click", function() { if (isMobile()) { closeSidebar(); } });
+});
+</script>
+
+</body>
+</html>

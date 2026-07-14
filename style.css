@@ -444,6 +444,197 @@ footer small {
   }
 }
 
+/* ============================================
+   NEW PAGES - SERVICES, RENTAL, BOOKING, ETC.
+   ============================================ */
+
+/* --- Service Cards --- */
+.service-card {
+  text-align: center;
+  padding: 2rem 1.5rem;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.service-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+}
+
+.service-card i {
+  font-size: clamp(2rem, 4vw, 3rem);
+  color: #198754;
+  margin-bottom: 1rem;
+}
+
+/* --- Rental Cards --- */
+.rental-card .card-img-top {
+  height: 200px;
+}
+
+.rental-features {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  font-size: clamp(0.8rem, 1.5vw, 0.9rem);
+}
+
+.rental-features li {
+  padding: 4px 0;
+  color: #555;
+}
+
+.rental-features li::before {
+  content: "\2713";
+  color: #198754;
+  margin-right: 6px;
+  font-weight: bold;
+}
+
+/* --- Booking Form --- */
+.booking-form .form-control,
+.booking-form .form-select {
+  min-height: 48px;
+  font-size: clamp(0.85rem, 1.5vw, 1rem);
+}
+
+/* --- Finance Calculator --- */
+.calculator-card {
+  background: #f8f9fa;
+  border-radius: 12px;
+  padding: clamp(1.5rem, 3vw, 2rem);
+}
+
+.calculator-result {
+  background: #198754;
+  color: white;
+  border-radius: 12px;
+  padding: clamp(1.5rem, 3vw, 2rem);
+  text-align: center;
+}
+
+.calculator-result .display-value {
+  font-size: clamp(1.8rem, 4vw, 2.5rem);
+  font-weight: bold;
+}
+
+input[type="range"] {
+  width: 100%;
+  accent-color: #198754;
+}
+
+/* --- Review Cards --- */
+.review-card {
+  padding: 1.5rem;
+  border-left: 4px solid #198754;
+}
+
+.review-stars i {
+  color: #ffc107;
+  font-size: 1rem;
+}
+
+.rating-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+  font-size: clamp(0.8rem, 1.5vw, 0.9rem);
+}
+
+.rating-bar .bar {
+  flex: 1;
+  height: 10px;
+  background: #e9ecef;
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.rating-bar .bar-fill {
+  height: 100%;
+  background: #198754;
+  border-radius: 5px;
+}
+
+/* --- Blog Cards --- */
+.blog-card .card-img-top {
+  height: 200px;
+  object-fit: cover;
+}
+
+.blog-placeholder {
+  height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 3rem;
+  color: white;
+}
+
+.blog-featured {
+  border: 2px solid #198754;
+}
+
+/* --- Parts Shop --- */
+.part-card {
+  text-align: center;
+}
+
+.part-card .part-image {
+  height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.5rem;
+  color: white;
+  border-radius: 8px 8px 0 0;
+}
+
+.part-price {
+  font-size: clamp(1.1rem, 2vw, 1.3rem);
+  font-weight: bold;
+  color: #198754;
+}
+
+.cart-sidebar {
+  position: sticky;
+  top: 90px;
+}
+
+/* --- Support --- */
+.contact-card {
+  text-align: center;
+  padding: 2rem 1.5rem;
+}
+
+.contact-card i {
+  font-size: 2rem;
+  color: #198754;
+  margin-bottom: 1rem;
+}
+
+.faq-item {
+  margin-bottom: 0.5rem;
+}
+
+.office-hours {
+  background: #f8f9fa;
+  border-radius: 12px;
+  padding: 1.5rem;
+}
+
+/* --- Responsive Grid for new pages --- */
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+}
+
+.parts-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.5rem;
+}
+
 /* --- Print --- */
 @media print {
   .sidebar, .sidebar-overlay, .hamburger-btn {

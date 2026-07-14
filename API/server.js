@@ -1,21 +1,12 @@
-require('dotenv').config(); // Loaded at the very top
+require('dotenv').config();
 const express = require("express");
 const mysql = require("mysql2"); 
 const cors = require("cors");
 
 const app = express();
 app.use(express.json());
-app.use(cors({
-    origin: [
-        "https://athstack.github.io",
-        "https://petty-directory-frigidly.ngrok-free.dev",
-        "http://localhost:8080"
-    ]
-}));
+app.use(cors());
 
-// ==========================================
-// ☁️ CLOUD DATABASE POOL CONFIGURATION 
-// ==========================================
 const db = mysql.createPool({
     host: process.env.DB_HOST,
     user: process.env.DB_USER,
@@ -27,90 +18,327 @@ const db = mysql.createPool({
     queueLimit: 0
 });
 
-// Test the cloud pool connection profile
 db.getConnection((err, connection) => {
     if (err) {
-        console.error('❌ Cloud Database pool connection failed: ' + err.message);
+        console.error('Database connection failed: ' + err.message);
         return;
     }
-    console.log('✅ Connected to MySQL Cloud Database Pool.');
-    connection.release(); // Crucial: gives the connection back to the pool
+    console.log('Connected to MySQL Database.');
+    connection.release();
 });
 
 // ==========================================
-// 🛣️ API ROUTES
+// CREATE TABLES
 // ==========================================
+const tables = [
+    `CREATE TABLE IF NOT EXISTS bookings (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        name VARCHAR(255) NOT NULL,
+        email VARCHAR(255) NOT NULL,
+        phone VARCHAR(50) NOT NULL,
+        service_type VARCHAR(100) NOT NULL,
+        preferred_date DATE,
+        preferred_time VARCHAR(50),
+        vehicle VARCHAR(255),
+        notes TEXT,
+        status ENUM('pending','confirmed','completed','cancelled') DEFAULT 'pending',
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    )`,
+    `CREATE TABLE IF NOT EXISTS service_records (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        name VARCHAR(255) NOT NULL,
+        email VARCHAR(255),
+        phone VARCHAR(50) NOT NULL,
+        service_type VARCHAR(100) NOT NULL,
+        vehicle VARCHAR(255),
+        notes TEXT,
+        status ENUM('pending','in_progress','completed') DEFAULT 'pending',
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    )`,
+    `CREATE TABLE IF NOT EXISTS rentals (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        name VARCHAR(255) NOT NULL,
+        email VARCHAR(255) NOT NULL,
+        phone VARCHAR(50) NOT NULL,
+        vehicle VARCHAR(255) NOT NULL,
+        rental_class VARCHAR(50),
+        start_date DATE,
+        end_date DATE,
+        total_price DECIMAL(10,2),
+        status ENUM('reserved','active','returned','cancelled') DEFAULT 'reserved',
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    )`,
+    `CREATE TABLE IF NOT EXISTS reviews (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        name VARCHAR(255) NOT NULL,
+        email VARCHAR(255),
+        rating INT NOT NULL,
+        vehicle VARCHAR(255),
+        review_text TEXT NOT NULL,
+        approved BOOLEAN DEFAULT FALSE,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    )`,
+    `CREATE TABLE IF NOT EXISTS blog_posts (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        title VARCHAR(255) NOT NULL,
+        excerpt TEXT,
+        content LONGTEXT,
+        category VARCHAR(50) DEFAULT 'general',
+        image_url VARCHAR(500),
+        published BOOLEAN DEFAULT TRUE,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    )`,
+    `CREATE TABLE IF NOT EXISTS parts (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        name VARCHAR(255) NOT NULL,
+        category VARCHAR(50),
+        compatible_vehicles VARCHAR(500),
+        price DECIMAL(10,2) NOT NULL,
+        stock INT DEFAULT 0,
+        image_url VARCHAR(500),
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    )`,
+    `CREATE TABLE IF NOT EXISTS part_orders (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        name VARCHAR(255) NOT NULL,
+        email VARCHAR(255) NOT NULL,
+        phone VARCHAR(50) NOT NULL,
+        items JSON,
+        total DECIMAL(10,2),
+        status ENUM('pending','processing','shipped','delivered') DEFAULT 'pending',
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    )`,
+    `CREATE TABLE IF NOT EXISTS tickets (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        name VARCHAR(255) NOT NULL,
+        email VARCHAR(255) NOT NULL,
+        phone VARCHAR(50),
+        department VARCHAR(50),
+        subject VARCHAR(255) NOT NULL,
+        message TEXT NOT NULL,
+        status ENUM('open','in_progress','resolved','closed') DEFAULT 'open',
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    )`
+];
 
-// Create a new user / order
-app.post("/api/users", (req, res) => {
-    const { name, email, phoneNo, location } = req.body;
-
-    if (!name || !email || !phoneNo || !location) {
-        return res.status(400).json({ message: "All fields required" });
-    }
-
-    const sql = "INSERT INTO users (name, email, phoneNo, location) VALUES (?, ?, ?, ?)";
-
-    db.query(sql, [name, email, phoneNo, location], (err, result) => {
-        if (err) {
-            return res.status(500).json({ message: err.message });
-        }
-        res.json({ message: "Order placed successfully" });
+tables.forEach(sql => {
+    db.query(sql, (err) => {
+        if (err) console.error('Table creation error:', err.message);
     });
 });
 
-// Fetch all users from database
-app.get("/api/users", (req, res) => {
-    const sql = "SELECT * FROM users";
-    db.query(sql, (err, results) => {
-        if (err) {
-            return res.status(500).json({ message: err.message });
-        }
+// ==========================================
+// BOOKINGS API
+// ==========================================
+app.post("/api/bookings", (req, res) => {
+    const { name, email, phone, service_type, preferred_date, preferred_time, vehicle, notes } = req.body;
+    if (!name || !email || !phone || !service_type) {
+        return res.status(400).json({ message: "Name, email, phone, and service type are required" });
+    }
+    const sql = "INSERT INTO bookings (name, email, phone, service_type, preferred_date, preferred_time, vehicle, notes) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+    db.query(sql, [name, email, phone, service_type, preferred_date, preferred_time, vehicle, notes], (err, result) => {
+        if (err) return res.status(500).json({ message: err.message });
+        res.json({ message: "Appointment booked successfully" });
+    });
+});
+
+app.get("/api/bookings", (req, res) => {
+    db.query("SELECT * FROM bookings ORDER BY created_at DESC", (err, results) => {
+        if (err) return res.status(500).json({ message: err.message });
         res.json(results);
     });
 });
 
-// Delete a specific user by their ID URL parameter
-app.delete("/api/users/:id", (req, res) => {
-    const userId = req.params.id;
-    const sql = "DELETE FROM users WHERE id = ?";
-    
-    db.query(sql, [userId], (err, result) => {
-        if (err) {
-            return res.status(500).json({ message: err.message });
-        }
-        if (result.affectedRows === 0) {
-            return res.status(404).json({ message: "User not found" });
-        }
-        res.json({ message: `User with ID ${userId} deleted successfully` });
+// ==========================================
+// SERVICE RECORDS API
+// ==========================================
+app.post("/api/services", (req, res) => {
+    const { name, email, phone, service_type, vehicle, notes } = req.body;
+    if (!name || !phone || !service_type) {
+        return res.status(400).json({ message: "Name, phone, and service type are required" });
+    }
+    const sql = "INSERT INTO service_records (name, email, phone, service_type, vehicle, notes) VALUES (?, ?, ?, ?, ?, ?)";
+    db.query(sql, [name, email, phone, service_type, vehicle, notes], (err, result) => {
+        if (err) return res.status(500).json({ message: err.message });
+        res.json({ message: "Service recorded successfully" });
     });
 });
 
-// Update an existing user's details by their ID
+app.get("/api/services/lookup", (req, res) => {
+    const phone = req.query.phone;
+    if (!phone) return res.status(400).json({ message: "Phone number required" });
+    db.query("SELECT * FROM service_records WHERE phone = ? ORDER BY created_at DESC", [phone], (err, results) => {
+        if (err) return res.status(500).json({ message: err.message });
+        res.json(results);
+    });
+});
+
+// ==========================================
+// RENTALS API
+// ==========================================
+app.post("/api/rentals", (req, res) => {
+    const { name, email, phone, vehicle, rental_class, start_date, end_date, total_price } = req.body;
+    if (!name || !email || !phone || !vehicle) {
+        return res.status(400).json({ message: "Name, email, phone, and vehicle are required" });
+    }
+    const sql = "INSERT INTO rentals (name, email, phone, vehicle, rental_class, start_date, end_date, total_price) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+    db.query(sql, [name, email, phone, vehicle, rental_class, start_date, end_date, total_price], (err, result) => {
+        if (err) return res.status(500).json({ message: err.message });
+        res.json({ message: "Car reserved successfully" });
+    });
+});
+
+app.get("/api/rentals", (req, res) => {
+    db.query("SELECT * FROM rentals ORDER BY created_at DESC", (err, results) => {
+        if (err) return res.status(500).json({ message: err.message });
+        res.json(results);
+    });
+});
+
+// ==========================================
+// REVIEWS API
+// ==========================================
+app.post("/api/reviews", (req, res) => {
+    const { name, email, rating, vehicle, review_text } = req.body;
+    if (!name || !rating || !review_text) {
+        return res.status(400).json({ message: "Name, rating, and review are required" });
+    }
+    const sql = "INSERT INTO reviews (name, email, rating, vehicle, review_text) VALUES (?, ?, ?, ?, ?)";
+    db.query(sql, [name, email, rating, vehicle, review_text], (err, result) => {
+        if (err) return res.status(500).json({ message: err.message });
+        res.json({ message: "Review submitted successfully" });
+    });
+});
+
+app.get("/api/reviews", (req, res) => {
+    db.query("SELECT * FROM reviews WHERE approved = TRUE ORDER BY created_at DESC", (err, results) => {
+        if (err) return res.status(500).json({ message: err.message });
+        res.json(results);
+    });
+});
+
+// ==========================================
+// BLOG API
+// ==========================================
+app.get("/api/blog", (req, res) => {
+    db.query("SELECT * FROM blog_posts WHERE published = TRUE ORDER BY created_at DESC", (err, results) => {
+        if (err) return res.status(500).json({ message: err.message });
+        res.json(results);
+    });
+});
+
+app.post("/api/blog", (req, res) => {
+    const { title, excerpt, content, category, image_url } = req.body;
+    if (!title || !content) {
+        return res.status(400).json({ message: "Title and content are required" });
+    }
+    const sql = "INSERT INTO blog_posts (title, excerpt, content, category, image_url) VALUES (?, ?, ?, ?, ?)";
+    db.query(sql, [title, excerpt, content, category, image_url], (err, result) => {
+        if (err) return res.status(500).json({ message: err.message });
+        res.json({ message: "Blog post published" });
+    });
+});
+
+// ==========================================
+// PARTS API
+// ==========================================
+app.get("/api/parts", (req, res) => {
+    const category = req.query.category;
+    let sql = "SELECT * FROM parts";
+    let params = [];
+    if (category && category !== 'all') {
+        sql += " WHERE category = ?";
+        params.push(category);
+    }
+    db.query(sql, params, (err, results) => {
+        if (err) return res.status(500).json({ message: err.message });
+        res.json(results);
+    });
+});
+
+app.post("/api/parts/orders", (req, res) => {
+    const { name, email, phone, items, total } = req.body;
+    if (!name || !email || !phone || !items) {
+        return res.status(400).json({ message: "Name, email, phone, and items are required" });
+    }
+    const sql = "INSERT INTO part_orders (name, email, phone, items, total) VALUES (?, ?, ?, ?, ?)";
+    db.query(sql, [name, email, phone, JSON.stringify(items), total], (err, result) => {
+        if (err) return res.status(500).json({ message: err.message });
+        res.json({ message: "Order placed successfully" });
+    });
+});
+
+// ==========================================
+// TICKETS API
+// ==========================================
+app.post("/api/tickets", (req, res) => {
+    const { name, email, phone, department, subject, message } = req.body;
+    if (!name || !email || !subject || !message) {
+        return res.status(400).json({ message: "Name, email, subject, and message are required" });
+    }
+    const sql = "INSERT INTO tickets (name, email, phone, department, subject, message) VALUES (?, ?, ?, ?, ?, ?)";
+    db.query(sql, [name, email, phone, department, subject, message], (err, result) => {
+        if (err) return res.status(500).json({ message: err.message });
+        res.json({ message: "Ticket submitted successfully" });
+    });
+});
+
+app.get("/api/tickets", (req, res) => {
+    db.query("SELECT * FROM tickets ORDER BY created_at DESC", (err, results) => {
+        if (err) return res.status(500).json({ message: err.message });
+        res.json(results);
+    });
+});
+
+// ==========================================
+// EXISTING USERS / ORDERS API
+// ==========================================
+app.post("/api/users", (req, res) => {
+    const { name, email, phoneNo, location } = req.body;
+    if (!name || !email || !phoneNo || !location) {
+        return res.status(400).json({ message: "All fields required" });
+    }
+    const sql = "INSERT INTO users (name, email, phoneNo, location) VALUES (?, ?, ?, ?)";
+    db.query(sql, [name, email, phoneNo, location], (err, result) => {
+        if (err) return res.status(500).json({ message: err.message });
+        res.json({ message: "Order placed successfully" });
+    });
+});
+
+app.get("/api/users", (req, res) => {
+    db.query("SELECT * FROM users", (err, results) => {
+        if (err) return res.status(500).json({ message: err.message });
+        res.json(results);
+    });
+});
+
+app.delete("/api/users/:id", (req, res) => {
+    const userId = req.params.id;
+    db.query("DELETE FROM users WHERE id = ?", [userId], (err, result) => {
+        if (err) return res.status(500).json({ message: err.message });
+        if (result.affectedRows === 0) return res.status(404).json({ message: "User not found" });
+        res.json({ message: "User deleted successfully" });
+    });
+});
+
 app.put("/api/users/:id", (req, res) => {
     const userId = req.params.id;
     const { name, email, phoneNo, location } = req.body;
-
     if (!name || !email || !phoneNo || !location) {
-        return res.status(400).json({ message: "All fields are required for updates" });
+        return res.status(400).json({ message: "All fields required" });
     }
-
     const sql = "UPDATE users SET name = ?, email = ?, phoneNo = ?, location = ? WHERE id = ?";
     db.query(sql, [name, email, phoneNo, location, userId], (err, result) => {
-        if (err) {
-            return res.status(500).json({ message: err.message });
-        }
-        if (result.affectedRows === 0) {
-            return res.status(404).json({ message: "User not found" });
-        }
-        res.json({ message: `User with ID ${userId} updated successfully` });
+        if (err) return res.status(500).json({ message: err.message });
+        if (result.affectedRows === 0) return res.status(404).json({ message: "User not found" });
+        res.json({ message: "User updated successfully" });
     });
 });
 
 // ==========================================
-// 🚀 START SERVER
+// START SERVER
 // ==========================================
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
+    console.log("Server running on port " + PORT);
 });
