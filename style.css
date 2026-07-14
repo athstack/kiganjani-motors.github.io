@@ -90,60 +90,68 @@ img {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 24px 16px 20px;
-  margin-bottom: 4px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+  justify-content: center;
+  padding: 24px 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  margin-bottom: 15px;
 }
 
 .logo-wrapper {
-  width: 80px;
-  height: 80px;
+  width: 75px;
+  height: 75px;
   border-radius: 50%;
-  background: #1a1a1a;
+  overflow: hidden;
+  background: #111111;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
   border: 2px solid #198754;
   display: flex;
   align-items: center;
   justify-content: center;
-  overflow: hidden;
-  padding: 6px;
+  padding: 4px;
   box-sizing: border-box;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4), 0 0 0 3px rgba(25, 135, 84, 0.1);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition: transform 0.3s ease;
 }
 
 .logo-wrapper:hover {
   transform: scale(1.05);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5), 0 0 0 4px rgba(25, 135, 84, 0.2);
 }
 
-.sidebar-logo {
-  width: 60px;
-  height: 60px;
+.logo-wrapper img {
+  width: 100%;
+  height: 100%;
   object-fit: contain;
-  border-radius: 50%;
-  display: block;
 }
 
 .brand-title {
-  color: #ffffff;
-  font-family: 'Poppins', sans-serif;
-  font-size: 0.95rem;
-  font-weight: 700;
-  letter-spacing: 4px;
-  text-transform: uppercase;
   margin-top: 14px;
+  font-size: 1.15rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: #ffffff;
+  text-transform: uppercase;
   text-align: center;
-  position: relative;
 }
 
-.brand-title::after {
-  content: '';
+.brand-highlight {
+  color: #f39c12;
   display: block;
-  width: 24px;
-  height: 2px;
-  background: #198754;
-  margin: 8px auto 0;
-  border-radius: 2px;
+  font-size: 1.25rem;
+  letter-spacing: 1.5px;
+}
+
+.brand-tagline {
+  margin-top: 6px;
+  font-size: 0.65rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #a0a0a0;
+  text-align: center;
+}
+
+.brand-tagline span {
+  color: #f39c12;
+  margin: 0 3px;
 }
 
 /* ============================================
