@@ -60,7 +60,7 @@
 <!-- Top Bar -->
 <nav class="navbar navbar-dark bg-dark position-relative shadow-sm" role="banner">
   <div class="container-fluid">
-    <button class="btn btn-outline-success hamburger-btn" onclick="toggleSidebar()" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="sidebar">☰</button>
+    <button class="btn btn-outline-success hamburger-btn" onclick="toggleSidebar()" aria-label="Toggle navigation menu" aria-controls="sidebar">&#9776;</button>
   </div>
   <span class="navbar-brand text-success fw-bold">
     <h2 class="mb-0">Kiganjani Motors</h2>
@@ -262,27 +262,18 @@ function isMobile() {
 function openSidebar() {
   var sidebar = document.getElementById("sidebar");
   var overlay = document.getElementById("sidebarOverlay");
-  var hamburger = document.querySelector(".hamburger-btn");
-
   sidebar.classList.add("mobile-open");
-  sidebar.classList.remove("collapsed");
   overlay.classList.add("active");
   overlay.setAttribute("aria-hidden", "false");
-  hamburger.setAttribute("aria-expanded", "true");
   document.body.style.overflow = "hidden";
-
-  sidebar.focus();
 }
 
 function closeSidebar() {
   var sidebar = document.getElementById("sidebar");
   var overlay = document.getElementById("sidebarOverlay");
-  var hamburger = document.querySelector(".hamburger-btn");
-
   sidebar.classList.remove("mobile-open");
   overlay.classList.remove("active");
   overlay.setAttribute("aria-hidden", "true");
-  hamburger.setAttribute("aria-expanded", "false");
   document.body.style.overflow = "";
 }
 
@@ -294,9 +285,6 @@ function toggleSidebar() {
     } else {
       openSidebar();
     }
-  } else {
-    document.getElementById("sidebar").classList.toggle("collapsed");
-    document.getElementById("content").classList.toggle("full");
   }
 }
 
@@ -316,7 +304,6 @@ document.getElementById("sidebarOverlay").addEventListener("click", closeSidebar
 document.addEventListener("keydown", function(e) {
   if (e.key === "Escape" && document.getElementById("sidebar").classList.contains("mobile-open")) {
     closeSidebar();
-    document.querySelector(".hamburger-btn").focus();
   }
 });
 

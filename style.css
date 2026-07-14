@@ -6,6 +6,7 @@
 *, *::before, *::after {
   box-sizing: border-box;
 }
+}
 
 html {
   scroll-behavior: smooth;
@@ -23,7 +24,11 @@ img {
   object-fit: cover;
 }
 
-/* --- Sidebar (Desktop: permanent, Mobile: off-canvas drawer) --- */
+/* ============================================
+   SIDEBAR
+   Desktop: fixed left panel, always visible
+   Mobile (<992px): off-canvas drawer
+   ============================================ */
 .sidebar {
   height: 100vh;
   position: fixed;
@@ -32,10 +37,16 @@ img {
   width: 220px;
   background: #111;
   color: white;
-  transition: transform 0.3s ease;
   z-index: 1050;
   overflow-y: auto;
   overflow-x: hidden;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  transition: transform 0.3s ease;
+}
+
+.sidebar::-webkit-scrollbar {
+  display: none;
 }
 
 .sidebar a {
@@ -54,15 +65,7 @@ img {
   color: white;
 }
 
-.sidebar.collapsed {
-  width: 70px;
-}
-
-.sidebar.collapsed a span {
-  display: none;
-}
-
-/* Sidebar overlay for mobile */
+/* --- Sidebar Overlay (mobile only) --- */
 .sidebar-overlay {
   display: none;
   position: fixed;
@@ -79,17 +82,6 @@ img {
 .sidebar-overlay.active {
   display: block;
   opacity: 1;
-}
-
-/* --- Content Area --- */
-.content {
-  margin-left: 220px;
-  transition: margin-left 0.3s ease;
-  min-height: 100vh;
-}
-
-.content.full {
-  margin-left: 70px;
 }
 
 /* --- Sidebar Logo --- */
@@ -112,20 +104,23 @@ img {
   margin: 0 auto;
 }
 
-.sidebar.collapsed .sidebar-logo {
-  width: 40px;
-  padding: 0;
-}
-
-.sidebar.collapsed .logo-text {
-  display: none;
-}
-
 .sidebar-logo:hover {
   filter: drop-shadow(0 0 5px rgba(25, 135, 84, 0.5));
 }
 
-/* --- Navbar --- */
+/* ============================================
+   CONTENT AREA
+   Offset by sidebar width on desktop
+   ============================================ */
+.content {
+  margin-left: 220px;
+  transition: margin-left 0.3s ease;
+  min-height: 100vh;
+}
+
+/* ============================================
+   NAVBAR
+   ============================================ */
 .navbar-brand {
   position: absolute;
   top: 50%;
@@ -138,7 +133,20 @@ img {
   white-space: nowrap;
 }
 
-/* --- Hero Section --- */
+/* --- Hamburger Button (hidden on desktop) --- */
+.hamburger-btn {
+  min-width: 44px;
+  min-height: 44px;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+  padding: 8px 12px;
+}
+
+/* ============================================
+   HERO SECTION
+   ============================================ */
 #home {
   min-height: 50vh;
   display: flex;
@@ -154,20 +162,26 @@ img {
   font-size: clamp(0.9rem, 2vw, 1.25rem);
 }
 
-/* --- Responsive Typography --- */
+/* ============================================
+   TYPOGRAPHY
+   ============================================ */
 h1 { font-size: clamp(1.8rem, 4vw, 3rem); }
 h2 { font-size: clamp(1.4rem, 3vw, 2rem); }
 h3 { font-size: clamp(1.2rem, 2.5vw, 1.75rem); }
 h5 { font-size: clamp(1rem, 2vw, 1.25rem); }
 p  { font-size: clamp(0.9rem, 1.5vw, 1rem); }
 
-/* --- Section Spacing --- */
+/* ============================================
+   SECTION SPACING
+   ============================================ */
 section {
   padding-left: clamp(1rem, 3vw, 3rem);
   padding-right: clamp(1rem, 3vw, 3rem);
 }
 
-/* --- Filter Buttons --- */
+/* ============================================
+   FILTER BUTTONS
+   ============================================ */
 .filter-buttons {
   display: flex;
   flex-wrap: wrap;
@@ -184,7 +198,9 @@ section {
   white-space: nowrap;
 }
 
-/* --- Car Cards Grid --- */
+/* ============================================
+   CAR CARDS GRID
+   ============================================ */
 #carList {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -219,13 +235,14 @@ section {
   justify-content: space-between;
 }
 
-/* --- Cards Touch Targets --- */
 #carList .btn {
   min-height: 44px;
   font-size: clamp(0.8rem, 1.5vw, 0.95rem);
 }
 
-/* --- Form Responsive (Order page) --- */
+/* ============================================
+   FORM / UTILITY
+   ============================================ */
 .order-card {
   width: 100%;
 }
@@ -234,7 +251,9 @@ section {
   min-height: 48px;
 }
 
-/* --- Footer --- */
+/* ============================================
+   FOOTER
+   ============================================ */
 footer {
   padding: clamp(1rem, 2vw, 2rem) 1rem;
 }
@@ -243,24 +262,15 @@ footer small {
   font-size: clamp(0.7rem, 1.5vw, 0.9rem);
 }
 
-/* --- Contact Section --- */
+/* ============================================
+   CONTACT SECTION
+   ============================================ */
 #contact h2 {
   font-size: clamp(1.3rem, 3vw, 2rem);
 }
 
 #contact p {
   font-size: clamp(0.85rem, 1.5vw, 1rem);
-}
-
-/* --- Hamburger Button --- */
-.hamburger-btn {
-  min-width: 44px;
-  min-height: 44px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.25rem;
-  padding: 8px 12px;
 }
 
 /* ============================================
@@ -281,9 +291,11 @@ footer small {
   }
 }
 
-/* --- Tablet / Small Desktop (992px - 1199px) --- */
-@media (max-width: 1199px) {
+/* --- Mobile / Tablet (< 992px) --- */
+@media (max-width: 991px) {
+  /* Sidebar: off-canvas drawer */
   .sidebar {
+    width: 260px;
     transform: translateX(-100%);
   }
 
@@ -291,39 +303,17 @@ footer small {
     transform: translateX(0);
   }
 
-  .sidebar.collapsed {
-    width: 220px;
-  }
-
-  .sidebar.collapsed a span {
-    display: inline;
-  }
-
-  .sidebar.collapsed .sidebar-logo {
-    width: 98%;
-    max-width: 170px;
-    padding: 5px;
-  }
-
-  .sidebar.collapsed .logo-text {
-    display: block;
-  }
-
+  /* Content: full width */
   .content {
     margin-left: 0;
   }
 
-  .content.full {
-    margin-left: 0;
+  /* Show hamburger */
+  .hamburger-btn {
+    display: flex;
   }
 
-  #carList {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-/* --- Tablet (768px - 991px) --- */
-@media (max-width: 991px) {
+  /* Grid adjustments */
   #carList {
     grid-template-columns: repeat(2, 1fr);
   }
@@ -337,34 +327,6 @@ footer small {
 @media (max-width: 767px) {
   .sidebar {
     width: 260px;
-    transform: translateX(-100%);
-  }
-
-  .sidebar.mobile-open {
-    transform: translateX(0);
-  }
-
-  .sidebar.collapsed {
-    width: 260px;
-  }
-
-  .sidebar.collapsed a span {
-    display: inline;
-  }
-
-  .sidebar.collapsed .sidebar-logo {
-    width: 98%;
-    max-width: 170px;
-    padding: 5px;
-  }
-
-  .sidebar.collapsed .logo-text {
-    display: block;
-  }
-
-  .content,
-  .content.full {
-    margin-left: 0;
   }
 
   #carList {
