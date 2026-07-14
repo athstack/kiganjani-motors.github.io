@@ -84,27 +84,41 @@ img {
 }
 
 /* --- Sidebar Logo --- */
-.sidebar img {
-  border-radius: 50%;
-  padding: 5px;
-}
-
 .logo-container {
-  transition: all 0.3s ease;
-  overflow: hidden;
+  padding: 20px 16px 16px;
+  margin-bottom: 8px;
+  background: linear-gradient(180deg, #0a0a0a 0%, #111 100%);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  text-align: center;
 }
 
 .sidebar-logo {
-  width: 98%;
+  width: 80%;
+  max-width: 140px;
   height: auto;
-  max-width: 170px;
-  transition: all 0.3s ease;
   display: block;
   margin: 0 auto;
+  border-radius: 10px;
+  padding: 6px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  transition: all 0.3s ease;
+  object-fit: contain;
 }
 
 .sidebar-logo:hover {
-  filter: drop-shadow(0 0 5px rgba(25, 135, 84, 0.5));
+  background: rgba(25, 135, 84, 0.12);
+  border-color: rgba(25, 135, 84, 0.3);
+  box-shadow: 0 0 20px rgba(25, 135, 84, 0.15);
+}
+
+.logo-text {
+  font-size: 0.85rem;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: #198754;
+  margin: 10px 0 0;
+  opacity: 0.9;
 }
 
 /* ============================================
