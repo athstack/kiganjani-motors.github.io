@@ -200,12 +200,13 @@ app.get("/api/rentals", (req, res) => {
 // REVIEWS API
 // ==========================================
 app.post("/api/reviews", (req, res) => {
-    const { name, email, rating, vehicle, review_text } = req.body;
-    if (!name || !rating || !review_text) {
+    const { name, email, rating, vehicle, review_text, review } = req.body;
+    const text = review_text || review;
+    if (!name || !rating || !text) {
         return res.status(400).json({ message: "Name, rating, and review are required" });
     }
     const sql = "INSERT INTO reviews (name, email, rating, vehicle, review_text) VALUES (?, ?, ?, ?, ?)";
-    db.query(sql, [name, email, rating, vehicle, review_text], (err, result) => {
+    db.query(sql, [name, email, rating, vehicle, text], (err, result) => {
         if (err) return res.status(500).json({ message: err.message });
         res.json({ message: "Review submitted successfully" });
     });

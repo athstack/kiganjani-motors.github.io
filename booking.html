@@ -178,7 +178,7 @@ function submitBooking(e) {
   };
   var resultDiv = document.getElementById("bookingResult");
   resultDiv.innerHTML = '<div class="text-center"><div class="spinner-border text-success" role="status"><span class="visually-hidden">Submitting...</span></div></div>';
-  fetch("https://petty-directory-frigidly.ngrok-free.dev/api/bookings", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(data) })
+  fetch("https://petty-directory-frigidly.ngrok-free.dev/api/bookings", { method: "POST", headers: { "Content-Type": "application/json", "ngrok-skip-browser-warning": "true" }, body: JSON.stringify(data) })
     .then(function(r) { return r.json(); })
     .then(function(resp) {
       resultDiv.innerHTML = '<div class="alert alert-success">Appointment booked successfully! We will contact you shortly.</div>';

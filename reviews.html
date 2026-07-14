@@ -233,18 +233,18 @@
     <h2 class="text-center mb-4 fw-bold">Write a Review</h2>
     <div class="row justify-content-center">
       <div class="col-md-8 col-lg-6">
-        <form action="https://petty-directory-frigidly.ngrok-free.dev/api/reviews" method="POST">
+        <form id="reviewForm" onsubmit="submitReview(event)">
           <div class="mb-3">
             <label for="reviewName" class="form-label fw-bold">Your Name</label>
-            <input type="text" class="form-control" id="reviewName" name="name" required>
+            <input type="text" class="form-control" id="reviewName" required>
           </div>
           <div class="mb-3">
             <label for="reviewEmail" class="form-label fw-bold">Email Address</label>
-            <input type="email" class="form-control" id="reviewEmail" name="email" required>
+            <input type="email" class="form-control" id="reviewEmail" required>
           </div>
           <div class="mb-3">
             <label for="reviewRating" class="form-label fw-bold">Rating</label>
-            <select class="form-control" id="reviewRating" name="rating" required>
+            <select class="form-control" id="reviewRating" required>
               <option value="">Select rating...</option>
               <option value="5">5 - Excellent</option>
               <option value="4">4 - Very Good</option>
@@ -255,14 +255,15 @@
           </div>
           <div class="mb-3">
             <label for="reviewVehicle" class="form-label fw-bold">Vehicle Purchased</label>
-            <input type="text" class="form-control" id="reviewVehicle" name="vehicle" placeholder="e.g. Mitsubishi Lancer Evo">
+            <input type="text" class="form-control" id="reviewVehicle" placeholder="e.g. Mitsubishi Lancer Evo">
           </div>
           <div class="mb-3">
             <label for="reviewText" class="form-label fw-bold">Your Review</label>
-            <textarea class="form-control" id="reviewText" name="review" rows="5" required></textarea>
+            <textarea class="form-control" id="reviewText" rows="5" required></textarea>
           </div>
           <button type="submit" class="btn btn-success w-100">Submit Review</button>
         </form>
+        <div id="reviewResult" class="mt-3"></div>
       </div>
     </div>
   </div>
@@ -315,6 +316,31 @@ function toggleSidebar() {
     document.getElementById("sidebar").classList.toggle("collapsed");
     document.getElementById("content").classList.toggle("full");
   }
+}
+function submitReview(e) {
+  e.preventDefault();
+  var resultDiv = document.getElementById("reviewResult");
+  var data = {
+    name: document.getElementById("reviewName").value,
+    email: document.getElementById("reviewEmail").value,
+    rating: document.getElementById("reviewRating").value,
+    vehicle: document.getElementById("reviewVehicle").value,
+    review_text: document.getElementById("reviewText").value
+  };
+  resultDiv.innerHTML = '<div class="text-center"><div class="spinner-border text-success" role="status"></div></div>';
+  fetch("https://petty-directory-frigidly.ngrok-free.dev/api/reviews", {
+    method: "POST",
+    headers: { "Content-Type": "application/json", "ngrok-skip-browser-warning": "true" },
+    body: JSON.stringify(data)
+  })
+    .then(function(r) { return r.json(); })
+    .then(function(resp) {
+      resultDiv.innerHTML = '<div class="alert alert-success">Review submitted successfully! It will appear after approval.</div>';
+      document.getElementById("reviewForm").reset();
+    })
+    .catch(function() {
+      resultDiv.innerHTML = '<div class="alert alert-danger">Error submitting review. Please try again later.</div>';
+    });
 }
 document.getElementById("sidebarOverlay").addEventListener("click", closeSidebar);
 document.addEventListener("keydown", function(e) {

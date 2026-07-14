@@ -265,20 +265,21 @@
               <span class="fw-bold">Total:</span>
               <span id="cartTotal" class="fw-bold text-success fs-5">$0</span>
             </div>
-            <form action="https://petty-directory-frigidly.ngrok-free.dev/api/parts/orders" method="POST" id="checkoutForm">
+            <form id="checkoutForm" onsubmit="submitCheckout(event)">
               <div class="mb-2">
-                <input type="text" name="name" class="form-control form-control-sm" placeholder="Full Name" required>
+                <input type="text" id="checkoutName" class="form-control form-control-sm" placeholder="Full Name" required>
               </div>
               <div class="mb-2">
-                <input type="email" name="email" class="form-control form-control-sm" placeholder="Email" required>
+                <input type="email" id="checkoutEmail" class="form-control form-control-sm" placeholder="Email" required>
               </div>
               <div class="mb-2">
-                <input type="text" name="phone" class="form-control form-control-sm" placeholder="Phone" required>
+                <input type="text" id="checkoutPhone" class="form-control form-control-sm" placeholder="Phone" required>
               </div>
-              <input type="hidden" name="items" id="cartData" value="">
-              <input type="hidden" name="total" id="cartTotalValue" value="0">
+              <input type="hidden" id="cartData" value="">
+              <input type="hidden" id="cartTotalValue" value="0">
               <button type="submit" class="btn btn-success w-100 mt-2" id="checkoutBtn" disabled>Checkout</button>
             </form>
+            <div id="checkoutResult" class="mt-2"></div>
           </div>
         </div>
       </div>
@@ -406,6 +407,34 @@ function updateCart() {
   cartTotal.textContent = "$" + total;
   cartData.value = JSON.stringify(cart);
   document.getElementById("cartTotalValue").value = total;
+}
+
+function submitCheckout(e) {
+  e.preventDefault();
+  var resultDiv = document.getElementById("checkoutResult");
+  var data = {
+    name: document.getElementById("checkoutName").value,
+    email: document.getElementById("checkoutEmail").value,
+    phone: document.getElementById("checkoutPhone").value,
+    items: document.getElementById("cartData").value,
+    total: document.getElementById("cartTotalValue").value
+  };
+  resultDiv.innerHTML = '<div class="text-center"><div class="spinner-border text-success" role="status"></div></div>';
+  fetch("https://petty-directory-frigidly.ngrok-free.dev/api/parts/orders", {
+    method: "POST",
+    headers: { "Content-Type": "application/json", "ngrok-skip-browser-warning": "true" },
+    body: JSON.stringify(data)
+  })
+    .then(function(r) { return r.json(); })
+    .then(function(resp) {
+      resultDiv.innerHTML = '<div class="alert alert-success">Order placed successfully!</div>';
+      cart = [];
+      updateCart();
+      document.getElementById("checkoutForm").reset();
+    })
+    .catch(function() {
+      resultDiv.innerHTML = '<div class="alert alert-danger">Error placing order. Please try again later.</div>';
+    });
 }
 
 document.getElementById("sidebarOverlay").addEventListener("click", closeSidebar);

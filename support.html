@@ -175,22 +175,22 @@
     <h2 class="text-center mb-4 fw-bold">Submit a Ticket</h2>
     <div class="row justify-content-center">
       <div class="col-md-8 col-lg-6">
-        <form action="https://petty-directory-frigidly.ngrok-free.dev/api/tickets" method="POST">
+        <form id="ticketForm" onsubmit="submitTicket(event)">
           <div class="mb-3">
             <label for="ticketName" class="form-label fw-bold">Full Name</label>
-            <input type="text" class="form-control" id="ticketName" name="name" required>
+            <input type="text" class="form-control" id="ticketName" required>
           </div>
           <div class="mb-3">
             <label for="ticketEmail" class="form-label fw-bold">Email Address</label>
-            <input type="email" class="form-control" id="ticketEmail" name="email" required>
+            <input type="email" class="form-control" id="ticketEmail" required>
           </div>
           <div class="mb-3">
             <label for="ticketPhone" class="form-label fw-bold">Phone Number</label>
-            <input type="tel" class="form-control" id="ticketPhone" name="phone" required>
+            <input type="tel" class="form-control" id="ticketPhone" required>
           </div>
           <div class="mb-3">
             <label for="ticketDept" class="form-label fw-bold">Department</label>
-            <select class="form-control" id="ticketDept" name="department" required>
+            <select class="form-control" id="ticketDept" required>
               <option value="">Select department...</option>
               <option value="sales">Sales</option>
               <option value="service">Service</option>
@@ -201,14 +201,15 @@
           </div>
           <div class="mb-3">
             <label for="ticketSubject" class="form-label fw-bold">Subject</label>
-            <input type="text" class="form-control" id="ticketSubject" name="subject" required>
+            <input type="text" class="form-control" id="ticketSubject" required>
           </div>
           <div class="mb-3">
             <label for="ticketMessage" class="form-label fw-bold">Message</label>
-            <textarea class="form-control" id="ticketMessage" name="message" rows="5" required></textarea>
+            <textarea class="form-control" id="ticketMessage" rows="5" required></textarea>
           </div>
           <button type="submit" class="btn btn-success w-100">Submit Ticket</button>
         </form>
+        <div id="ticketResult" class="mt-3"></div>
       </div>
     </div>
   </div>
@@ -281,6 +282,32 @@ function toggleSidebar() {
     document.getElementById("sidebar").classList.toggle("collapsed");
     document.getElementById("content").classList.toggle("full");
   }
+}
+function submitTicket(e) {
+  e.preventDefault();
+  var resultDiv = document.getElementById("ticketResult");
+  var data = {
+    name: document.getElementById("ticketName").value,
+    email: document.getElementById("ticketEmail").value,
+    phone: document.getElementById("ticketPhone").value,
+    department: document.getElementById("ticketDept").value,
+    subject: document.getElementById("ticketSubject").value,
+    message: document.getElementById("ticketMessage").value
+  };
+  resultDiv.innerHTML = '<div class="text-center"><div class="spinner-border text-success" role="status"></div></div>';
+  fetch("https://petty-directory-frigidly.ngrok-free.dev/api/tickets", {
+    method: "POST",
+    headers: { "Content-Type": "application/json", "ngrok-skip-browser-warning": "true" },
+    body: JSON.stringify(data)
+  })
+    .then(function(r) { return r.json(); })
+    .then(function(resp) {
+      resultDiv.innerHTML = '<div class="alert alert-success">Ticket submitted successfully! We will get back to you soon.</div>';
+      document.getElementById("ticketForm").reset();
+    })
+    .catch(function() {
+      resultDiv.innerHTML = '<div class="alert alert-danger">Error submitting ticket. Please try again later.</div>';
+    });
 }
 document.getElementById("sidebarOverlay").addEventListener("click", closeSidebar);
 document.addEventListener("keydown", function(e) {
