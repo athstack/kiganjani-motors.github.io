@@ -394,6 +394,58 @@ app.post("/api/users", submitLimiter, turnstileMiddleware, (req, res) => {
 });
 
 // ==========================================
+// ADMIN API (Password-Protected)
+// ==========================================
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD;
+
+function adminAuth(req, res, next) {
+    const password = req.headers['x-admin-password'] || req.query.password;
+    if (!ADMIN_PASSWORD) {
+        return res.status(500).json({ message: "Admin password not configured" });
+    }
+    if (password !== ADMIN_PASSWORD) {
+        return res.status(401).json({ message: "Invalid admin password" });
+    }
+    next();
+}
+
+app.post("/api/admin/login", (req, res) => {
+    const { password } = req.body;
+    if (!ADMIN_PASSWORD) {
+        return res.status(500).json({ message: "Admin password not configured" });
+    }
+    if (password !== ADMIN_PASSWORD) {
+        return res.status(401).json({ message: "Invalid password" });
+    }
+    res.json({ message: "Login successful" });
+});
+
+app.get("/api/admin/reviews", adminAuth, (req, res) => {
+    db.query("SELECT *, IF(approved, 'Approved', 'Pending') as status FROM reviews ORDER BY created_at DESC", (err, results) => {
+        if (err) return res.status(500).json({ message: err.message });
+        res.json(results);
+    });
+});
+
+app.post("/api/admin/reviews/:id/approve", adminAuth, (req, res) => {
+    const id = req.params.id;
+    db.query("UPDATE reviews SET approved = TRUE WHERE id = ?", [id], (err, result) => {
+        if (err) return res.status(500).json({ message: err.message });
+        if (result.affectedRows === 0) return res.status(404).json({ message: "Review not found" });
+        res.json({ message: "Review approved" });
+    });
+});
+
+app.delete("/api/admin/reviews/:id", adminAuth, (req, res) => {
+    const id = req.params.id;
+    db.query("DELETE FROM reviews WHERE id = ?", [id], (err, result) => {
+        if (err) return res.status(500).json({ message: err.message });
+        if (result.affectedRows === 0) return res.status(404).json({ message: "Review not found" });
+        res.json({ message: "Review deleted" });
+    });
+});
+
+// ==========================================
 // START SERVER (local dev only)
 // ==========================================
 if (process.env.VERCEL !== "1") {
