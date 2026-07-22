@@ -2,19 +2,42 @@ require('dotenv').config();
 const express = require("express");
 const mysql = require("mysql2"); 
 const cors = require("cors");
+const rateLimit = require("express-rate-limit");
 
 const app = express();
 
+const allowedOrigins = [
+    'https://athstack.github.io',
+    'http://localhost:3000',
+    'http://localhost:8080'
+];
+
 app.use((req, res, next) => {
-    res.header("Access-Control-Allow-Origin", "*");
+    const origin = req.headers.origin;
+    if (allowedOrigins.includes(origin)) {
+        res.header("Access-Control-Allow-Origin", origin);
+    }
     res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
-    res.header("Access-Control-Allow-Headers", "Content-Type, Authorization, ngrok-skip-browser-warning");
+    res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
     if (req.method === "OPTIONS") {
         return res.sendStatus(204);
     }
     next();
 });
 
+const apiLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000,
+    max: 100,
+    message: { message: "Too many requests, please try again later." }
+});
+
+const submitLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000,
+    max: 20,
+    message: { message: "Too many submissions, please try again later." }
+});
+
+app.use("/api/", apiLimiter);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -164,7 +187,7 @@ tables.forEach(sql => {
 // ==========================================
 // BOOKINGS API
 // ==========================================
-app.post("/api/bookings", (req, res) => {
+app.post("/api/bookings", submitLimiter, (req, res) => {
     const { name, email, phone, service_type, preferred_date, preferred_time, vehicle, notes } = req.body;
     if (!name || !email || !phone || !service_type) {
         return res.status(400).json({ message: "Name, email, phone, and service type are required" });
@@ -186,7 +209,7 @@ app.get("/api/bookings", (req, res) => {
 // ==========================================
 // SERVICE RECORDS API
 // ==========================================
-app.post("/api/services", (req, res) => {
+app.post("/api/services", submitLimiter, (req, res) => {
     const { name, email, phone, service_type, vehicle, notes } = req.body;
     if (!name || !phone || !service_type) {
         return res.status(400).json({ message: "Name, phone, and service type are required" });
@@ -210,7 +233,7 @@ app.get("/api/services/lookup", (req, res) => {
 // ==========================================
 // RENTALS API
 // ==========================================
-app.post("/api/rentals", (req, res) => {
+app.post("/api/rentals", submitLimiter, (req, res) => {
     const { name, email, phone, vehicle, rental_class, start_date, end_date, total_price } = req.body;
     if (!name || !email || !phone || !vehicle) {
         return res.status(400).json({ message: "Name, email, phone, and vehicle are required" });
@@ -232,7 +255,7 @@ app.get("/api/rentals", (req, res) => {
 // ==========================================
 // REVIEWS API
 // ==========================================
-app.post("/api/reviews", (req, res) => {
+app.post("/api/reviews", submitLimiter, (req, res) => {
     const { name, email, rating, vehicle, review_text, review } = req.body;
     const text = review_text || review;
     if (!name || !rating || !text) {
@@ -262,7 +285,7 @@ app.get("/api/blog", (req, res) => {
     });
 });
 
-app.post("/api/blog", (req, res) => {
+app.post("/api/blog", submitLimiter, (req, res) => {
     const { title, excerpt, content, category, image_url } = req.body;
     if (!title || !content) {
         return res.status(400).json({ message: "Title and content are required" });
@@ -291,7 +314,7 @@ app.get("/api/parts", (req, res) => {
     });
 });
 
-app.post("/api/parts/orders", (req, res) => {
+app.post("/api/parts/orders", submitLimiter, (req, res) => {
     const { name, email, phone, items, total } = req.body;
     if (!name || !email || !phone || !items) {
         return res.status(400).json({ message: "Name, email, phone, and items are required" });
@@ -307,7 +330,7 @@ app.post("/api/parts/orders", (req, res) => {
 // ==========================================
 // TICKETS API
 // ==========================================
-app.post("/api/tickets", (req, res) => {
+app.post("/api/tickets", submitLimiter, (req, res) => {
     const { name, email, phone, department, subject, message } = req.body;
     if (!name || !email || !subject || !message) {
         return res.status(400).json({ message: "Name, email, subject, and message are required" });
@@ -329,7 +352,7 @@ app.get("/api/tickets", (req, res) => {
 // ==========================================
 // EXISTING USERS / ORDERS API
 // ==========================================
-app.post("/api/users", (req, res) => {
+app.post("/api/users", submitLimiter, (req, res) => {
     const { name, email, phoneNo, location } = req.body;
     if (!name || !email || !phoneNo || !location) {
         return res.status(400).json({ message: "All fields required" });
@@ -338,36 +361,6 @@ app.post("/api/users", (req, res) => {
     db.query(sql, [name, email, phoneNo, location, eatNow()], (err, result) => {
         if (err) return res.status(500).json({ message: err.message });
         res.json({ message: "Order placed successfully" });
-    });
-});
-
-app.get("/api/users", (req, res) => {
-    db.query("SELECT * FROM users", (err, results) => {
-        if (err) return res.status(500).json({ message: err.message });
-        res.json(results);
-    });
-});
-
-app.delete("/api/users/:id", (req, res) => {
-    const userId = req.params.id;
-    db.query("DELETE FROM users WHERE id = ?", [userId], (err, result) => {
-        if (err) return res.status(500).json({ message: err.message });
-        if (result.affectedRows === 0) return res.status(404).json({ message: "User not found" });
-        res.json({ message: "User deleted successfully" });
-    });
-});
-
-app.put("/api/users/:id", (req, res) => {
-    const userId = req.params.id;
-    const { name, email, phoneNo, location } = req.body;
-    if (!name || !email || !phoneNo || !location) {
-        return res.status(400).json({ message: "All fields required" });
-    }
-    const sql = "UPDATE users SET name = ?, email = ?, phoneNo = ?, location = ? WHERE id = ?";
-    db.query(sql, [name, email, phoneNo, location, userId], (err, result) => {
-        if (err) return res.status(500).json({ message: err.message });
-        if (result.affectedRows === 0) return res.status(404).json({ message: "User not found" });
-        res.json({ message: "User updated successfully" });
     });
 });
 
