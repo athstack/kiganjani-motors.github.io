@@ -79,6 +79,8 @@ function doAdminLogin() {
     return r.json().then(function(d) { return { ok: r.ok, data: d }; });
   }).then(function(resp) {
     if (resp.ok) {
+      sessionStorage.setItem("isAdminLoggedIn", "true");
+      sessionStorage.setItem("adminPassword", pw);
       window.location.href = "admin.html";
     } else {
       msg.innerHTML = '<div class="alert alert-danger py-2 small">' + (resp.data.message || "Login failed") + "</div>";
