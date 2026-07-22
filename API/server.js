@@ -36,6 +36,10 @@ db.on('connection', function (connection) {
     connection.query("SET time_zone = '+03:00'");
 });
 
+function eatNow() {
+    return new Date().toLocaleString('sv-SE', { timeZone: 'Africa/Dar_es_Salaam' }).replace(' ', 'T');
+}
+
 db.getConnection((err, connection) => {
     if (err) {
         console.error('Database connection failed: ' + err.message);
@@ -165,8 +169,8 @@ app.post("/api/bookings", (req, res) => {
     if (!name || !email || !phone || !service_type) {
         return res.status(400).json({ message: "Name, email, phone, and service type are required" });
     }
-    const sql = "INSERT INTO bookings (name, email, phone, service_type, preferred_date, preferred_time, vehicle, notes) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-    db.query(sql, [name, email, phone, service_type, preferred_date, preferred_time, vehicle, notes], (err, result) => {
+    const sql = "INSERT INTO bookings (name, email, phone, service_type, preferred_date, preferred_time, vehicle, notes, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    db.query(sql, [name, email, phone, service_type, preferred_date, preferred_time, vehicle, notes, eatNow()], (err, result) => {
         if (err) return res.status(500).json({ message: err.message });
         res.json({ message: "Appointment booked successfully" });
     });
@@ -187,8 +191,8 @@ app.post("/api/services", (req, res) => {
     if (!name || !phone || !service_type) {
         return res.status(400).json({ message: "Name, phone, and service type are required" });
     }
-    const sql = "INSERT INTO service_records (name, email, phone, service_type, vehicle, notes) VALUES (?, ?, ?, ?, ?, ?)";
-    db.query(sql, [name, email, phone, service_type, vehicle, notes], (err, result) => {
+    const sql = "INSERT INTO service_records (name, email, phone, service_type, vehicle, notes, created_at) VALUES (?, ?, ?, ?, ?, ?, ?)";
+    db.query(sql, [name, email, phone, service_type, vehicle, notes, eatNow()], (err, result) => {
         if (err) return res.status(500).json({ message: err.message });
         res.json({ message: "Service recorded successfully" });
     });
@@ -211,8 +215,8 @@ app.post("/api/rentals", (req, res) => {
     if (!name || !email || !phone || !vehicle) {
         return res.status(400).json({ message: "Name, email, phone, and vehicle are required" });
     }
-    const sql = "INSERT INTO rentals (name, email, phone, vehicle, rental_class, start_date, end_date, total_price) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-    db.query(sql, [name, email, phone, vehicle, rental_class, start_date, end_date, total_price], (err, result) => {
+    const sql = "INSERT INTO rentals (name, email, phone, vehicle, rental_class, start_date, end_date, total_price, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    db.query(sql, [name, email, phone, vehicle, rental_class, start_date, end_date, total_price, eatNow()], (err, result) => {
         if (err) return res.status(500).json({ message: err.message });
         res.json({ message: "Car reserved successfully" });
     });
@@ -234,8 +238,8 @@ app.post("/api/reviews", (req, res) => {
     if (!name || !rating || !text) {
         return res.status(400).json({ message: "Name, rating, and review are required" });
     }
-    const sql = "INSERT INTO reviews (name, email, rating, vehicle, review_text) VALUES (?, ?, ?, ?, ?)";
-    db.query(sql, [name, email, rating, vehicle, text], (err, result) => {
+    const sql = "INSERT INTO reviews (name, email, rating, vehicle, review_text, created_at) VALUES (?, ?, ?, ?, ?, ?)";
+    db.query(sql, [name, email, rating, vehicle, text, eatNow()], (err, result) => {
         if (err) return res.status(500).json({ message: err.message });
         res.json({ message: "Review submitted successfully" });
     });
@@ -263,8 +267,8 @@ app.post("/api/blog", (req, res) => {
     if (!title || !content) {
         return res.status(400).json({ message: "Title and content are required" });
     }
-    const sql = "INSERT INTO blog_posts (title, excerpt, content, category, image_url) VALUES (?, ?, ?, ?, ?)";
-    db.query(sql, [title, excerpt, content, category, image_url], (err, result) => {
+    const sql = "INSERT INTO blog_posts (title, excerpt, content, category, image_url, created_at) VALUES (?, ?, ?, ?, ?, ?)";
+    db.query(sql, [title, excerpt, content, category, image_url, eatNow()], (err, result) => {
         if (err) return res.status(500).json({ message: err.message });
         res.json({ message: "Blog post published" });
     });
@@ -293,8 +297,8 @@ app.post("/api/parts/orders", (req, res) => {
         return res.status(400).json({ message: "Name, email, phone, and items are required" });
     }
     var itemsJson = typeof items === 'string' ? items : JSON.stringify(items);
-    const sql = "INSERT INTO part_orders (name, email, phone, items, total) VALUES (?, ?, ?, ?, ?)";
-    db.query(sql, [name, email, phone, itemsJson, total || 0], (err, result) => {
+    const sql = "INSERT INTO part_orders (name, email, phone, items, total, created_at) VALUES (?, ?, ?, ?, ?, ?)";
+    db.query(sql, [name, email, phone, itemsJson, total || 0, eatNow()], (err, result) => {
         if (err) return res.status(500).json({ message: err.message });
         res.json({ message: "Order placed successfully" });
     });
@@ -308,8 +312,8 @@ app.post("/api/tickets", (req, res) => {
     if (!name || !email || !subject || !message) {
         return res.status(400).json({ message: "Name, email, subject, and message are required" });
     }
-    const sql = "INSERT INTO tickets (name, email, phone, department, subject, message) VALUES (?, ?, ?, ?, ?, ?)";
-    db.query(sql, [name, email, phone, department, subject, message], (err, result) => {
+    const sql = "INSERT INTO tickets (name, email, phone, department, subject, message, created_at) VALUES (?, ?, ?, ?, ?, ?, ?)";
+    db.query(sql, [name, email, phone, department, subject, message, eatNow()], (err, result) => {
         if (err) return res.status(500).json({ message: err.message });
         res.json({ message: "Ticket submitted successfully" });
     });
@@ -330,8 +334,8 @@ app.post("/api/users", (req, res) => {
     if (!name || !email || !phoneNo || !location) {
         return res.status(400).json({ message: "All fields required" });
     }
-    const sql = "INSERT INTO users (name, email, phoneNo, location) VALUES (?, ?, ?, ?)";
-    db.query(sql, [name, email, phoneNo, location], (err, result) => {
+    const sql = "INSERT INTO users (name, email, phoneNo, location, created_at) VALUES (?, ?, ?, ?, ?)";
+    db.query(sql, [name, email, phoneNo, location, eatNow()], (err, result) => {
         if (err) return res.status(500).json({ message: err.message });
         res.json({ message: "Order placed successfully" });
     });
