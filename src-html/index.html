@@ -6,6 +6,7 @@
 <title>Kiganjani Motors</title>
 
 <link rel="stylesheet" href="KAYOMBO/bootstrap-5.0.2-dist/css/bootstrap.min.css">
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 <link rel="stylesheet" href="style.css?v=11">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
 <script src="KAYOMBO/bootstrap-5.0.2-dist/js/bootstrap.bundle.min.js"></script>
@@ -98,7 +99,7 @@ style="background:url('IMAGES/top_nav.jpg') center/cover;">
       <div class="card-body text-center">
         <h5 class="fw-bold">Mitsubishi Lancer Evo</h5>
         <p class="text-muted small mb-3">$45,000</p>
-        <a href="./API/form.html?car=Mitsubishi Lancer Evo&price=45,000" class="btn btn-success w-100">Order Now</a>
+        <button type="button" class="btn btn-success w-100" onclick="openOrderModal('Mitsubishi Lancer Evo','45,000')">Order Now</button>
       </div>
     </div>
   </div>
@@ -109,7 +110,7 @@ style="background:url('IMAGES/top_nav.jpg') center/cover;">
       <div class="card-body text-center">
         <h5 class="fw-bold">Range Rover</h5>
         <p class="text-muted small mb-3">$25,000</p>
-        <a href="./API/form.html?car=Range Rover&price=25,000" class="btn btn-success w-100">Order Now</a>
+        <button type="button" class="btn btn-success w-100" onclick="openOrderModal('Range Rover','25,000')">Order Now</button>
       </div>
     </div>
   </div>
@@ -120,7 +121,7 @@ style="background:url('IMAGES/top_nav.jpg') center/cover;">
       <div class="card-body text-center">
         <h5 class="fw-bold">Ferrari 296 GTP</h5>
         <p class="text-muted small mb-3">$300,000</p>
-        <a href="./API/form.html?car=Ferrari 296 GTP&price=300,000" class="btn btn-success w-100">Order Now</a>
+        <button type="button" class="btn btn-success w-100" onclick="openOrderModal('Ferrari 296 GTP','300,000')">Order Now</button>
       </div>
     </div>
   </div>
@@ -131,7 +132,7 @@ style="background:url('IMAGES/top_nav.jpg') center/cover;">
       <div class="card-body text-center">
         <h5 class="fw-bold">Tesla Model S</h5>
         <p class="text-muted small mb-3">$101,630</p>
-        <a href="./API/form.html?car=Tesla Model S&price=101,630" class="btn btn-success w-100">Order Now</a>
+        <button type="button" class="btn btn-success w-100" onclick="openOrderModal('Tesla Model S','101,630')">Order Now</button>
       </div>
     </div>
   </div>
@@ -142,7 +143,7 @@ style="background:url('IMAGES/top_nav.jpg') center/cover;">
       <div class="card-body text-center">
         <h5 class="fw-bold">Tesla Model X</h5>
         <p class="text-muted small mb-3">$160,000</p>
-        <a href="./API/form.html?car=Tesla Model X&price=160,000" class="btn btn-success w-100">Order Now</a>
+        <button type="button" class="btn btn-success w-100" onclick="openOrderModal('Tesla Model X','160,000')">Order Now</button>
       </div>
     </div>
   </div>
@@ -153,7 +154,7 @@ style="background:url('IMAGES/top_nav.jpg') center/cover;">
       <div class="card-body text-center">
         <h5 class="fw-bold">Ford F-150 Raptor</h5>
         <p class="text-muted small mb-3">$110,000</p>
-        <a href="./API/form.html?car=Ford F-150 Raptor&price=110,000" class="btn btn-success w-100">Order Now</a>
+        <button type="button" class="btn btn-success w-100" onclick="openOrderModal('Ford F-150 Raptor','110,000')">Order Now</button>
       </div>
     </div>
   </div>
@@ -164,7 +165,7 @@ style="background:url('IMAGES/top_nav.jpg') center/cover;">
       <div class="card-body text-center">
         <h5 class="fw-bold">Renault Espace</h5>
         <p class="text-muted small mb-3">$55,000</p>
-        <a href="./API/form.html?car=Renault Espace&price=55,000" class="btn btn-success w-100">Order Now</a>
+        <button type="button" class="btn btn-success w-100" onclick="openOrderModal('Renault Espace','55,000')">Order Now</button>
       </div>
     </div>
   </div>
@@ -175,7 +176,7 @@ style="background:url('IMAGES/top_nav.jpg') center/cover;">
       <div class="card-body text-center">
         <h5 class="fw-bold">Mercedes-Benz A</h5>
         <p class="text-muted small mb-3">$70,000</p>
-        <a href="./API/form.html?car=Mercedes-Benz A&price=70,000" class="btn btn-success w-100">Order Now</a>
+        <button type="button" class="btn btn-success w-100" onclick="openOrderModal('Mercedes-Benz A','70,000')">Order Now</button>
       </div>
     </div>
   </div>
@@ -186,7 +187,7 @@ style="background:url('IMAGES/top_nav.jpg') center/cover;">
       <div class="card-body text-center">
         <h5 class="fw-bold">Marcedes-AMG C63 Cabriolet</h5>
         <p class="text-muted small mb-3">$100,000</p>
-        <a href="./API/form.html?car=Marcedes-AMG C63 Cabriolet&price=100,000" class="btn btn-success w-100">Order Now</a>
+        <button type="button" class="btn btn-success w-100" onclick="openOrderModal('Marcedes-AMG C63 Cabriolet','100,000')">Order Now</button>
       </div>
     </div>
   </div>
@@ -197,7 +198,7 @@ style="background:url('IMAGES/top_nav.jpg') center/cover;">
       <div class="card-body text-center">
         <h5 class="fw-bold">BMW 8 Series</h5>
         <p class="text-muted small mb-3">$95,000</p>
-        <a href="./API/form.html?car=BMW 8 Series&price=95,000" class="btn btn-success w-100">Order Now</a>
+        <button type="button" class="btn btn-success w-100" onclick="openOrderModal('BMW 8 Series','95,000')">Order Now</button>
       </div>
     </div>
   </div>
@@ -208,7 +209,7 @@ style="background:url('IMAGES/top_nav.jpg') center/cover;">
       <div class="card-body text-center">
         <h5 class="fw-bold">Mercedes-Benz E</h5>
         <p class="text-muted small mb-3">$85,000</p>
-        <a href="./API/form.html?car=Mercedes-Benz E&price=85,000" class="btn btn-success w-100">Order Now</a>
+        <button type="button" class="btn btn-success w-100" onclick="openOrderModal('Mercedes-Benz E','85,000')">Order Now</button>
       </div>
     </div>
   </div>
@@ -218,7 +219,7 @@ style="background:url('IMAGES/top_nav.jpg') center/cover;">
       <div class="card-body text-center">
         <h5 class="fw-bold">Marcedes-Benz SLC</h5>
         <p class="text-muted small mb-3">$35,000</p>
-        <a href="./API/form.html?car=Marcedes-Benz SLC&price=35,000" class="btn btn-success w-100">Order Now</a>
+        <button type="button" class="btn btn-success w-100" onclick="openOrderModal('Marcedes-Benz SLC','35,000')">Order Now</button>
       </div>
     </div>
   </div>
@@ -228,7 +229,7 @@ style="background:url('IMAGES/top_nav.jpg') center/cover;">
       <div class="card-body text-center">
         <h5 class="fw-bold">Ford Thunderbird</h5>
         <p class="text-muted small mb-3">$60,000</p>
-        <a href="./API/form.html?car=Ford Thunderbird&price=60,000" class="btn btn-success w-100">Order Now</a>
+        <button type="button" class="btn btn-success w-100" onclick="openOrderModal('Ford Thunderbird','60,000')">Order Now</button>
       </div>
     </div>
   </div>
@@ -239,7 +240,7 @@ style="background:url('IMAGES/top_nav.jpg') center/cover;">
       <div class="card-body text-center">
         <h5 class="fw-bold">Toyota Land Cruiser</h5>
         <p class="text-muted small mb-3">$65,000</p>
-        <a href="./API/form.html?car=Toyota Land Cruiser&price=65,000" class="btn btn-success w-100">Order Now</a>
+        <button type="button" class="btn btn-success w-100" onclick="openOrderModal('Toyota Land Cruiser','65,000')">Order Now</button>
       </div>
     </div>
   </div>
@@ -250,7 +251,7 @@ style="background:url('IMAGES/top_nav.jpg') center/cover;">
       <div class="card-body text-center">
         <h5 class="fw-bold">Honda Civic</h5>
         <p class="text-muted small mb-3">$28,000</p>
-        <a href="./API/form.html?car=Honda Civic&price=28,000" class="btn btn-success w-100">Order Now</a>
+        <button type="button" class="btn btn-success w-100" onclick="openOrderModal('Honda Civic','28,000')">Order Now</button>
       </div>
     </div>
   </div>
@@ -261,7 +262,7 @@ style="background:url('IMAGES/top_nav.jpg') center/cover;">
       <div class="card-body text-center">
         <h5 class="fw-bold">Toyota Crown</h5>
         <p class="text-muted small mb-3">$38,000</p>
-        <a href="./API/form.html?car=Toyota Crown&price=38,000" class="btn btn-success w-100">Order Now</a>
+        <button type="button" class="btn btn-success w-100" onclick="openOrderModal('Toyota Crown','38,000')">Order Now</button>
       </div>
     </div>
   </div>
@@ -294,7 +295,91 @@ style="background:url('IMAGES/top_nav.jpg') center/cover;">
 
 </div>
 
+<!-- Order Modal -->
+<div id="orderModal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;z-index:2000;">
+  <div style="position:absolute;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.6);" onclick="closeOrderModal()"></div>
+  <div style="position:relative;z-index:2001;max-width:500px;width:95%;margin:5% auto;background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 8px 32px rgba(0,0,0,.3);max-height:85vh;overflow-y:auto;">
+    <div style="background:#198754;color:#fff;padding:16px 20px;display:flex;justify-content:space-between;align-items:center;">
+      <div><strong id="modalCarName">Place Order</strong><br><small id="modalCarPrice" style="opacity:.85;"></small></div>
+      <button onclick="closeOrderModal()" style="background:none;border:none;color:#fff;font-size:1.5rem;cursor:pointer;line-height:1;">&times;</button>
+    </div>
+    <div style="padding:20px;">
+      <div id="orderMessage"></div>
+      <form id="orderForm" onsubmit="submitOrder(event)">
+        <input type="hidden" id="orderUserId">
+        <div class="mb-3">
+          <input type="text" id="orderName" class="form-control" placeholder="Full Name" required>
+        </div>
+        <div class="mb-3">
+          <input type="email" id="orderEmail" class="form-control" placeholder="Email" required>
+        </div>
+        <div class="mb-3">
+          <input type="text" id="orderPhone" class="form-control" placeholder="Phone" required>
+        </div>
+        <div class="mb-3">
+          <textarea id="orderLocation" class="form-control" rows="2" placeholder="Location" required></textarea>
+        </div>
+        <div class="mb-3 text-center">
+          <div class="cf-turnstile" data-sitekey="0x4AAAAAAD7R7gk1ZBNDyvU3" data-theme="light"></div>
+        </div>
+        <button type="submit" class="btn btn-success w-100 fw-bold" style="padding:12px;">Submit Order</button>
+        <button type="button" class="btn btn-secondary w-100 mt-2" onclick="closeOrderModal()">Cancel</button>
+      </form>
+    </div>
+  </div>
+</div>
+
 <script>
+var API_BASE = (location.hostname === 'localhost' || location.hostname === '127.0.0.1') ? 'http://localhost:3000' : 'https://kiganjani-api.vercel.app';
+
+function openOrderModal(car, price) {
+  document.getElementById("modalCarName").textContent = car;
+  document.getElementById("modalCarPrice").textContent = "$" + price;
+  document.getElementById("orderForm").reset();
+  document.getElementById("orderMessage").innerHTML = "";
+  document.getElementById("orderModal").style.display = "block";
+  document.body.style.overflow = "hidden";
+  if (typeof turnstile !== 'undefined') {
+    var w = document.querySelector('#orderModal .cf-turnstile');
+    if (w) turnstile.render(w);
+  }
+}
+
+function closeOrderModal() {
+  document.getElementById("orderModal").style.display = "none";
+  document.body.style.overflow = "";
+}
+
+function submitOrder(e) {
+  e.preventDefault();
+  var resultDiv = document.getElementById("orderMessage");
+  var name = document.getElementById("orderName").value.trim();
+  var email = document.getElementById("orderEmail").value.trim();
+  var phoneNo = document.getElementById("orderPhone").value.trim();
+  var location = document.getElementById("orderLocation").value.trim();
+  var turnstileToken = (typeof turnstile !== 'undefined') ? turnstile.getResponse(document.querySelector('#orderModal .cf-turnstile')) : "";
+
+  resultDiv.innerHTML = '<div class="text-center"><div class="spinner-border text-success" role="status"></div></div>';
+
+  fetch(API_BASE + "/api/users", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ name: name, email: email, phoneNo: phoneNo, location: location, cf_turnstile_response: turnstileToken || "" })
+  }).then(function(r) {
+    return r.json().then(function(d) { return { ok: r.ok, data: d }; });
+  }).then(function(resp) {
+    if (resp.ok) {
+      resultDiv.innerHTML = '<div class="alert alert-success py-2 small">Order placed successfully!</div>';
+      document.getElementById("orderForm").reset();
+      setTimeout(closeOrderModal, 2000);
+    } else {
+      resultDiv.innerHTML = '<div class="alert alert-danger py-2 small">' + (resp.data.message || "Error placing order.") + '</div>';
+    }
+  }).catch(function() {
+    resultDiv.innerHTML = '<div class="alert alert-danger py-2 small">Server error. Please try again.</div>';
+  });
+}
+
 function isMobile() {
   return window.innerWidth < 992;
 }
