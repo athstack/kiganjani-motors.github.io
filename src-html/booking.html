@@ -226,7 +226,7 @@ function submitBooking(e) {
     notes: document.getElementById("notes").value
   };
   resultDiv.innerHTML = '<div class="text-center"><div class="spinner-border text-success" role="status"><span class="visually-hidden">Submitting...</span></div></div>';
-  fetch(API_BASE + "/api/bookings", { method: "POST", headers: { "Content-Type": "application/json", "ngrok-skip-browser-warning": "true",  }, body: JSON.stringify(data) })
+  fetch(API_BASE + "/api/bookings", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(data) })
     .then(function(r) { return r.json().then(function(d) { return { ok: r.ok, data: d }; }); })
     .then(function(resp) {
       if (resp.ok) {

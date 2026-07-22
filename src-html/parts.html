@@ -462,7 +462,7 @@ function submitCheckout(e) {
   resultDiv.innerHTML = '<div class="text-center"><div class="spinner-border text-success" role="status"></div></div>';
   fetch(API_BASE + "/api/parts/orders", {
     method: "POST",
-    headers: { "Content-Type": "application/json", "ngrok-skip-browser-warning": "true" },
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify(data)
   })
     .then(function(r) { return r.json().then(function(d) { return { ok: r.ok, data: d }; }); })
