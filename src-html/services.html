@@ -172,6 +172,8 @@
 
 <script>
 var API_BASE = (location.hostname === 'localhost' || location.hostname === '127.0.0.1') ? 'http://localhost:3000' : 'https://kiganjani-api.vercel.app';
+function esc(s) { var d = document.createElement("div"); d.textContent = s || ""; return d.innerHTML; }
+function fmtDate(d) { if (!d) return "-"; return new Date(d).toLocaleDateString("en-US", { year:"numeric", month:"short", day:"numeric" }); }
 function isMobile() { return window.innerWidth < 992; }
 function openSidebar() {
   var sidebar = document.getElementById("sidebar");
@@ -208,7 +210,7 @@ function lookupService() {
       if (data.length === 0) { resultDiv.innerHTML = '<div class="alert alert-info">No service records found for this phone number.</div>'; return; }
       var html = '<div class="list-group">';
       data.forEach(function(record) {
-        html += '<div class="list-group-item"><h6 class="fw-bold">' + record.service + '</h6><p class="mb-1 small">Date: ' + record.date + ' | Cost: $' + record.cost + '</p></div>';
+        html += '<div class="list-group-item"><h6 class="fw-bold">' + esc(record.service_type) + '</h6><p class="mb-1 small">Vehicle: ' + esc(record.vehicle||'-') + ' | Date: ' + fmtDate(record.created_at) + '</p><p class="mb-0 small text-muted">' + esc(record.notes||'') + '</p></div>';
       });
       html += '</div>';
       resultDiv.innerHTML = html;
