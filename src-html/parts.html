@@ -465,12 +465,16 @@ function submitCheckout(e) {
     headers: { "Content-Type": "application/json", "ngrok-skip-browser-warning": "true" },
     body: JSON.stringify(data)
   })
-    .then(function(r) { return r.json(); })
+    .then(function(r) { return r.json().then(function(d) { return { ok: r.ok, data: d }; }); })
     .then(function(resp) {
-      resultDiv.innerHTML = '<div class="alert alert-success"><i class="bi bi-check-circle-fill me-2"></i>Order placed successfully!</div>';
-      cart = [];
-      updateCart();
-      form.reset();
+      if (resp.ok) {
+        resultDiv.innerHTML = '<div class="alert alert-success"><i class="bi bi-check-circle-fill me-2"></i>Order placed successfully!</div>';
+        cart = [];
+        updateCart();
+        form.reset();
+      } else {
+        resultDiv.innerHTML = '<div class="alert alert-danger"><i class="bi bi-exclamation-triangle-fill me-2"></i>' + (resp.data.message || 'Error placing order.') + '</div>';
+      }
     })
     .catch(function() {
       resultDiv.innerHTML = '<div class="alert alert-danger"><i class="bi bi-exclamation-triangle-fill me-2"></i>Error placing order. Please try again later.</div>';

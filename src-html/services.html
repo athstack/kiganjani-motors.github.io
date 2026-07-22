@@ -197,8 +197,10 @@ function lookupService() {
   if (!phone) { resultDiv.innerHTML = '<div class="alert alert-warning">Please enter a phone number.</div>'; return; }
   resultDiv.innerHTML = '<div class="text-center"><div class="spinner-border text-success" role="status"><span class="visually-hidden">Loading...</span></div></div>';
   fetch(API_BASE + "/api/services/lookup?phone=" + encodeURIComponent(phone), { headers: { "ngrok-skip-browser-warning": "true" } })
-    .then(function(r) { return r.json(); })
-    .then(function(data) {
+    .then(function(r) { return r.json().then(function(d) { return { ok: r.ok, data: d }; }); })
+    .then(function(resp) {
+      if (!resp.ok) { resultDiv.innerHTML = '<div class="alert alert-danger">Error fetching records. ' + (resp.data.message || 'Please try again later.') + '</div>'; return; }
+      var data = resp.data;
       if (data.length === 0) { resultDiv.innerHTML = '<div class="alert alert-info">No service records found for this phone number.</div>'; return; }
       var html = '<div class="list-group">';
       data.forEach(function(record) {

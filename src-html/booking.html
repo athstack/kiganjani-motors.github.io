@@ -216,21 +216,25 @@ function submitBooking(e) {
   }
 
   var data = {
-    fullName: fullName.value.trim(),
+    name: fullName.value.trim(),
     email: email.value.trim(),
     phone: phone.value.trim(),
-    serviceType: serviceType.value,
-    preferredDate: preferredDate.value,
-    preferredTime: preferredTime.value,
-    vehicleOfInterest: document.getElementById("vehicleOfInterest").value,
+    service_type: serviceType.value,
+    preferred_date: preferredDate.value,
+    preferred_time: preferredTime.value,
+    vehicle: document.getElementById("vehicleOfInterest").value,
     notes: document.getElementById("notes").value
   };
   resultDiv.innerHTML = '<div class="text-center"><div class="spinner-border text-success" role="status"><span class="visually-hidden">Submitting...</span></div></div>';
   fetch(API_BASE + "/api/bookings", { method: "POST", headers: { "Content-Type": "application/json", "ngrok-skip-browser-warning": "true",  }, body: JSON.stringify(data) })
-    .then(function(r) { return r.json(); })
+    .then(function(r) { return r.json().then(function(d) { return { ok: r.ok, data: d }; }); })
     .then(function(resp) {
-      resultDiv.innerHTML = '<div class="alert alert-success"><i class="bi bi-check-circle-fill me-2"></i>Appointment booked successfully! We will contact you shortly.</div>';
-      form.reset();
+      if (resp.ok) {
+        resultDiv.innerHTML = '<div class="alert alert-success"><i class="bi bi-check-circle-fill me-2"></i>Appointment booked successfully! We will contact you shortly.</div>';
+        form.reset();
+      } else {
+        resultDiv.innerHTML = '<div class="alert alert-danger"><i class="bi bi-exclamation-triangle-fill me-2"></i>' + (resp.data.message || 'Error submitting appointment.') + '</div>';
+      }
     })
     .catch(function() {
       resultDiv.innerHTML = '<div class="alert alert-danger"><i class="bi bi-exclamation-triangle-fill me-2"></i>Error submitting appointment. Please try again later.</div>';
