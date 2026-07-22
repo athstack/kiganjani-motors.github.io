@@ -172,9 +172,16 @@ var API_BASE = "https://kiganjani-api.vercel.app";
 var adminPassword = "";
 var currentTab = "reviews";
 var currentData = [];
+var isInIframe = (window.self !== window.top);
+if (isInIframe) {
+  document.getElementById("siteFrame").style.display = "none";
+}
 
 function closeLogin() {
   document.getElementById("loginOverlay").classList.add("hidden");
+  if (isInIframe) {
+    window.parent.postMessage("closeAdmin", "*");
+  }
 }
 
 function openSidebar() {
@@ -216,6 +223,9 @@ function doLogout() {
   document.getElementById("dashboardOverlay").classList.remove("active");
   document.getElementById("adminPassword").value = "";
   document.getElementById("loginMsg").innerHTML = "";
+  if (isInIframe) {
+    window.parent.postMessage("closeAdmin", "*");
+  }
 }
 
 function switchTab(tab, el) {
