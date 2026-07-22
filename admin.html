@@ -9,7 +9,7 @@
 <script src="KAYOMBO/bootstrap-5.0.2-dist/js/bootstrap.bundle.min.js"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-body{background:#f4f6f9;font-family:Arial,sans-serif;overflow-x:hidden}
+body{font-family:Arial,sans-serif;overflow:hidden}
 .table th{white-space:nowrap}
 .badge-approved,.badge-completed,.badge-confirmed,.badge-delivered,.badge-resolved,.badge-published{background:#198754;color:#fff}
 .badge-pending,.badge-open,.badge-reserved{background:#ffc107;color:#212529}
@@ -20,14 +20,23 @@ body{background:#f4f6f9;font-family:Arial,sans-serif;overflow-x:hidden}
 .stars{color:#198754}
 .btn-delete{color:#dc3545;border:1px solid rgba(220,53,69,.3);background:transparent;font-size:.8rem;padding:2px 6px;transition:all .15s}
 .btn-delete:hover{background:#dc3545;color:#fff;border-color:#dc3545}
-.back-link{display:block;text-align:center;margin-top:12px;color:#999;text-decoration:none;font-size:.85rem;transition:color .2s}
-.back-link:hover{color:#198754}
 
-/* Login */
-.login-box{max-width:380px;margin:10% auto}
+/* Website iframe behind everything */
+#siteFrame{position:fixed;top:0;left:0;width:100%;height:100%;border:none;z-index:0}
+
+/* Overlays */
+.admin-overlay{position:fixed;top:0;left:0;width:100%;height:100%;z-index:9999;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.6);backdrop-filter:blur(2px)}
+.admin-overlay.hidden{display:none}
+
+/* Login card */
+.login-card{max-width:400px;width:90%;position:relative}
+
+/* Dashboard overlay */
+.admin-dashboard-overlay{position:fixed;top:0;left:0;width:100%;height:100%;z-index:9999;background:#f4f6f9;display:none;overflow:hidden}
+.admin-dashboard-overlay.active{display:flex}
 
 /* Sidebar */
-.admin-sidebar{position:fixed;top:0;left:0;width:230px;height:100vh;background:#111;color:#fff;z-index:1060;display:flex;flex-direction:column;transition:transform .3s;overflow-y:auto;overflow-x:hidden;scrollbar-width:none}
+.admin-sidebar{width:230px;min-width:230px;height:100vh;background:#111;color:#fff;display:flex;flex-direction:column;overflow-y:auto;overflow-x:hidden;scrollbar-width:none}
 .admin-sidebar::-webkit-scrollbar{display:none}
 .admin-sidebar .brand{padding:20px 16px;display:flex;align-items:center;gap:10px;border-bottom:1px solid rgba(255,255,255,.08)}
 .admin-sidebar .brand img{width:42px;height:42px;border-radius:8px;object-fit:cover}
@@ -42,25 +51,28 @@ body{background:#f4f6f9;font-family:Arial,sans-serif;overflow-x:hidden}
 .admin-sidebar .sidebar-footer{margin-top:auto;padding:14px 16px;border-top:1px solid rgba(255,255,255,.08)}
 
 /* Main content */
-.admin-main{margin-left:230px;min-height:100vh;transition:margin-left .3s}
+.admin-main{flex:1;display:flex;flex-direction:column;min-height:100vh;overflow:hidden}
 
-/* Mobile */
+/* Mobile sidebar overlay */
+.sidebar-backdrop{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.5);z-index:10001}
+.sidebar-backdrop.active{display:block}
 @media(max-width:768px){
-  .admin-sidebar{transform:translateX(-100%)}
+  .admin-sidebar{position:fixed;top:0;left:0;z-index:10002;transform:translateX(-100%);transition:transform .3s}
   .admin-sidebar.show{transform:translateX(0)}
-  .admin-main{margin-left:0}
-  .sidebar-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.5);z-index:1050}
-  .sidebar-overlay.active{display:block}
 }
 </style>
 </head>
 <body>
 
-<!-- Login -->
-<div id="loginScreen">
-  <div class="login-box">
+<!-- Website iframe (always behind) -->
+<iframe id="siteFrame" src="index.html"></iframe>
+
+<!-- Login Overlay -->
+<div class="admin-overlay" id="loginOverlay">
+  <div class="login-card">
     <div class="card shadow border-0">
       <div class="card-body p-4 text-center">
+        <button class="btn position-absolute top-0 end-0 m-2 p-1 text-muted" onclick="closeLogin()" style="font-size:1.2rem;border:none;background:none;" title="Close">&times;</button>
         <i class="bi bi-shield-lock text-success" style="font-size:3rem;"></i>
         <h4 class="fw-bold mt-2">Admin Dashboard</h4>
         <p class="text-muted small">Enter your admin password</p>
@@ -69,17 +81,15 @@ body{background:#f4f6f9;font-family:Arial,sans-serif;overflow-x:hidden}
           <input type="password" id="adminPassword" class="form-control form-control-lg" placeholder="Password" onkeydown="if(event.key==='Enter')doLogin()">
         </div>
         <button class="btn btn-success btn-lg w-100" onclick="doLogin()">Login</button>
-        <a href="index.html" class="back-link"><i class="bi bi-arrow-left me-1"></i>Back to Website</a>
       </div>
     </div>
   </div>
 </div>
 
-<!-- Mobile Overlay -->
-<div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
-
-<!-- Dashboard -->
-<div id="dashboardScreen" style="display:none;">
+<!-- Dashboard Overlay (full-screen) -->
+<div class="admin-dashboard-overlay" id="dashboardOverlay">
+  <!-- Mobile sidebar backdrop -->
+  <div class="sidebar-backdrop" id="sidebarBackdrop" onclick="closeSidebar()"></div>
 
   <!-- Sidebar -->
   <aside class="admin-sidebar" id="adminSidebar">
@@ -115,13 +125,12 @@ body{background:#f4f6f9;font-family:Arial,sans-serif;overflow-x:hidden}
       <i class="bi bi-journal-text"></i>Blog<span class="nav-badge" id="count-blog">0</span>
     </a>
     <div class="sidebar-footer">
-      <button class="btn btn-outline-secondary btn-sm w-100" onclick="doLogout()"><i class="bi bi-box-arrow-left me-1"></i>Logout</button>
+      <button class="btn btn-outline-secondary btn-sm w-100" onclick="doLogout()"><i class="bi bi-box-arrow-left me-1"></i>Back to Site</button>
     </div>
   </aside>
 
   <!-- Main Content -->
   <div class="admin-main">
-    <!-- Top bar -->
     <nav class="navbar bg-white border-bottom px-3">
       <div class="container-fluid">
         <button class="btn btn-outline-success d-md-none me-2" onclick="openSidebar()"><i class="bi bi-list fs-4"></i></button>
@@ -133,9 +142,7 @@ body{background:#f4f6f9;font-family:Arial,sans-serif;overflow-x:hidden}
         </div>
       </div>
     </nav>
-
-    <!-- Content -->
-    <div class="px-3 py-3">
+    <div class="px-3 py-3" style="flex:1;overflow-y:auto;">
       <div id="dashboardMsg"></div>
       <div class="card shadow-sm border-0">
         <div class="card-body p-0">
@@ -159,13 +166,17 @@ var adminPassword = "";
 var currentTab = "reviews";
 var currentData = [];
 
+function closeLogin() {
+  document.getElementById("loginOverlay").classList.add("hidden");
+}
+
 function openSidebar() {
   document.getElementById("adminSidebar").classList.add("show");
-  document.getElementById("sidebarOverlay").classList.add("active");
+  document.getElementById("sidebarBackdrop").classList.add("active");
 }
 function closeSidebar() {
   document.getElementById("adminSidebar").classList.remove("show");
-  document.getElementById("sidebarOverlay").classList.remove("active");
+  document.getElementById("sidebarBackdrop").classList.remove("active");
 }
 
 function doLogin() {
@@ -182,8 +193,8 @@ function doLogin() {
   }).then(function(resp) {
     if (resp.ok) {
       adminPassword = pw;
-      document.getElementById("loginScreen").style.display = "none";
-      document.getElementById("dashboardScreen").style.display = "block";
+      document.getElementById("loginOverlay").classList.add("hidden");
+      document.getElementById("dashboardOverlay").classList.add("active");
       loadSection();
     } else {
       msg.innerHTML = '<div class="alert alert-danger py-2 small">' + (resp.data.message || "Login failed") + '</div>';
@@ -195,8 +206,7 @@ function doLogin() {
 
 function doLogout() {
   adminPassword = "";
-  document.getElementById("dashboardScreen").style.display = "none";
-  document.getElementById("loginScreen").style.display = "block";
+  document.getElementById("dashboardOverlay").classList.remove("active");
   document.getElementById("adminPassword").value = "";
   document.getElementById("loginMsg").innerHTML = "";
 }
