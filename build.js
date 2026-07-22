@@ -4,6 +4,7 @@ const JavaScriptObfuscator = require('javascript-obfuscator');
 const CleanCSS = require('clean-css');
 
 const ROOT = __dirname;
+const SRC = path.join(ROOT, 'src-html');
 const HTML_FILES = [
   'index.html','about.html','rental.html','services.html',
   'booking.html','finance.html','reviews.html','blog.html',
@@ -52,7 +53,7 @@ console.log('  common.min.js (' + commonObf.length + ' bytes)');
 // Step 3: Process each HTML
 console.log('Step 3: Processing HTML files...');
 HTML_FILES.forEach(function(file) {
-  let html = fs.readFileSync(path.join(ROOT, file), 'utf8');
+  let html = fs.readFileSync(path.join(SRC, file), 'utf8');
 
   // Extract inline <script>...</script> content
   const re = /<script>\s*([\s\S]*?)\s*<\/script>/;

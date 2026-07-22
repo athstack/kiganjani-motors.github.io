@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -141,7 +141,8 @@ document.getElementById("userForm").addEventListener("submit", function(e) {
     var location = document.getElementById("location").value;
 
     var isEditing = id !== "";
-    var baseUrl = "https://petty-directory-frigidly.ngrok-free.dev/api/users";
+    var API_BASE = (location.hostname === 'localhost' || location.hostname === '127.0.0.1') ? 'http://localhost:3000' : 'https://kiganjani-api.vercel.app';
+    var baseUrl = API_BASE + "/api/users";
     var targetUrl = isEditing ? baseUrl + "/" + id : baseUrl;
     var targetMethod = isEditing ? "PUT" : "POST";
 

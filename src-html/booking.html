@@ -1,0 +1,252 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kiganjani Motors - Book Appointment</title>
+<link rel="stylesheet" href="KAYOMBO/bootstrap-5.0.2-dist/css/bootstrap.min.css">
+<link rel="stylesheet" href="style.css?v=13">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+<script src="KAYOMBO/bootstrap-5.0.2-dist/js/bootstrap.bundle.min.js"></script>
+</head>
+<body>
+
+<div id="sidebarOverlay" class="sidebar-overlay" aria-hidden="true"></div>
+
+<nav id="sidebar" class="sidebar" role="navigation" aria-label="Main navigation">
+  <div class="brand-logo-container">
+    <img src="IMAGES/official_logo.png" alt="Kiganjani Motors Logo" class="brand-logo-img">
+  </div>
+  <a href="index.html" class="nav-link"><i class="bi bi-house"></i> <span>Home</span></a>
+  <a href="about.html" class="nav-link"><i class="bi bi-info-circle"></i> <span>About Us</span></a>
+  <a href="rental.html" class="nav-link"><i class="bi bi-car-front"></i> <span>Car Rental</span></a>
+  <a href="services.html" class="nav-link"><i class="bi bi-tools"></i> <span>Services</span></a>
+  <a href="booking.html" class="nav-link active" aria-current="page"><i class="bi bi-calendar-check"></i> <span>Book Appointment</span></a>
+  <a href="finance.html" class="nav-link"><i class="bi bi-calculator"></i> <span>Finance</span></a>
+  <a href="parts.html" class="nav-link"><i class="bi bi-gear"></i> <span>Spare Parts</span></a>
+  <a href="blog.html" class="nav-link"><i class="bi bi-journal-text"></i> <span>Blog</span></a>
+  <a href="reviews.html" class="nav-link"><i class="bi bi-star"></i> <span>Reviews</span></a>
+  <a href="support.html" class="nav-link"><i class="bi bi-headset"></i> <span>Support</span></a>
+</nav>
+
+<div id="content" class="content">
+<nav class="navbar navbar-dark bg-dark position-relative shadow-sm" role="banner">
+  <div class="container-fluid">
+    <button class="btn btn-outline-success hamburger-btn" onclick="toggleSidebar()" aria-label="Toggle navigation menu" aria-controls="sidebar">&#9776;</button>
+  </div>
+  <span class="navbar-brand text-success fw-bold">
+    <h2 class="mb-0 header-title">Kiganjani Motors</h2>
+  </span>
+</nav>
+
+<section id="home" class="text-white text-center" style="background:url('IMAGES/top_nav.jpg') center/cover;">
+  <div class="container">
+    <h1>Book an Appointment</h1>
+    <p>Schedule Your Service or Test Drive Today</p>
+  </div>
+</section>
+
+<section class="py-5">
+<div class="container">
+<div class="row g-4">
+  <div class="col-md-7">
+    <h2 class="fw-bold mb-4">Appointment Form</h2>
+    <form id="bookingForm" onsubmit="submitBooking(event)">
+      <div class="mb-3">
+        <label for="fullName" class="form-label">Full Name</label>
+        <input type="text" id="fullName" class="form-control" required>
+      </div>
+      <div class="mb-3">
+        <label for="email" class="form-label">Email</label>
+        <input type="email" id="email" class="form-control" required>
+      </div>
+      <div class="mb-3">
+        <label for="phone" class="form-label">Phone</label>
+        <input type="tel" id="phone" class="form-control" required>
+      </div>
+      <div class="mb-3">
+        <label for="serviceType" class="form-label">Service Type</label>
+        <select id="serviceType" class="form-control" required>
+          <option value="">Select a service...</option>
+          <option value="Test Drive">Test Drive</option>
+          <option value="Vehicle Inspection">Vehicle Inspection</option>
+          <option value="Oil Change">Oil Change</option>
+          <option value="Tire Rotation">Tire Rotation</option>
+          <option value="Brake Service">Brake Service</option>
+          <option value="Engine Diagnostic">Engine Diagnostic</option>
+          <option value="General Service">General Service</option>
+        </select>
+      </div>
+      <div class="mb-3">
+        <label for="preferredDate" class="form-label">Preferred Date</label>
+        <input type="date" id="preferredDate" class="form-control" required>
+      </div>
+      <div class="mb-3">
+        <label for="preferredTime" class="form-label">Preferred Time</label>
+        <input type="time" id="preferredTime" class="form-control" required>
+      </div>
+      <div class="mb-3">
+        <label for="vehicleOfInterest" class="form-label">Vehicle of Interest</label>
+        <input type="text" id="vehicleOfInterest" class="form-control" placeholder="e.g. Toyota Corolla">
+      </div>
+      <div class="mb-3">
+        <label for="notes" class="form-label">Notes</label>
+        <textarea id="notes" class="form-control" rows="3" placeholder="Any additional information..."></textarea>
+      </div>
+      <button type="submit" class="btn btn-success w-100">Submit Appointment</button>
+    </form>
+    <div id="bookingResult" class="mt-3"></div>
+  </div>
+  <div class="col-md-5">
+    <div class="bg-light p-4 rounded">
+      <h3 class="fw-bold mb-3">Why Book With Us?</h3>
+      <ul class="list-unstyled">
+        <li class="mb-3"><i class="bi bi-check-circle-fill text-success me-2"></i> <strong>Certified Technicians</strong> ΓÇô Our team is trained and certified for all makes and models.</li>
+        <li class="mb-3"><i class="bi bi-check-circle-fill text-success me-2"></i> <strong>Genuine Parts</strong> ΓÇô We use only OEM-approved parts for every service.</li>
+        <li class="mb-3"><i class="bi bi-check-circle-fill text-success me-2"></i> <strong>Transparent Pricing</strong> ΓÇô No hidden fees, no surprises. You approve all work before we start.</li>
+        <li class="mb-3"><i class="bi bi-check-circle-fill text-success me-2"></i> <strong>Fast Turnaround</strong> ΓÇô Most services completed within hours, not days.</li>
+        <li class="mb-3"><i class="bi bi-check-circle-fill text-success me-2"></i> <strong>Free Pickup &amp; Drop</strong> ΓÇô We offer complimentary vehicle pickup and delivery within Dar es Salaam.</li>
+        <li class="mb-3"><i class="bi bi-check-circle-fill text-success me-2"></i> <strong>Warranty on Service</strong> ΓÇô All our work is backed by a comprehensive service warranty.</li>
+      </ul>
+    </div>
+  </div>
+</div>
+</div>
+</section>
+
+<section id="contact" class="py-5 text-center bg-light">
+  <div class="container">
+    <h2 class="fw-bold">Contact Us</h2>
+    
+    <div class="social-links mt-4">
+      <a href="https://wa.me/255782303971" target="_blank" class="social-link whatsapp" aria-label="WhatsApp">
+        <i class="bi bi-whatsapp"></i>
+      </a>
+      <a href="https://instagram.com/_athstack_" target="_blank" class="social-link instagram" aria-label="Instagram">
+        <i class="bi bi-instagram"></i>
+      </a>
+      <a href="https://www.facebook.com/share/191Kx8PYR8/?mibextid=wwXIfr" target="_blank" class="social-link facebook" aria-label="Facebook">
+        <i class="bi bi-facebook"></i>
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer class="custom-footer text-center p-4">
+  <small>&copy; 2026 Kiganjani Motors | Quality You Can Trust</small>
+</footer>
+
+</div>
+
+<script>
+var API_BASE = (location.hostname === 'localhost' || location.hostname === '127.0.0.1') ? 'http://localhost:3000' : 'https://kiganjani-api.vercel.app';
+function isMobile() { return window.innerWidth < 992; }
+function openSidebar() {
+  var sidebar = document.getElementById("sidebar");
+  var overlay = document.getElementById("sidebarOverlay");
+  sidebar.classList.add("mobile-open");
+  overlay.classList.add("active");
+  overlay.setAttribute("aria-hidden", "false");
+  document.body.style.overflow = "hidden";
+}
+function closeSidebar() {
+  var sidebar = document.getElementById("sidebar");
+  var overlay = document.getElementById("sidebarOverlay");
+  sidebar.classList.remove("mobile-open");
+  overlay.classList.remove("active");
+  overlay.setAttribute("aria-hidden", "true");
+  document.body.style.overflow = "";
+}
+function toggleSidebar() {
+  if (isMobile()) {
+    var sidebar = document.getElementById("sidebar");
+    if (sidebar.classList.contains("mobile-open")) { closeSidebar(); } else { openSidebar(); }
+  }
+}
+function submitBooking(e) {
+  e.preventDefault();
+  var form = document.getElementById("bookingForm");
+  var resultDiv = document.getElementById("bookingResult");
+  var errors = [];
+
+  var fullName = document.getElementById("fullName");
+  var email = document.getElementById("email");
+  var phone = document.getElementById("phone");
+  var serviceType = document.getElementById("serviceType");
+  var preferredDate = document.getElementById("preferredDate");
+  var preferredTime = document.getElementById("preferredTime");
+
+  form.querySelectorAll(".is-invalid").forEach(function(el) { el.classList.remove("is-invalid"); });
+  form.querySelectorAll(".invalid-feedback").forEach(function(el) { el.remove(); });
+
+  function markInvalid(field, msg) {
+    field.classList.add("is-invalid");
+    var div = document.createElement("div");
+    div.className = "invalid-feedback";
+    div.textContent = msg;
+    field.parentNode.appendChild(div);
+    errors.push(msg);
+  }
+
+  if (!fullName.value.trim()) markInvalid(fullName, "Full name is required.");
+  if (!email.value.trim()) {
+    markInvalid(email, "Email is required.");
+  } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value)) {
+    markInvalid(email, "Please enter a valid email address.");
+  }
+  if (!phone.value.trim()) {
+    markInvalid(phone, "Phone number is required.");
+  } else if (!/^[0-9+\-\s]{7,15}$/.test(phone.value)) {
+    markInvalid(phone, "Please enter a valid phone number.");
+  }
+  if (!serviceType.value) markInvalid(serviceType, "Please select a service type.");
+  if (!preferredDate.value) {
+    markInvalid(preferredDate, "Please select a preferred date.");
+  } else {
+    var selected = new Date(preferredDate.value);
+    var today = new Date();
+    today.setHours(0,0,0,0);
+    if (selected < today) markInvalid(preferredDate, "Date cannot be in the past.");
+  }
+  if (!preferredTime.value) markInvalid(preferredTime, "Please select a preferred time.");
+
+  if (errors.length > 0) {
+    resultDiv.innerHTML = '<div class="alert alert-danger"><i class="bi bi-exclamation-triangle-fill me-2"></i>Please fix ' + errors.length + ' error(s) above.</div>';
+    return;
+  }
+
+  var data = {
+    fullName: fullName.value.trim(),
+    email: email.value.trim(),
+    phone: phone.value.trim(),
+    serviceType: serviceType.value,
+    preferredDate: preferredDate.value,
+    preferredTime: preferredTime.value,
+    vehicleOfInterest: document.getElementById("vehicleOfInterest").value,
+    notes: document.getElementById("notes").value
+  };
+  resultDiv.innerHTML = '<div class="text-center"><div class="spinner-border text-success" role="status"><span class="visually-hidden">Submitting...</span></div></div>';
+  fetch(API_BASE + "/api/bookings", { method: "POST", headers: { "Content-Type": "application/json", "ngrok-skip-browser-warning": "true",  }, body: JSON.stringify(data) })
+    .then(function(r) { return r.json(); })
+    .then(function(resp) {
+      resultDiv.innerHTML = '<div class="alert alert-success"><i class="bi bi-check-circle-fill me-2"></i>Appointment booked successfully! We will contact you shortly.</div>';
+      form.reset();
+    })
+    .catch(function() {
+      resultDiv.innerHTML = '<div class="alert alert-danger"><i class="bi bi-exclamation-triangle-fill me-2"></i>Error submitting appointment. Please try again later.</div>';
+    });
+}
+document.getElementById("sidebarOverlay").addEventListener("click", closeSidebar);
+document.addEventListener("keydown", function(e) {
+  if (e.key === "Escape" && document.getElementById("sidebar").classList.contains("mobile-open")) {
+    closeSidebar();
+  }
+});
+window.addEventListener("resize", function() { if (!isMobile()) { closeSidebar(); } });
+document.querySelectorAll("#sidebar .nav-link").forEach(function(link) {
+  link.addEventListener("click", function() { if (isMobile()) { closeSidebar(); } });
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,395 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kiganjani Motors - Customer Reviews</title>
+<link rel="stylesheet" href="KAYOMBO/bootstrap-5.0.2-dist/css/bootstrap.min.css">
+<link rel="stylesheet" href="style.css?v=13">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+<script src="KAYOMBO/bootstrap-5.0.2-dist/js/bootstrap.bundle.min.js"></script>
+</head>
+<body>
+
+<div id="sidebarOverlay" class="sidebar-overlay" aria-hidden="true"></div>
+
+<nav id="sidebar" class="sidebar" role="navigation" aria-label="Main navigation">
+  <div class="brand-logo-container">
+    <img src="IMAGES/official_logo.png" alt="Kiganjani Motors Logo" class="brand-logo-img">
+  </div>
+  <a href="index.html" class="nav-link"><i class="bi bi-house"></i> <span>Home</span></a>
+  <a href="about.html" class="nav-link"><i class="bi bi-info-circle"></i> <span>About Us</span></a>
+  <a href="rental.html" class="nav-link"><i class="bi bi-car-front"></i> <span>Car Rental</span></a>
+  <a href="services.html" class="nav-link"><i class="bi bi-tools"></i> <span>Services</span></a>
+  <a href="booking.html" class="nav-link"><i class="bi bi-calendar-check"></i> <span>Book Appointment</span></a>
+  <a href="finance.html" class="nav-link"><i class="bi bi-calculator"></i> <span>Finance</span></a>
+  <a href="parts.html" class="nav-link"><i class="bi bi-gear"></i> <span>Spare Parts</span></a>
+  <a href="blog.html" class="nav-link"><i class="bi bi-journal-text"></i> <span>Blog</span></a>
+  <a href="reviews.html" class="nav-link active" aria-current="page"><i class="bi bi-star"></i> <span>Reviews</span></a>
+  <a href="support.html" class="nav-link"><i class="bi bi-headset"></i> <span>Support</span></a>
+</nav>
+
+<div id="content" class="content">
+<nav class="navbar navbar-dark bg-dark position-relative shadow-sm" role="banner">
+  <div class="container-fluid">
+    <button class="btn btn-outline-success hamburger-btn" onclick="toggleSidebar()" aria-label="Toggle navigation menu" aria-controls="sidebar">&#9776;</button>
+  </div>
+  <span class="navbar-brand text-success fw-bold">
+    <h2 class="mb-0 header-title">Kiganjani Motors</h2>
+  </span>
+</nav>
+
+<!-- Hero Section -->
+<section id="home" class="text-white text-center" style="background:url('IMAGES/top_nav.jpg') center/cover;">
+  <div class="container">
+    <h1>Customer Reviews</h1>
+    <p>What our customers say about us</p>
+  </div>
+</section>
+
+<!-- Rating Summary -->
+<section class="py-5">
+  <div class="container">
+    <div class="row justify-content-center mb-5">
+      <div class="col-md-8 col-lg-6 text-center">
+        <h2 class="fw-bold mb-3">Overall Rating</h2>
+        <div class="d-flex align-items-center justify-content-center gap-2 mb-2">
+          <span style="font-size:3rem;" class="fw-bold text-success">4.7</span>
+          <span class="text-muted fs-4">/ 5</span>
+        </div>
+        <div class="mb-2">
+          <i class="bi bi-star-fill text-success"></i>
+          <i class="bi bi-star-fill text-success"></i>
+          <i class="bi bi-star-fill text-success"></i>
+          <i class="bi bi-star-fill text-success"></i>
+          <i class="bi bi-star-half text-success"></i>
+        </div>
+        <p class="text-muted">Based on 128 reviews</p>
+      </div>
+    </div>
+
+    <div class="row justify-content-center mb-5">
+      <div class="col-md-6 col-lg-5">
+        <div class="d-flex align-items-center mb-2">
+          <span class="me-2" style="min-width:60px;">5 <i class="bi bi-star-fill text-success small"></i></span>
+          <div class="progress flex-grow-1" style="height:12px;">
+            <div class="progress-bar bg-success" style="width:60%;"></div>
+          </div>
+          <span class="ms-2 text-muted small">60%</span>
+        </div>
+        <div class="d-flex align-items-center mb-2">
+          <span class="me-2" style="min-width:60px;">4 <i class="bi bi-star-fill text-success small"></i></span>
+          <div class="progress flex-grow-1" style="height:12px;">
+            <div class="progress-bar bg-success" style="width:25%;"></div>
+          </div>
+          <span class="ms-2 text-muted small">25%</span>
+        </div>
+        <div class="d-flex align-items-center mb-2">
+          <span class="me-2" style="min-width:60px;">3 <i class="bi bi-star-fill text-success small"></i></span>
+          <div class="progress flex-grow-1" style="height:12px;">
+            <div class="progress-bar bg-success" style="width:10%;"></div>
+          </div>
+          <span class="ms-2 text-muted small">10%</span>
+        </div>
+        <div class="d-flex align-items-center mb-2">
+          <span class="me-2" style="min-width:60px;">2 <i class="bi bi-star-fill text-success small"></i></span>
+          <div class="progress flex-grow-1" style="height:12px;">
+            <div class="progress-bar bg-success" style="width:3%;"></div>
+          </div>
+          <span class="ms-2 text-muted small">3%</span>
+        </div>
+        <div class="d-flex align-items-center mb-2">
+          <span class="me-2" style="min-width:60px;">1 <i class="bi bi-star-fill text-success small"></i></span>
+          <div class="progress flex-grow-1" style="height:12px;">
+            <div class="progress-bar bg-success" style="width:2%;"></div>
+          </div>
+          <span class="ms-2 text-muted small">2%</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Review Cards Grid -->
+    <h2 class="text-center mb-4 fw-bold text-dark">Recent Reviews</h2>
+    <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem;">
+
+      <div class="card shadow-sm border-0">
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-center mb-2">
+            <h5 class="fw-bold mb-0">John M.</h5>
+            <small class="text-muted">Jan 20, 2026</small>
+          </div>
+          <div class="mb-2">
+            <i class="bi bi-star-fill text-success"></i>
+            <i class="bi bi-star-fill text-success"></i>
+            <i class="bi bi-star-fill text-success"></i>
+            <i class="bi bi-star-fill text-success"></i>
+            <i class="bi bi-star-fill text-success"></i>
+          </div>
+          <small class="text-muted d-block mb-2"><i class="bi bi-car-front"></i> Mitsubishi Lancer Evo</small>
+          <p class="mb-0">"Excellent service! Best car buying experience in Tanzania. The team was professional and the process was smooth."</p>
+        </div>
+      </div>
+
+      <div class="card shadow-sm border-0">
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-center mb-2">
+            <h5 class="fw-bold mb-0">Sarah K.</h5>
+            <small class="text-muted">Feb 5, 2026</small>
+          </div>
+          <div class="mb-2">
+            <i class="bi bi-star-fill text-success"></i>
+            <i class="bi bi-star-fill text-success"></i>
+            <i class="bi bi-star-fill text-success"></i>
+            <i class="bi bi-star-fill text-success"></i>
+            <i class="bi bi-star-fill text-success"></i>
+          </div>
+          <small class="text-muted d-block mb-2"><i class="bi bi-car-front"></i> Range Rover</small>
+          <p class="mb-0">"Very happy with my Range Rover purchase. The financing options were flexible and the staff was very helpful throughout."</p>
+        </div>
+      </div>
+
+      <div class="card shadow-sm border-0">
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-center mb-2">
+            <h5 class="fw-bold mb-0">David L.</h5>
+            <small class="text-muted">Feb 28, 2026</small>
+          </div>
+          <div class="mb-2">
+            <i class="bi bi-star-fill text-success"></i>
+            <i class="bi bi-star-fill text-success"></i>
+            <i class="bi bi-star-fill text-success"></i>
+            <i class="bi bi-star-fill text-success"></i>
+            <i class="bi bi-star text-success"></i>
+          </div>
+          <small class="text-muted d-block mb-2"><i class="bi bi-car-front"></i> Tesla Model S</small>
+          <p class="mb-0">"Great selection of electric vehicles. The Tesla Model S exceeded my expectations. Delivery was on time."</p>
+        </div>
+      </div>
+
+      <div class="card shadow-sm border-0">
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-center mb-2">
+            <h5 class="fw-bold mb-0">Grace N.</h5>
+            <small class="text-muted">Mar 15, 2026</small>
+          </div>
+          <div class="mb-2">
+            <i class="bi bi-star-fill text-success"></i>
+            <i class="bi bi-star-fill text-success"></i>
+            <i class="bi bi-star-fill text-success"></i>
+            <i class="bi bi-star-fill text-success"></i>
+            <i class="bi bi-star-fill text-success"></i>
+          </div>
+          <small class="text-muted d-block mb-2"><i class="bi bi-car-front"></i> BMW 8 Series</small>
+          <p class="mb-0">"Absolutely love my new BMW! The quality and service at Kiganjani Motors is unmatched. Highly recommended!"</p>
+        </div>
+      </div>
+
+      <div class="card shadow-sm border-0">
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-center mb-2">
+            <h5 class="fw-bold mb-0">Peter T.</h5>
+            <small class="text-muted">Apr 2, 2026</small>
+          </div>
+          <div class="mb-2">
+            <i class="bi bi-star-fill text-success"></i>
+            <i class="bi bi-star-fill text-success"></i>
+            <i class="bi bi-star-fill text-success"></i>
+            <i class="bi bi-star-fill text-success"></i>
+            <i class="bi bi-star text-success"></i>
+          </div>
+          <small class="text-muted d-block mb-2"><i class="bi bi-car-front"></i> Ford F-150 Raptor</small>
+          <p class="mb-0">"Solid truck and great value for money. The after-sales service has been excellent. Would buy again."</p>
+        </div>
+      </div>
+
+      <div class="card shadow-sm border-0">
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-center mb-2">
+            <h5 class="fw-bold mb-0">Amina H.</h5>
+            <small class="text-muted">May 10, 2026</small>
+          </div>
+          <div class="mb-2">
+            <i class="bi bi-star-fill text-success"></i>
+            <i class="bi bi-star-fill text-success"></i>
+            <i class="bi bi-star-fill text-success"></i>
+            <i class="bi bi-star-fill text-success"></i>
+            <i class="bi bi-star-fill text-success"></i>
+          </div>
+          <small class="text-muted d-block mb-2"><i class="bi bi-car-front"></i> Renault Espace</small>
+          <p class="mb-0">"Perfect family car! The staff helped me find exactly what I needed within my budget. Thank you Kiganjani Motors!"</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- Write a Review Form -->
+<section class="py-5 bg-light">
+  <div class="container">
+    <h2 class="text-center mb-4 fw-bold">Write a Review</h2>
+    <div class="row justify-content-center">
+      <div class="col-md-8 col-lg-6">
+        <form id="reviewForm" onsubmit="submitReview(event)">
+          <div class="mb-3">
+            <label for="reviewName" class="form-label fw-bold">Your Name</label>
+            <input type="text" class="form-control" id="reviewName" required>
+          </div>
+          <div class="mb-3">
+            <label for="reviewEmail" class="form-label fw-bold">Email Address</label>
+            <input type="email" class="form-control" id="reviewEmail" required>
+          </div>
+          <div class="mb-3">
+            <label for="reviewRating" class="form-label fw-bold">Rating</label>
+            <select class="form-control" id="reviewRating" required>
+              <option value="">Select rating...</option>
+              <option value="5">5 - Excellent</option>
+              <option value="4">4 - Very Good</option>
+              <option value="3">3 - Good</option>
+              <option value="2">2 - Fair</option>
+              <option value="1">1 - Poor</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label for="reviewVehicle" class="form-label fw-bold">Vehicle Purchased</label>
+            <input type="text" class="form-control" id="reviewVehicle" placeholder="e.g. Mitsubishi Lancer Evo">
+          </div>
+          <div class="mb-3">
+            <label for="reviewText" class="form-label fw-bold">Your Review</label>
+            <textarea class="form-control" id="reviewText" rows="5" required></textarea>
+          </div>
+          <button type="submit" class="btn btn-success w-100">Submit Review</button>
+        </form>
+        <div id="reviewResult" class="mt-3"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Contact Section -->
+<section id="contact" class="py-5 text-center bg-light">
+  <div class="container">
+    <h2 class="fw-bold">Contact Us</h2>
+    
+    <div class="social-links mt-4">
+      <a href="https://wa.me/255782303971" target="_blank" class="social-link whatsapp" aria-label="WhatsApp">
+        <i class="bi bi-whatsapp"></i>
+      </a>
+      <a href="https://instagram.com/_athstack_" target="_blank" class="social-link instagram" aria-label="Instagram">
+        <i class="bi bi-instagram"></i>
+      </a>
+      <a href="https://www.facebook.com/share/191Kx8PYR8/?mibextid=wwXIfr" target="_blank" class="social-link facebook" aria-label="Facebook">
+        <i class="bi bi-facebook"></i>
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer class="custom-footer text-center p-4">
+  <small>&copy; 2026 Kiganjani Motors | Quality You Can Trust</small>
+</footer>
+
+</div>
+
+<script>
+var API_BASE = (location.hostname === 'localhost' || location.hostname === '127.0.0.1') ? 'http://localhost:3000' : 'https://kiganjani-api.vercel.app';
+function isMobile() { return window.innerWidth < 992; }
+function openSidebar() {
+  var sidebar = document.getElementById("sidebar");
+  var overlay = document.getElementById("sidebarOverlay");
+  sidebar.classList.add("mobile-open");
+  overlay.classList.add("active");
+  overlay.setAttribute("aria-hidden", "false");
+  document.body.style.overflow = "hidden";
+}
+function closeSidebar() {
+  var sidebar = document.getElementById("sidebar");
+  var overlay = document.getElementById("sidebarOverlay");
+  sidebar.classList.remove("mobile-open");
+  overlay.classList.remove("active");
+  overlay.setAttribute("aria-hidden", "true");
+  document.body.style.overflow = "";
+}
+function toggleSidebar() {
+  if (isMobile()) {
+    var sidebar = document.getElementById("sidebar");
+    if (sidebar.classList.contains("mobile-open")) { closeSidebar(); } else { openSidebar(); }
+  }
+}
+function submitReview(e) {
+  e.preventDefault();
+  var form = document.getElementById("reviewForm");
+  var resultDiv = document.getElementById("reviewResult");
+  var errors = [];
+
+  var name = document.getElementById("reviewName");
+  var email = document.getElementById("reviewEmail");
+  var rating = document.getElementById("reviewRating");
+  var text = document.getElementById("reviewText");
+
+  form.querySelectorAll(".is-invalid").forEach(function(el) { el.classList.remove("is-invalid"); });
+  form.querySelectorAll(".invalid-feedback").forEach(function(el) { el.remove(); });
+
+  function markInvalid(field, msg) {
+    field.classList.add("is-invalid");
+    var div = document.createElement("div");
+    div.className = "invalid-feedback";
+    div.textContent = msg;
+    field.parentNode.appendChild(div);
+    errors.push(msg);
+  }
+
+  if (!name.value.trim()) markInvalid(name, "Your name is required.");
+  if (!email.value.trim()) {
+    markInvalid(email, "Email is required.");
+  } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value)) {
+    markInvalid(email, "Please enter a valid email address.");
+  }
+  if (!rating.value) markInvalid(rating, "Please select a rating.");
+  if (!text.value.trim()) {
+    markInvalid(text, "Please write your review.");
+  } else if (text.value.trim().length < 10) {
+    markInvalid(text, "Review must be at least 10 characters.");
+  }
+
+  if (errors.length > 0) {
+    resultDiv.innerHTML = '<div class="alert alert-danger"><i class="bi bi-exclamation-triangle-fill me-2"></i>Please fix ' + errors.length + ' error(s) above.</div>';
+    return;
+  }
+
+  var data = {
+    name: name.value.trim(),
+    email: email.value.trim(),
+    rating: rating.value,
+    vehicle: document.getElementById("reviewVehicle").value,
+    review_text: text.value.trim()
+  };
+  resultDiv.innerHTML = '<div class="text-center"><div class="spinner-border text-success" role="status"></div></div>';
+  fetch(API_BASE + "/api/reviews", {
+    method: "POST",
+    headers: { "Content-Type": "application/json", "ngrok-skip-browser-warning": "true" },
+    body: JSON.stringify(data)
+  })
+    .then(function(r) { return r.json(); })
+    .then(function(resp) {
+      resultDiv.innerHTML = '<div class="alert alert-success"><i class="bi bi-check-circle-fill me-2"></i>Review submitted successfully! It will appear after approval.</div>';
+      form.reset();
+    })
+    .catch(function() {
+      resultDiv.innerHTML = '<div class="alert alert-danger"><i class="bi bi-exclamation-triangle-fill me-2"></i>Error submitting review. Please try again later.</div>';
+    });
+}
+document.getElementById("sidebarOverlay").addEventListener("click", closeSidebar);
+document.addEventListener("keydown", function(e) {
+  if (e.key === "Escape" && document.getElementById("sidebar").classList.contains("mobile-open")) {
+    closeSidebar();
+  }
+});
+window.addEventListener("resize", function() { if (!isMobile()) { closeSidebar(); } });
+document.querySelectorAll("#sidebar .nav-link").forEach(function(link) {
+  link.addEventListener("click", function() { if (isMobile()) { closeSidebar(); } });
+});
+</script>
+
+</body>
+</html>
