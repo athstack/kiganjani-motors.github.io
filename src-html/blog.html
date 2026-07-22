@@ -55,115 +55,15 @@
 <section class="py-5">
   <div class="container">
     <div class="filter-buttons mb-4">
-      <button class="btn btn-success" onclick="filterPosts('all')">All</button>
-      <button class="btn btn-outline-success" onclick="filterPosts('tips')">Tips</button>
-      <button class="btn btn-outline-success" onclick="filterPosts('reviews')">Reviews</button>
-      <button class="btn btn-outline-success" onclick="filterPosts('industry')">Industry</button>
-      <button class="btn btn-outline-success" onclick="filterPosts('guides')">Guides</button>
+      <button class="btn btn-success" onclick="filterPosts('all', this)">All</button>
+      <button class="btn btn-outline-success" onclick="filterPosts('tips', this)">Tips</button>
+      <button class="btn btn-outline-success" onclick="filterPosts('reviews', this)">Reviews</button>
+      <button class="btn btn-outline-success" onclick="filterPosts('industry', this)">Industry</button>
+      <button class="btn btn-outline-success" onclick="filterPosts('guides', this)">Guides</button>
     </div>
 
-    <!-- Featured Article -->
-    <div class="blog-post mb-4" data-category="industry">
-      <div class="card shadow-sm border-0">
-        <div class="row g-0">
-          <div class="col-md-5">
-            <div style="width:100%;height:300px;background:linear-gradient(135deg,#198754,#20c997);display:flex;align-items:center;justify-content:center;">
-              <i class="bi bi-newspaper text-white" style="font-size:4rem;"></i>
-            </div>
-          </div>
-          <div class="col-md-7">
-            <div class="card-body d-flex flex-column justify-content-center h-100 p-4">
-              <span class="badge bg-success mb-2" style="width:fit-content;">Featured</span>
-              <h3 class="fw-bold">Kiganjani Motors Expands to New Locations in 2026</h3>
-              <p class="text-muted">Jan 8, 2026</p>
-              <p>We are thrilled to announce that Kiganjani Motors is expanding its operations to serve more customers across Tanzania. With new showrooms and service centers, we're bringing quality cars and service closer to you.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Blog Grid -->
-    <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem;">
-
-      <div class="blog-post" data-category="tips">
-        <div class="card shadow-sm border-0 h-100">
-          <div style="height:180px;background:linear-gradient(135deg,#0d6efd,#6610f2);display:flex;align-items:center;justify-content:center;">
-            <i class="bi bi-trophy text-white" style="font-size:3rem;"></i>
-          </div>
-          <div class="card-body">
-            <h5 class="fw-bold">Top 10 Cars to Buy in 2026</h5>
-            <p class="text-muted small mb-2">Jan 15, 2026</p>
-            <p class="small">Discover the best cars to buy this year, from affordable sedans to luxury SUVs. Our experts have curated the perfect list for every budget.</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="blog-post" data-category="tips">
-        <div class="card shadow-sm border-0 h-100">
-          <div style="height:180px;background:linear-gradient(135deg,#dc3545,#fd7e14);display:flex;align-items:center;justify-content:center;">
-            <i class="bi bi-gear text-white" style="font-size:3rem;"></i>
-          </div>
-          <div class="card-body">
-            <h5 class="fw-bold">How to Maintain Your Engine</h5>
-            <p class="text-muted small mb-2">Feb 3, 2026</p>
-            <p class="small">Proper engine maintenance is key to your car's longevity. Learn essential tips to keep your engine running smoothly for years to come.</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="blog-post" data-category="industry">
-        <div class="card shadow-sm border-0 h-100">
-          <div style="height:180px;background:linear-gradient(135deg,#198754,#20c997);display:flex;align-items:center;justify-content:center;">
-            <i class="bi bi-ev-front text-white" style="font-size:3rem;"></i>
-          </div>
-          <div class="card-body">
-            <h5 class="fw-bold">Electric Cars: The Future of Tanzania</h5>
-            <p class="text-muted small mb-2">Mar 10, 2026</p>
-            <p class="small">Electric vehicles are gaining momentum in East Africa. Find out how EVs are shaping the future of transportation in Tanzania.</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="blog-post" data-category="guides">
-        <div class="card shadow-sm border-0 h-100">
-          <div style="height:180px;background:linear-gradient(135deg,#ffc107,#ffc720);display:flex;align-items:center;justify-content:center;">
-            <i class="bi bi-shield-check text-white" style="font-size:3rem;"></i>
-          </div>
-          <div class="card-body">
-            <h5 class="fw-bold">Car Insurance Guide for Beginners</h5>
-            <p class="text-muted small mb-2">Apr 5, 2026</p>
-            <p class="small">Understanding car insurance can be overwhelming. This beginner's guide breaks down everything you need to know about coverage options.</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="blog-post" data-category="tips">
-        <div class="card shadow-sm border-0 h-100">
-          <div style="height:180px;background:linear-gradient(135deg,#6f42c1,#d63384);display:flex;align-items:center;justify-content:center;">
-            <i class="bi bi-car-front-fill text-white" style="font-size:3rem;"></i>
-          </div>
-          <div class="card-body">
-            <h5 class="fw-bold">SUV vs Sedan: Which is Better?</h5>
-            <p class="text-muted small mb-2">May 20, 2026</p>
-            <p class="small">Choosing between an SUV and a sedan? We compare both vehicle types on comfort, fuel efficiency, safety, and value for money.</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="blog-post" data-category="guides">
-        <div class="card shadow-sm border-0 h-100">
-          <div style="height:180px;background:linear-gradient(135deg,#0dcaf0,#0d6efd);display:flex;align-items:center;justify-content:center;">
-            <i class="bi bi-cart-check text-white" style="font-size:3rem;"></i>
-          </div>
-          <div class="card-body">
-            <h5 class="fw-bold">Tips for First-Time Car Buyers</h5>
-            <p class="text-muted small mb-2">Jun 12, 2026</p>
-            <p class="small">Buying your first car is exciting! Here are expert tips to help you make the right choice without breaking the bank.</p>
-          </div>
-        </div>
-      </div>
-
+    <div id="blogGrid" style="display:grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem;">
+      <div class="text-center py-4" style="grid-column:1/-1"><div class="spinner-border text-success"></div></div>
     </div>
   </div>
 </section>
@@ -194,6 +94,57 @@
 </div>
 
 <script>
+var API_BASE = (location.hostname === 'localhost' || location.hostname === '127.0.0.1') ? 'http://localhost:3000' : 'https://kiganjani-api.vercel.app';
+var blogData = [];
+var categoryIcons = { tips: 'bi-trophy', reviews: 'bi-star-fill', industry: 'bi-newspaper', guides: 'bi-book' };
+var categoryColors = { tips: '#0d6efd,#6610f2', reviews: '#6f42c1,#d63384', industry: '#198754,#20c997', guides: '#ffc107,#ffc720' };
+
+function loadBlog() {
+  fetch(API_BASE + "/api/blog")
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+      blogData = data;
+      renderBlog(data);
+    }).catch(function() {
+      document.getElementById("blogGrid").innerHTML = '<div class="text-center text-muted py-4" style="grid-column:1/-1">Failed to load blog posts.</div>';
+    });
+}
+
+function renderBlog(data) {
+  var grid = document.getElementById("blogGrid");
+  if (!data.length) { grid.innerHTML = '<div class="text-center text-muted py-4" style="grid-column:1/-1">No blog posts yet.</div>'; return; }
+  var html = "";
+  data.forEach(function(post, i) {
+    var cat = post.category || 'tips';
+    var colors = categoryColors[cat] || '#198754,#20c997';
+    var icon = categoryIcons[cat] || 'bi-journal-text';
+    var d = new Date(post.created_at);
+    var dateStr = d.toLocaleDateString("en-US", { year: "numeric", month: "short", day: "numeric" });
+    var excerpt = post.excerpt || (post.content ? post.content.substring(0, 120) + "..." : "");
+    html += '<div class="blog-post" data-category="' + esc(cat) + '">' +
+      '<div class="card shadow-sm border-0 h-100">' +
+      '<div style="height:180px;background:linear-gradient(135deg,' + colors + ');display:flex;align-items:center;justify-content:center;">' +
+      '<i class="bi ' + icon + ' text-white" style="font-size:3rem;"></i></div>' +
+      '<div class="card-body">' +
+      '<h5 class="fw-bold">' + esc(post.title) + '</h5>' +
+      '<p class="text-muted small mb-2">' + dateStr + '</p>' +
+      '<p class="small">' + esc(excerpt) + '</p>' +
+      '</div></div></div>';
+  });
+  grid.innerHTML = html;
+}
+
+function esc(s) { var d = document.createElement("div"); d.textContent = s || ""; return d.innerHTML; }
+
+function filterPosts(category, btn) {
+  var btns = document.querySelectorAll(".filter-buttons .btn");
+  btns.forEach(function(b) { b.classList.remove("btn-success"); b.classList.add("btn-outline-success"); });
+  btn.classList.remove("btn-outline-success");
+  btn.classList.add("btn-success");
+  if (category === "all") { renderBlog(blogData); return; }
+  renderBlog(blogData.filter(function(p) { return p.category === category; }));
+}
+
 function isMobile() { return window.innerWidth < 992; }
 function openSidebar() {
   var sidebar = document.getElementById("sidebar");
@@ -217,33 +168,15 @@ function toggleSidebar() {
     if (sidebar.classList.contains("mobile-open")) { closeSidebar(); } else { openSidebar(); }
   }
 }
-function filterPosts(category) {
-  var btns = document.querySelectorAll(".filter-buttons .btn");
-  btns.forEach(function(btn) {
-    btn.classList.remove("btn-success");
-    btn.classList.add("btn-outline-success");
-  });
-  event.target.classList.remove("btn-outline-success");
-  event.target.classList.add("btn-success");
-  var posts = document.querySelectorAll(".blog-post");
-  posts.forEach(function(post) {
-    if (category === "all") {
-      post.style.display = "block";
-    } else {
-      post.style.display = post.getAttribute("data-category") === category ? "block" : "none";
-    }
-  });
-}
 document.getElementById("sidebarOverlay").addEventListener("click", closeSidebar);
 document.addEventListener("keydown", function(e) {
-  if (e.key === "Escape" && document.getElementById("sidebar").classList.contains("mobile-open")) {
-    closeSidebar();
-  }
+  if (e.key === "Escape" && document.getElementById("sidebar").classList.contains("mobile-open")) { closeSidebar(); }
 });
 window.addEventListener("resize", function() { if (!isMobile()) { closeSidebar(); } });
 document.querySelectorAll("#sidebar .nav-link").forEach(function(link) {
   link.addEventListener("click", function() { if (isMobile()) { closeSidebar(); } });
 });
+loadBlog();
 </script>
 
 </body>
