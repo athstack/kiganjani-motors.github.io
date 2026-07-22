@@ -42,6 +42,10 @@ db.getConnection((err, connection) => {
     connection.release();
 });
 
+app.get("/", (req, res) => {
+    res.json({ status: "ok", name: "Kiganjani Motors API", version: "1.0" });
+});
+
 // ==========================================
 // CREATE TABLES
 // ==========================================
