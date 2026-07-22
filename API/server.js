@@ -27,12 +27,14 @@ const dbConfig = {
     waitForConnections: true,
     connectionLimit: 10,
     queueLimit: 0,
-    timezone: '+03:00'
+    ssl: {}
 };
 
-dbConfig.ssl = {};
-
 const db = mysql.createPool(dbConfig);
+
+db.on('connection', function (connection) {
+    connection.query("SET time_zone = '+03:00'");
+});
 
 db.getConnection((err, connection) => {
     if (err) {
