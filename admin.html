@@ -6,72 +6,118 @@
 <title>Kiganjani Motors - Admin</title>
 <link rel="stylesheet" href="KAYOMBO/bootstrap-5.0.2-dist/css/bootstrap.min.css">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-body{background:#f4f6f9;font-family:Arial,sans-serif}
-.login-box{max-width:380px;margin:12% auto}
-.table th{white-space:nowrap}
-.badge-approved{background:#198754}
-.badge-pending{background:#ffc107;color:#212529}
-.stars{color:#198754}
+body{background:#0a0f1a;font-family:'Poppins',Arial,sans-serif;margin:0;min-height:100vh}
+.login-page{min-height:100vh;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#0a0f1a 0%,#1a2332 50%,#0d1926 100%)}
+.login-card{max-width:400px;width:90%;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:40px 32px;backdrop-filter:blur(10px);box-shadow:0 8px 32px rgba(0,0,0,.4)}
+.login-icon{width:72px;height:72px;background:linear-gradient(135deg,#198754,#20c997);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 20px;box-shadow:0 4px 20px rgba(25,135,84,.4)}
+.login-icon i{font-size:2rem;color:#fff}
+.login-card h4{color:#fff;font-weight:700;margin-bottom:4px}
+.login-card p{color:rgba(255,255,255,.4);font-size:.85rem}
+.login-card .form-control{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);color:#fff;border-radius:10px;padding:12px 16px;font-size:.95rem}
+.login-card .form-control::placeholder{color:rgba(255,255,255,.3)}
+.login-card .form-control:focus{background:rgba(255,255,255,.12);border-color:#198754;box-shadow:0 0 0 3px rgba(25,135,84,.2);color:#fff}
+.btn-login{background:linear-gradient(135deg,#198754,#20c997);border:none;border-radius:10px;padding:12px;font-weight:600;font-size:1rem;color:#fff;transition:all .3s}
+.btn-login:hover{transform:translateY(-1px);box-shadow:0 4px 16px rgba(25,135,84,.4);background:linear-gradient(135deg,#146c43,#1aa179)}
+.btn-back{color:rgba(255,255,255,.35);text-decoration:none;font-size:.85rem;transition:color .2s}
+.btn-back:hover{color:#198754;text-decoration:none}
+.alert{border-radius:10px;border:none;font-size:.85rem}
+
+.navbar-admin{background:linear-gradient(135deg,#0a0f1a,#1a2332);border-bottom:1px solid rgba(255,255,255,.08);padding:12px 0}
+.navbar-admin .brand{color:#fff;font-weight:700;font-size:1.1rem;display:flex;align-items:center;gap:10px}
+.navbar-admin .brand-icon{width:36px;height:36px;background:linear-gradient(135deg,#198754,#20c997);border-radius:8px;display:flex;align-items:center;justify-content:center}
+.btn-logout{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);color:rgba(255,255,255,.7);border-radius:8px;padding:6px 16px;font-size:.85rem;transition:all .2s}
+.btn-logout:hover{background:rgba(220,53,69,.2);border-color:rgba(220,53,69,.4);color:#dc3545}
+
+.stat-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);border-radius:12px;padding:20px;text-align:center;transition:transform .2s}
+.stat-card:hover{transform:translateY(-2px)}
+.stat-card h3{font-weight:700;margin-bottom:2px;font-size:1.8rem}
+.stat-card small{color:rgba(255,255,255,.4);font-size:.8rem;text-transform:uppercase;letter-spacing:1px}
+.stat-total h3{color:#6ea8fe}
+.stat-approved h3{color:#198754}
+.stat-pending h3{color:#ffc107}
+
+.table-admin{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:12px;overflow:hidden}
+.table-admin table{margin-bottom:0;color:rgba(255,255,255,.85)}
+.table-admin thead{background:rgba(255,255,255,.06)}
+.table-admin thead th{color:rgba(255,255,255,.5);font-weight:600;font-size:.8rem;text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid rgba(255,255,255,.08);padding:14px 16px}
+.table-admin tbody tr{border-bottom:1px solid rgba(255,255,255,.04);transition:background .15s}
+.table-admin tbody tr:hover{background:rgba(255,255,255,.04)}
+.table-admin tbody td{padding:14px 16px;vertical-align:middle;border:none;font-size:.9rem}
+.table-admin .text-email{color:rgba(255,255,255,.35);font-size:.8rem}
+.table-admin .text-review{color:rgba(255,255,255,.7);max-width:280px;font-size:.85rem;line-height:1.4}
+.badge-approved{background:rgba(25,135,84,.2);color:#20c997;border:1px solid rgba(25,135,84,.3);padding:4px 10px;border-radius:6px;font-size:.75rem;font-weight:600}
+.badge-pending{background:rgba(255,193,7,.15);color:#ffc107;border:1px solid rgba(255,193,7,.25);padding:4px 10px;border-radius:6px;font-size:.75rem;font-weight:600}
+.stars{color:#ffc107;font-size:.85rem;letter-spacing:1px}
+.btn-approve{background:rgba(25,135,84,.15);border:1px solid rgba(25,135,84,.3);color:#20c997;border-radius:8px;padding:5px 10px;font-size:.8rem;transition:all .2s}
+.btn-approve:hover{background:#198754;color:#fff}
+.btn-delete{background:rgba(220,53,69,.1);border:1px solid rgba(220,53,69,.2);color:#dc3545;border-radius:8px;padding:5px 10px;font-size:.8rem;transition:all .2s}
+.btn-delete:hover{background:#dc3545;color:#fff}
+
+.page-title{color:#fff;font-weight:700;font-size:1.3rem}
+.btn-refresh{background:rgba(25,135,84,.15);border:1px solid rgba(25,135,84,.3);color:#20c997;border-radius:8px;padding:6px 14px;font-size:.85rem;transition:all .2s}
+.btn-refresh:hover{background:#198754;color:#fff}
 </style>
 </head>
 <body>
 
 <!-- Login -->
-<div id="loginScreen">
-  <div class="login-box">
-    <div class="card shadow border-0">
-      <div class="card-body p-4 text-center">
-        <i class="bi bi-shield-lock text-success" style="font-size:3rem;"></i>
-        <h4 class="fw-bold mt-2">Admin Dashboard</h4>
-        <p class="text-muted small">Enter your admin password</p>
-        <div id="loginMsg"></div>
-        <div class="mb-3">
-          <input type="password" id="adminPassword" class="form-control form-control-lg" placeholder="Password" onkeydown="if(event.key==='Enter')doLogin()">
-        </div>
-        <button class="btn btn-success btn-lg w-100" onclick="doLogin()">Login</button>
-        <a href="index.html" class="btn btn-link mt-2 text-muted small"><i class="bi bi-arrow-left me-1"></i>Back to Website</a>
-      </div>
+<div id="loginScreen" class="login-page">
+  <div class="login-card">
+    <div class="login-icon"><i class="bi bi-shield-lock"></i></div>
+    <h4 class="text-center">Admin Dashboard</h4>
+    <p class="text-center mb-4">Enter your password to continue</p>
+    <div id="loginMsg"></div>
+    <div class="mb-3">
+      <input type="password" id="adminPassword" class="form-control" placeholder="Password" onkeydown="if(event.key==='Enter')doLogin()">
+    </div>
+    <button class="btn btn-login w-100 mb-3" onclick="doLogin()">
+      <i class="bi bi-box-arrow-in-right me-2"></i>Login
+    </button>
+    <div class="text-center">
+      <a href="index.html" class="btn-back"><i class="bi bi-arrow-left me-1"></i>Back to Website</a>
     </div>
   </div>
 </div>
 
 <!-- Dashboard -->
 <div id="dashboardScreen" style="display:none;">
-  <nav class="navbar navbar-dark bg-dark mb-4">
-    <div class="container-fluid">
-      <span class="navbar-brand fw-bold"><i class="bi bi-speedometer2 me-2"></i>Admin Dashboard</span>
-      <button class="btn btn-outline-light btn-sm" onclick="doLogout()">Logout</button>
+  <nav class="navbar-admin">
+    <div class="container-fluid px-4 d-flex justify-content-between align-items-center">
+      <div class="brand">
+        <div class="brand-icon"><i class="bi bi-speedometer2 text-white"></i></div>
+        Admin Dashboard
+      </div>
+      <button class="btn-logout" onclick="doLogout()"><i class="bi bi-box-arrow-right me-1"></i>Logout</button>
     </div>
   </nav>
-  <div class="container">
-    <div class="d-flex justify-content-between align-items-center mb-3">
-      <h4 class="fw-bold mb-0">Customer Reviews</h4>
-      <button class="btn btn-success btn-sm" onclick="loadReviews()"><i class="bi bi-arrow-clockwise me-1"></i>Refresh</button>
+  <div class="container-fluid px-4 py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <div class="page-title"><i class="bi bi-star me-2"></i>Customer Reviews</div>
+      <button class="btn-refresh" onclick="loadReviews()"><i class="bi bi-arrow-clockwise me-1"></i>Refresh</button>
     </div>
     <div id="reviewStats" class="row g-3 mb-4"></div>
     <div id="dashboardMsg"></div>
-    <div class="card shadow-sm border-0">
-      <div class="card-body p-0">
-        <div class="table-responsive">
-          <table class="table table-hover align-middle mb-0">
-            <thead class="table-dark">
-              <tr>
-                <th>#</th>
-                <th>Name</th>
-                <th>Vehicle</th>
-                <th>Rating</th>
-                <th>Review</th>
-                <th>Status</th>
-                <th>Date</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody id="reviewsBody">
-              <tr><td colspan="8" class="text-center text-muted py-4">Loading...</td></tr>
-            </tbody>
-          </table>
-        </div>
+    <div class="table-admin">
+      <div class="table-responsive">
+        <table class="table align-middle mb-0">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Name</th>
+              <th>Vehicle</th>
+              <th>Rating</th>
+              <th>Review</th>
+              <th>Status</th>
+              <th>Date</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="reviewsBody">
+            <tr><td colspan="8" class="text-center py-5" style="color:rgba(255,255,255,.3);">Loading...</td></tr>
+          </tbody>
+        </table>
       </div>
     </div>
   </div>
@@ -84,8 +130,8 @@ var adminPassword = "";
 function doLogin() {
   var pw = document.getElementById("adminPassword").value.trim();
   var msg = document.getElementById("loginMsg");
-  if (!pw) { msg.innerHTML = '<div class="alert alert-warning py-2 small">Enter password</div>'; return; }
-  msg.innerHTML = '<div class="text-center"><div class="spinner-border text-success spinner-border-sm"></div></div>';
+  if (!pw) { msg.innerHTML = '<div class="alert" style="background:rgba(255,193,7,.15);color:#ffc107;">Please enter your password</div>'; return; }
+  msg.innerHTML = '<div class="text-center mb-2"><div class="spinner-border spinner-border-sm" style="color:#198754"></div></div>';
   fetch(API_BASE + "/api/admin/login", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -99,17 +145,18 @@ function doLogin() {
       document.getElementById("dashboardScreen").style.display = "block";
       loadReviews();
     } else {
-      msg.innerHTML = '<div class="alert alert-danger py-2 small">' + (resp.data.message || "Login failed") + '</div>';
+      msg.innerHTML = '<div class="alert" style="background:rgba(220,53,69,.15);color:#dc3545;">' + (resp.data.message || "Login failed") + '</div>';
+      document.getElementById("adminPassword").value = "";
     }
   }).catch(function() {
-    msg.innerHTML = '<div class="alert alert-danger py-2 small">Server error</div>';
+    msg.innerHTML = '<div class="alert" style="background:rgba(220,53,69,.15);color:#dc3545;">Server error. Please try again.</div>';
   });
 }
 
 function doLogout() {
   adminPassword = "";
   document.getElementById("dashboardScreen").style.display = "none";
-  document.getElementById("loginScreen").style.display = "block";
+  document.getElementById("loginScreen").style.display = "flex";
   document.getElementById("adminPassword").value = "";
   document.getElementById("loginMsg").innerHTML = "";
 }
@@ -129,46 +176,46 @@ function formatDate(d) {
 }
 
 function loadReviews() {
-  document.getElementById("reviewsBody").innerHTML = '<tr><td colspan="8" class="text-center py-4"><div class="spinner-border text-success"></div></td></tr>';
+  document.getElementById("reviewsBody").innerHTML = '<tr><td colspan="8" class="text-center py-5"><div class="spinner-border" style="color:#198754"></div></td></tr>';
   fetch(API_BASE + "/api/admin/reviews?password=" + encodeURIComponent(adminPassword))
     .then(function(r) { return r.json(); })
     .then(function(data) {
       if (!Array.isArray(data)) {
-        document.getElementById("reviewsBody").innerHTML = '<tr><td colspan="8" class="text-center text-danger py-4">' + (data.message || "Error loading") + '</td></tr>';
+        document.getElementById("reviewsBody").innerHTML = '<tr><td colspan="8" class="text-center py-5" style="color:#dc3545;">' + (data.message || "Error loading") + '</td></tr>';
         return;
       }
       var total = data.length;
       var approved = data.filter(function(r) { return r.approved; }).length;
       var pending = total - approved;
       document.getElementById("reviewStats").innerHTML =
-        '<div class="col-md-4"><div class="card shadow-sm border-0 text-center p-3"><h5 class="fw-bold text-primary mb-0">' + total + '</h5><small class="text-muted">Total Reviews</small></div></div>' +
-        '<div class="col-md-4"><div class="card shadow-sm border-0 text-center p-3"><h5 class="fw-bold text-success mb-0">' + approved + '</h5><small class="text-muted">Approved</small></div></div>' +
-        '<div class="col-md-4"><div class="card shadow-sm border-0 text-center p-3"><h5 class="fw-bold text-warning mb-0">' + pending + '</h5><small class="text-muted">Pending</small></div></div>';
+        '<div class="col-md-4"><div class="stat-card stat-total"><h3>' + total + '</h3><small>Total Reviews</small></div></div>' +
+        '<div class="col-md-4"><div class="stat-card stat-approved"><h3>' + approved + '</h3><small>Approved</small></div></div>' +
+        '<div class="col-md-4"><div class="stat-card stat-pending"><h3>' + pending + '</h3><small>Pending</small></div></div>';
 
       if (data.length === 0) {
-        document.getElementById("reviewsBody").innerHTML = '<tr><td colspan="8" class="text-center text-muted py-4">No reviews yet</td></tr>';
+        document.getElementById("reviewsBody").innerHTML = '<tr><td colspan="8" class="text-center py-5" style="color:rgba(255,255,255,.3);">No reviews yet</td></tr>';
         return;
       }
       var html = "";
       data.forEach(function(r) {
         html += '<tr>' +
-          '<td class="fw-bold">' + r.id + '</td>' +
-          '<td>' + esc(r.name) + '<br><small class="text-muted">' + esc(r.email || '') + '</small></td>' +
+          '<td style="color:rgba(255,255,255,.4);font-weight:600;">' + r.id + '</td>' +
+          '<td><span style="color:#fff;font-weight:500;">' + esc(r.name) + '</span><br><span class="text-email">' + esc(r.email || '') + '</span></td>' +
           '<td>' + esc(r.vehicle || '-') + '</td>' +
           '<td>' + makeStars(r.rating) + '</td>' +
-          '<td style="max-width:250px;">' + esc(r.review_text) + '</td>' +
+          '<td class="text-review">' + esc(r.review_text) + '</td>' +
           '<td><span class="badge ' + (r.approved ? 'badge-approved' : 'badge-pending') + '">' + r.status + '</span></td>' +
-          '<td><small>' + formatDate(r.created_at) + '</small></td>' +
+          '<td style="color:rgba(255,255,255,.4);font-size:.8rem;">' + formatDate(r.created_at) + '</td>' +
           '<td style="white-space:nowrap;">';
         if (!r.approved) {
-          html += '<button class="btn btn-sm btn-success me-1" onclick="approveReview(' + r.id + ')"><i class="bi bi-check-lg"></i></button>';
+          html += '<button class="btn-approve me-1" onclick="approveReview(' + r.id + ')" title="Approve"><i class="bi bi-check-lg"></i> Approve</button>';
         }
-        html += '<button class="btn btn-sm btn-danger" onclick="deleteReview(' + r.id + ')"><i class="bi bi-trash"></i></button>';
+        html += '<button class="btn-delete" onclick="deleteReview(' + r.id + ')" title="Delete"><i class="bi bi-trash"></i></button>';
         html += '</td></tr>';
       });
       document.getElementById("reviewsBody").innerHTML = html;
     }).catch(function() {
-      document.getElementById("reviewsBody").innerHTML = '<tr><td colspan="8" class="text-center text-danger py-4">Failed to load reviews</td></tr>';
+      document.getElementById("reviewsBody").innerHTML = '<tr><td colspan="8" class="text-center py-5" style="color:#dc3545;">Failed to load reviews</td></tr>';
     });
 }
 
@@ -178,26 +225,26 @@ function approveReview(id) {
     method: "POST",
     headers: { "X-Admin-Password": adminPassword }
   }).then(function(r) { return r.json(); }).then(function(d) {
-    msg.innerHTML = '<div class="alert alert-success py-2 small">' + d.message + '</div>';
+    msg.innerHTML = '<div class="alert" style="background:rgba(25,135,84,.15);color:#20c997;">' + d.message + '</div>';
     loadReviews();
     setTimeout(function() { msg.innerHTML = ""; }, 2000);
   }).catch(function() {
-    msg.innerHTML = '<div class="alert alert-danger py-2 small">Failed</div>';
+    msg.innerHTML = '<div class="alert" style="background:rgba(220,53,69,.15);color:#dc3545;">Failed to approve</div>';
   });
 }
 
 function deleteReview(id) {
-  if (!confirm("Delete this review?")) return;
+  if (!confirm("Delete this review permanently?")) return;
   var msg = document.getElementById("dashboardMsg");
   fetch(API_BASE + "/api/admin/reviews/" + id, {
     method: "DELETE",
     headers: { "X-Admin-Password": adminPassword }
   }).then(function(r) { return r.json(); }).then(function(d) {
-    msg.innerHTML = '<div class="alert alert-success py-2 small">' + d.message + '</div>';
+    msg.innerHTML = '<div class="alert" style="background:rgba(25,135,84,.15);color:#20c997;">' + d.message + '</div>';
     loadReviews();
     setTimeout(function() { msg.innerHTML = ""; }, 2000);
   }).catch(function() {
-    msg.innerHTML = '<div class="alert alert-danger py-2 small">Failed</div>';
+    msg.innerHTML = '<div class="alert" style="background:rgba(220,53,69,.15);color:#dc3545;">Failed to delete</div>';
   });
 }
 
