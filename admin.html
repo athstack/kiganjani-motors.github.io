@@ -70,7 +70,10 @@ body{background:#f4f6f9;font-family:Arial,sans-serif}
   <div class="container-fluid px-4 py-4">
     <div class="d-flex justify-content-between align-items-center mb-3">
       <h5 class="fw-bold mb-0" id="sectionTitle">Reviews</h5>
-      <button class="btn btn-outline-success btn-sm" onclick="loadSection()"><i class="bi bi-arrow-clockwise me-1"></i>Refresh</button>
+      <div>
+        <button class="btn btn-success btn-sm me-1" id="addNewBtn" style="display:none;" onclick="showAddModal()"><i class="bi bi-plus-lg me-1"></i>New</button>
+        <button class="btn btn-outline-success btn-sm" onclick="loadSection()"><i class="bi bi-arrow-clockwise me-1"></i>Refresh</button>
+      </div>
     </div>
     <div id="dashboardMsg"></div>
     <div class="card shadow-sm border-0">
@@ -133,6 +136,9 @@ function switchTab(tab, el) {
   el.classList.add("active");
   var titles = {reviews:"Customer Reviews",bookings:"Appointments",services:"Service Records",rentals:"Car Rentals",parts:"Part Orders",tickets:"Support Tickets",blog:"Blog Posts",users:"Car Orders"};
   document.getElementById("sectionTitle").textContent = titles[tab] || tab;
+  var addBtn = document.getElementById("addNewBtn");
+  if (tab === "services" || tab === "blog") { addBtn.style.display = "inline-block"; addBtn.textContent = tab === "services" ? "+ New Record" : "+ New Post"; }
+  else { addBtn.style.display = "none"; }
   loadSection();
 }
 
@@ -296,7 +302,136 @@ function deleteRecord(section, id) {
     showMsg(d.message, "success"); loadSection();
   }).catch(function() { showMsg("Failed", "danger"); });
 }
+
+// ==========================================
+// ADD NEW RECORDS (Services + Blog)
+// ==========================================
+function showAddModal() {
+  if (currentTab === "services") {
+    document.getElementById("addServiceModal").querySelector("form").reset();
+    new bootstrap.Modal(document.getElementById("addServiceModal")).show();
+  } else if (currentTab === "blog") {
+    document.getElementById("addBlogModal").querySelector("form").reset();
+    new bootstrap.Modal(document.getElementById("addBlogModal")).show();
+  }
+}
+
+function submitServiceRecord(e) {
+  e.preventDefault();
+  var result = document.getElementById("serviceAddResult");
+  var data = {
+    name: document.getElementById("svcName").value.trim(),
+    email: document.getElementById("svcEmail").value.trim(),
+    phone: document.getElementById("svcPhone").value.trim(),
+    service_type: document.getElementById("svcType").value.trim(),
+    vehicle: document.getElementById("svcVehicle").value.trim(),
+    notes: document.getElementById("svcNotes").value.trim()
+  };
+  if (!data.name || !data.phone || !data.service_type) {
+    result.innerHTML = '<div class="alert alert-danger py-1 small">Name, phone, and service type are required.</div>';
+    return;
+  }
+  result.innerHTML = '<div class="spinner-border text-success spinner-border-sm"></div>';
+  fetch(API_BASE + "/api/admin/service_records", {
+    method: "POST",
+    headers: { "Content-Type": "application/json", "X-Admin-Password": adminPassword },
+    body: JSON.stringify(data)
+  }).then(function(r) { return r.json(); }).then(function(d) {
+    if (d.message && !d.message.includes("Error")) {
+      result.innerHTML = '<div class="alert alert-success py-1 small">' + d.message + '</div>';
+      setTimeout(function() { bootstrap.Modal.getInstance(document.getElementById("addServiceModal")).hide(); loadSection(); }, 1000);
+    } else {
+      result.innerHTML = '<div class="alert alert-danger py-1 small">' + d.message + '</div>';
+    }
+  }).catch(function() { result.innerHTML = '<div class="alert alert-danger py-1 small">Server error</div>'; });
+}
+
+function submitBlogPost(e) {
+  e.preventDefault();
+  var result = document.getElementById("blogAddResult");
+  var data = {
+    title: document.getElementById("blogTitle").value.trim(),
+    excerpt: document.getElementById("blogExcerpt").value.trim(),
+    content: document.getElementById("blogContent").value.trim(),
+    category: document.getElementById("blogCategory").value
+  };
+  if (!data.title || !data.content) {
+    result.innerHTML = '<div class="alert alert-danger py-1 small">Title and content are required.</div>';
+    return;
+  }
+  result.innerHTML = '<div class="spinner-border text-success spinner-border-sm"></div>';
+  fetch(API_BASE + "/api/admin/blog_posts", {
+    method: "POST",
+    headers: { "Content-Type": "application/json", "X-Admin-Password": adminPassword },
+    body: JSON.stringify(data)
+  }).then(function(r) { return r.json(); }).then(function(d) {
+    if (d.message && !d.message.includes("Error")) {
+      result.innerHTML = '<div class="alert alert-success py-1 small">' + d.message + '</div>';
+      setTimeout(function() { bootstrap.Modal.getInstance(document.getElementById("addBlogModal")).hide(); loadSection(); }, 1000);
+    } else {
+      result.innerHTML = '<div class="alert alert-danger py-1 small">' + d.message + '</div>';
+    }
+  }).catch(function() { result.innerHTML = '<div class="alert alert-danger py-1 small">Server error</div>'; });
+}
 </script>
+
+<!-- Add Service Record Modal -->
+<div class="modal fade" id="addServiceModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header bg-success text-white">
+        <h5 class="modal-title"><i class="bi bi-tools me-2"></i>New Service Record</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <form onsubmit="submitServiceRecord(event)">
+          <div class="mb-2"><label class="form-label small fw-bold">Name *</label><input type="text" id="svcName" class="form-control" required></div>
+          <div class="mb-2"><label class="form-label small fw-bold">Email</label><input type="email" id="svcEmail" class="form-control"></div>
+          <div class="mb-2"><label class="form-label small fw-bold">Phone *</label><input type="tel" id="svcPhone" class="form-control" required></div>
+          <div class="mb-2"><label class="form-label small fw-bold">Service Type *</label>
+            <select id="svcType" class="form-select" required>
+              <option value="">Select service...</option>
+              <option>Oil Change</option><option>Tire Rotation</option><option>Brake Service</option>
+              <option>Engine Diagnostic</option><option>Transmission Service</option><option>Air Conditioning</option>
+              <option>Battery Replacement</option><option>Wheel Alignment</option><option>General Inspection</option>
+            </select>
+          </div>
+          <div class="mb-2"><label class="form-label small fw-bold">Vehicle</label><input type="text" id="svcVehicle" class="form-control" placeholder="e.g. Toyota Corolla"></div>
+          <div class="mb-2"><label class="form-label small fw-bold">Notes</label><textarea id="svcNotes" class="form-control" rows="2" placeholder="Additional details..."></textarea></div>
+          <div id="serviceAddResult"></div>
+          <button type="submit" class="btn btn-success w-100">Save Record</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Add Blog Post Modal -->
+<div class="modal fade" id="addBlogModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header bg-success text-white">
+        <h5 class="modal-title"><i class="bi bi-journal-text me-2"></i>New Blog Post</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <form onsubmit="submitBlogPost(event)">
+          <div class="mb-2"><label class="form-label small fw-bold">Title *</label><input type="text" id="blogTitle" class="form-control" required></div>
+          <div class="mb-2"><label class="form-label small fw-bold">Category</label>
+            <select id="blogCategory" class="form-select">
+              <option value="tips">Tips</option><option value="reviews">Reviews</option>
+              <option value="industry">Industry</option><option value="guides">Guides</option>
+            </select>
+          </div>
+          <div class="mb-2"><label class="form-label small fw-bold">Excerpt</label><input type="text" id="blogExcerpt" class="form-control" placeholder="Short summary..."></div>
+          <div class="mb-2"><label class="form-label small fw-bold">Content *</label><textarea id="blogContent" class="form-control" rows="5" required placeholder="Write your post..."></textarea></div>
+          <div id="blogAddResult"></div>
+          <button type="submit" class="btn btn-success w-100">Publish Post</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
 
 </body>
 </html>

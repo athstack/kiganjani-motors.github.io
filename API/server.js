@@ -502,6 +502,33 @@ Object.keys(adminTables).forEach(function(key) {
 });
 
 // ==========================================
+// ADMIN - CREATE ENDPOINTS (Services + Blog)
+// ==========================================
+app.post("/api/admin/service_records", adminAuth, (req, res) => {
+    const { name, email, phone, service_type, vehicle, notes } = req.body;
+    if (!name || !phone || !service_type) {
+        return res.status(400).json({ message: "Name, phone, and service type are required" });
+    }
+    const sql = "INSERT INTO service_records (name, email, phone, service_type, vehicle, notes, status, created_at) VALUES (?, ?, ?, ?, ?, ?, 'pending', ?)";
+    db.query(sql, [name, email || "", phone, service_type, vehicle || "", notes || "", eatNow()], (err, result) => {
+        if (err) return res.status(500).json({ message: err.message });
+        res.json({ message: "Service record created" });
+    });
+});
+
+app.post("/api/admin/blog_posts", adminAuth, (req, res) => {
+    const { title, excerpt, content, category, image_url } = req.body;
+    if (!title || !content) {
+        return res.status(400).json({ message: "Title and content are required" });
+    }
+    const sql = "INSERT INTO blog_posts (title, excerpt, content, category, image_url, published, created_at) VALUES (?, ?, ?, ?, ?, 1, ?)";
+    db.query(sql, [title, excerpt || "", content, category || "tips", image_url || "", eatNow()], (err, result) => {
+        if (err) return res.status(500).json({ message: err.message });
+        res.json({ message: "Blog post created" });
+    });
+});
+
+// ==========================================
 // START SERVER (local dev only)
 // ==========================================
 if (process.env.VERCEL !== "1") {
