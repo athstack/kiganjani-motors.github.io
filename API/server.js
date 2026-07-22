@@ -26,7 +26,8 @@ const dbConfig = {
     port: process.env.DB_PORT || 4000,
     waitForConnections: true,
     connectionLimit: 10,
-    queueLimit: 0
+    queueLimit: 0,
+    timezone: '+03:00'
 };
 
 dbConfig.ssl = {};
