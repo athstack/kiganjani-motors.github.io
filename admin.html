@@ -18,6 +18,8 @@ body{background:#f4f6f9;font-family:Arial,sans-serif;overflow-x:hidden}
 .badge-cancelled,.badge-closed,.badge-unpublished{background:#dc3545;color:#fff}
 .badge-active,.badge-returned{background:#198754;color:#fff}
 .stars{color:#198754}
+.btn-delete{color:#dc3545;border:1px solid rgba(220,53,69,.3);background:transparent;font-size:.8rem;padding:2px 6px;transition:all .15s}
+.btn-delete:hover{background:#dc3545;color:#fff;border-color:#dc3545}
 .back-link{display:block;text-align:center;margin-top:12px;color:#999;text-decoration:none;font-size:.85rem;transition:color .2s}
 .back-link:hover{color:#198754}
 
@@ -120,10 +122,10 @@ body{background:#f4f6f9;font-family:Arial,sans-serif;overflow-x:hidden}
   <!-- Main Content -->
   <div class="admin-main">
     <!-- Top bar -->
-    <nav class="navbar navbar-dark bg-dark px-3">
+    <nav class="navbar bg-white border-bottom px-3">
       <div class="container-fluid">
         <button class="btn btn-outline-success d-md-none me-2" onclick="openSidebar()"><i class="bi bi-list fs-4"></i></button>
-        <span class="navbar-brand mb-0 fw-bold"><i class="bi bi-speedometer2 me-2"></i><span id="sectionTitle">Reviews</span></span>
+        <span class="navbar-brand mb-0 fw-bold text-dark"><i class="bi bi-speedometer2 me-2"></i><span id="sectionTitle">Reviews</span></span>
         <div>
           <button class="btn btn-success btn-sm me-1" id="addServiceBtn" style="display:none;" data-bs-toggle="modal" data-bs-target="#addServiceModal"><i class="bi bi-plus-lg me-1"></i>New Record</button>
           <button class="btn btn-success btn-sm me-1" id="addBlogBtn" style="display:none;" data-bs-toggle="modal" data-bs-target="#addBlogModal"><i class="bi bi-plus-lg me-1"></i>New Post</button>
@@ -256,7 +258,7 @@ function renderTable(data) {
       data.forEach(function(r) {
         rows += '<tr><td>' + r.id + '</td><td>' + esc(r.name) + '<br><small class="text-muted">' + esc(r.email||'') + '</small></td><td>' + esc(r.vehicle||'-') + '</td><td>' + makeStars(r.rating) + '</td><td style="max-width:250px;font-size:.85rem;">' + esc(r.review_text) + '</td><td>' + (r.approved ? statusBadge('approved') : statusBadge('pending')) + '</td><td><small>' + fmtDate(r.created_at) + '</small></td><td style="white-space:nowrap">';
         if (!r.approved) rows += '<button class="btn btn-sm btn-success me-1" onclick="approveReview(' + r.id + ')"><i class="bi bi-check-lg"></i></button>';
-        rows += '<button class="btn btn-sm btn-danger" onclick="deleteRecord(\'reviews\',' + r.id + ')"><i class="bi bi-trash"></i></button></td></tr>';
+        rows += '<button class="btn btn-sm btn-delete" onclick="deleteRecord(\'reviews\',' + r.id + ')"><i class="bi bi-trash"></i></button></td></tr>';
       });
       break;
     case "bookings":
@@ -266,7 +268,7 @@ function renderTable(data) {
         if (r.status === 'pending') rows += '<button class="btn btn-sm btn-success me-1" onclick="updateStatus(\'bookings\',' + r.id + ',\'confirmed\')">Confirm</button>';
         if (r.status === 'confirmed') rows += '<button class="btn btn-sm btn-info text-white me-1" onclick="updateStatus(\'bookings\',' + r.id + ',\'completed\')">Complete</button>';
         if (r.status !== 'cancelled' && r.status !== 'completed') rows += '<button class="btn btn-sm btn-warning me-1" onclick="updateStatus(\'bookings\',' + r.id + ',\'cancelled\')">Cancel</button>';
-        rows += '<button class="btn btn-sm btn-danger" onclick="deleteRecord(\'bookings\',' + r.id + ')"><i class="bi bi-trash"></i></button></td></tr>';
+        rows += '<button class="btn btn-sm btn-delete" onclick="deleteRecord(\'bookings\',' + r.id + ')"><i class="bi bi-trash"></i></button></td></tr>';
       });
       break;
     case "services":
@@ -275,7 +277,7 @@ function renderTable(data) {
         rows += '<tr><td>' + r.id + '</td><td>' + esc(r.name) + '</td><td>' + esc(r.phone) + '</td><td>' + esc(r.service_type) + '</td><td>' + esc(r.vehicle||'-') + '</td><td style="max-width:150px;font-size:.85rem;">' + esc(r.notes||'-') + '</td><td>' + statusBadge(r.status) + '</td><td><small>' + fmtDate(r.created_at) + '</small></td><td style="white-space:nowrap">';
         if (r.status === 'pending') rows += '<button class="btn btn-sm btn-info text-white me-1" onclick="updateStatus(\'services\',' + r.id + ',\'in_progress\')">Start</button>';
         if (r.status === 'in_progress') rows += '<button class="btn btn-sm btn-success me-1" onclick="updateStatus(\'services\',' + r.id + ',\'completed\')">Complete</button>';
-        rows += '<button class="btn btn-sm btn-danger" onclick="deleteRecord(\'services\',' + r.id + ')"><i class="bi bi-trash"></i></button></td></tr>';
+        rows += '<button class="btn btn-sm btn-delete" onclick="deleteRecord(\'services\',' + r.id + ')"><i class="bi bi-trash"></i></button></td></tr>';
       });
       break;
     case "rentals":
@@ -285,7 +287,7 @@ function renderTable(data) {
         if (r.status === 'reserved') rows += '<button class="btn btn-sm btn-success me-1" onclick="updateStatus(\'rentals\',' + r.id + ',\'active\')">Activate</button>';
         if (r.status === 'active') rows += '<button class="btn btn-sm btn-info text-white me-1" onclick="updateStatus(\'rentals\',' + r.id + ',\'returned\')">Return</button>';
         if (r.status !== 'cancelled' && r.status !== 'returned') rows += '<button class="btn btn-sm btn-warning me-1" onclick="updateStatus(\'rentals\',' + r.id + ',\'cancelled\')">Cancel</button>';
-        rows += '<button class="btn btn-sm btn-danger" onclick="deleteRecord(\'rentals\',' + r.id + ')"><i class="bi bi-trash"></i></button></td></tr>';
+        rows += '<button class="btn btn-sm btn-delete" onclick="deleteRecord(\'rentals\',' + r.id + ')"><i class="bi bi-trash"></i></button></td></tr>';
       });
       break;
     case "parts":
@@ -298,7 +300,7 @@ function renderTable(data) {
         if (r.status === 'pending') rows += '<button class="btn btn-sm btn-info text-white me-1" onclick="updateStatus(\'parts\',' + r.id + ',\'processing\')">Process</button>';
         if (r.status === 'processing') rows += '<button class="btn btn-sm btn-primary me-1" onclick="updateStatus(\'parts\',' + r.id + ',\'shipped\')">Ship</button>';
         if (r.status === 'shipped') rows += '<button class="btn btn-sm btn-success me-1" onclick="updateStatus(\'parts\',' + r.id + ',\'delivered\')">Deliver</button>';
-        rows += '<button class="btn btn-sm btn-danger" onclick="deleteRecord(\'parts\',' + r.id + ')"><i class="bi bi-trash"></i></button></td></tr>';
+        rows += '<button class="btn btn-sm btn-delete" onclick="deleteRecord(\'parts\',' + r.id + ')"><i class="bi bi-trash"></i></button></td></tr>';
       });
       break;
     case "tickets":
@@ -308,7 +310,7 @@ function renderTable(data) {
         if (r.status === 'open') rows += '<button class="btn btn-sm btn-info text-white me-1" onclick="updateStatus(\'tickets\',' + r.id + ',\'in_progress\')">In Progress</button>';
         if (r.status === 'in_progress') rows += '<button class="btn btn-sm btn-success me-1" onclick="updateStatus(\'tickets\',' + r.id + ',\'resolved\')">Resolve</button>';
         if (r.status !== 'closed') rows += '<button class="btn btn-sm btn-secondary me-1" onclick="updateStatus(\'tickets\',' + r.id + ',\'closed\')">Close</button>';
-        rows += '<button class="btn btn-sm btn-danger" onclick="deleteRecord(\'tickets\',' + r.id + ')"><i class="bi bi-trash"></i></button></td></tr>';
+        rows += '<button class="btn btn-sm btn-delete" onclick="deleteRecord(\'tickets\',' + r.id + ')"><i class="bi bi-trash"></i></button></td></tr>';
       });
       break;
     case "blog":
@@ -316,14 +318,14 @@ function renderTable(data) {
       data.forEach(function(r) {
         rows += '<tr><td>' + r.id + '</td><td>' + esc(r.title) + '</td><td>' + esc(r.category||'-') + '</td><td>' + (r.published ? statusBadge('published') : statusBadge('unpublished')) + '</td><td><small>' + fmtDate(r.created_at) + '</small></td><td style="white-space:nowrap">';
         rows += '<button class="btn btn-sm btn-outline-success me-1" onclick="toggleBlog(' + r.id + ')"><i class="bi bi-eye' + (r.published ? '-slash' : '') + '"></i></button>';
-        rows += '<button class="btn btn-sm btn-danger" onclick="deleteRecord(\'blog\',' + r.id + ')"><i class="bi bi-trash"></i></button></td></tr>';
+        rows += '<button class="btn btn-sm btn-delete" onclick="deleteRecord(\'blog\',' + r.id + ')"><i class="bi bi-trash"></i></button></td></tr>';
       });
       break;
     case "users":
       head = '<tr><th>#</th><th>Name</th><th>Email</th><th>Phone</th><th>Location</th><th>Date</th><th>Actions</th></tr>';
       data.forEach(function(r) {
         rows += '<tr><td>' + r.id + '</td><td>' + esc(r.name) + '</td><td>' + esc(r.email) + '</td><td>' + esc(r.phoneNo||'-') + '</td><td>' + esc(r.location||'-') + '</td><td><small>' + fmtDate(r.created_at) + '</small></td><td>';
-        rows += '<button class="btn btn-sm btn-danger" onclick="deleteRecord(\'users\',' + r.id + ')"><i class="bi bi-trash"></i></button></td></tr>';
+        rows += '<button class="btn btn-sm btn-delete" onclick="deleteRecord(\'users\',' + r.id + ')"><i class="bi bi-trash"></i></button></td></tr>';
       });
       break;
   }
