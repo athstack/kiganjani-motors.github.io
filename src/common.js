@@ -56,11 +56,11 @@ document.querySelectorAll("#sidebar .nav-link").forEach(function(link) {
 /* === Admin Login Modal === */
 function showAdminLogin() {
   var m = document.getElementById("adminLoginModal");
-  if (m) m.style.setProperty("display", "flex", "important");
+  if (m) m.style.display = "flex";
 }
 function hideAdminLogin() {
   var m = document.getElementById("adminLoginModal");
-  if (m) m.style.setProperty("display", "none", "important");
+  if (m) m.style.display = "none";
   var pw = document.getElementById("adminLoginPw");
   var msg = document.getElementById("adminLoginMsg");
   if (pw) pw.value = "";
@@ -88,12 +88,10 @@ function doAdminLogin() {
   });
 }
 (function() {
-  var s = document.createElement("style");
-  s.textContent = "#adminLoginModal{display:none!important}";
-  document.head.appendChild(s);
   var m = document.createElement("div");
   m.id = "adminLoginModal";
-  m.style.cssText = "position:fixed;top:0;left:0;width:100%;height:100%;z-index:99999;background:rgba(0,0,0,.6);backdrop-filter:blur(2px);align-items:center;justify-content:center;";
+  m.style.display = "none";
+  m.style.cssText = "display:none;position:fixed;top:0;left:0;width:100%;height:100%;z-index:99999;background:rgba(0,0,0,.6);backdrop-filter:blur(2px);align-items:center;justify-content:center;";
   m.innerHTML = '<div style="max-width:400px;width:90%"><div class="card shadow border-0"><div class="card-body p-4 text-center"><button onclick="hideAdminLogin()" style="position:absolute;top:8px;right:12px;font-size:1.5rem;border:none;background:none;cursor:pointer;color:#6c757d;line-height:1;" title="Close">&times;</button><i class="bi bi-shield-lock text-success" style="font-size:3rem;"></i><h4 class="fw-bold mt-2">Admin Dashboard</h4><p class="text-muted small">Enter your admin password</p><div id="adminLoginMsg"></div><div class="mb-3"><input type="password" id="adminLoginPw" class="form-control form-control-lg" placeholder="Password" onkeydown="if(event.key===\'Enter\')doAdminLogin()"></div><button class="btn btn-success btn-lg w-100" onclick="doAdminLogin()">Login</button></div></div></div>';
   m.addEventListener("click", function(e) { if (e.target === m) hideAdminLogin(); });
   document.body.appendChild(m);
