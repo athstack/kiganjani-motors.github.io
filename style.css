@@ -386,6 +386,10 @@ section {
   background: #1877f2;
 }
 
+.social-link.email {
+  background: #1b8a5a;
+}
+
 /* ============================================
    RESPONSIVE BREAKPOINTS
    ============================================ */
