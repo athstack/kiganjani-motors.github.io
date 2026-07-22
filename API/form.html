@@ -6,6 +6,7 @@
     <title>Kiganjani Motors - Order System</title>
 
     <link rel="stylesheet" href="../KAYOMBO/bootstrap-5.0.2-dist/css/bootstrap.min.css">
+    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
     
     <style>
         *, *::before, *::after {
@@ -89,6 +90,10 @@
                 <textarea id="location" class="form-control form-control-lg fs-6" rows="2" placeholder="Location" required></textarea>
             </div>
 
+            <div class="mb-3 text-center">
+                <div class="cf-turnstile" data-sitekey="0x4AAAAAAD7R7gk1ZBNDyvU3" data-theme="light"></div>
+            </div>
+
             <div id="formActions" class="d-grid gap-2">
                 <button type="submit" id="submitBtn" class="btn btn-submit-order w-100">Submit Order</button>
                 <button type="button" class="btn btn-cancel-order w-100" onclick="window.location.href='../index.html'">Cancel</button>
@@ -146,12 +151,18 @@ document.getElementById("userForm").addEventListener("submit", function(e) {
     var targetUrl = isEditing ? baseUrl + "/" + id : baseUrl;
     var targetMethod = isEditing ? "PUT" : "POST";
 
+    var turnstileToken = "";
+    if (typeof turnstile !== 'undefined') {
+        var widget = document.querySelector('.cf-turnstile');
+        if (widget) turnstileToken = turnstile.getResponse(widget) || "";
+    }
+
     fetch(targetUrl, {
         method: targetMethod,
         headers: {
             "Content-Type": "application/json"
         },
-        body: JSON.stringify({ name: name, email: email, phoneNo: phoneNo, location: location })
+        body: JSON.stringify({ name: name, email: email, phoneNo: phoneNo, location: location, cf_turnstile_response: turnstileToken })
     }).then(function(response) {
         return response.json().then(function(data) {
             if (response.ok) {

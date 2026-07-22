@@ -41,6 +41,35 @@ app.use("/api/", apiLimiter);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+const TURNSTILE_SECRET = process.env.TURNSTILE_SECRET;
+
+async function verifyTurnstile(token, ip) {
+    if (!TURNSTILE_SECRET) return true;
+    const response = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: 'secret=' + encodeURIComponent(TURNSTILE_SECRET) + '&response=' + encodeURIComponent(token) + '&remoteip=' + encodeURIComponent(ip || '')
+    });
+    const result = await response.json();
+    return result.success;
+}
+
+function turnstileMiddleware(req, res, next) {
+    const token = req.body && req.body.cf_turnstile_response;
+    if (!token) {
+        return res.status(403).json({ message: "CAPTCHA verification required" });
+    }
+    verifyTurnstile(token, req.ip).then(success => {
+        if (!success) {
+            return res.status(403).json({ message: "CAPTCHA verification failed" });
+        }
+        delete req.body.cf_turnstile_response;
+        next();
+    }).catch(function() {
+        return res.status(500).json({ message: "CAPTCHA verification error" });
+    });
+}
+
 const dbConfig = {
     host: process.env.DB_HOST,
     user: process.env.DB_USER,
@@ -187,7 +216,7 @@ tables.forEach(sql => {
 // ==========================================
 // BOOKINGS API
 // ==========================================
-app.post("/api/bookings", submitLimiter, (req, res) => {
+app.post("/api/bookings", submitLimiter, turnstileMiddleware, (req, res) => {
     const { name, email, phone, service_type, preferred_date, preferred_time, vehicle, notes } = req.body;
     if (!name || !email || !phone || !service_type) {
         return res.status(400).json({ message: "Name, email, phone, and service type are required" });
@@ -209,7 +238,7 @@ app.get("/api/bookings", (req, res) => {
 // ==========================================
 // SERVICE RECORDS API
 // ==========================================
-app.post("/api/services", submitLimiter, (req, res) => {
+app.post("/api/services", submitLimiter, turnstileMiddleware, (req, res) => {
     const { name, email, phone, service_type, vehicle, notes } = req.body;
     if (!name || !phone || !service_type) {
         return res.status(400).json({ message: "Name, phone, and service type are required" });
@@ -233,7 +262,7 @@ app.get("/api/services/lookup", (req, res) => {
 // ==========================================
 // RENTALS API
 // ==========================================
-app.post("/api/rentals", submitLimiter, (req, res) => {
+app.post("/api/rentals", submitLimiter, turnstileMiddleware, (req, res) => {
     const { name, email, phone, vehicle, rental_class, start_date, end_date, total_price } = req.body;
     if (!name || !email || !phone || !vehicle) {
         return res.status(400).json({ message: "Name, email, phone, and vehicle are required" });
@@ -255,7 +284,7 @@ app.get("/api/rentals", (req, res) => {
 // ==========================================
 // REVIEWS API
 // ==========================================
-app.post("/api/reviews", submitLimiter, (req, res) => {
+app.post("/api/reviews", submitLimiter, turnstileMiddleware, (req, res) => {
     const { name, email, rating, vehicle, review_text, review } = req.body;
     const text = review_text || review;
     if (!name || !rating || !text) {
@@ -285,7 +314,7 @@ app.get("/api/blog", (req, res) => {
     });
 });
 
-app.post("/api/blog", submitLimiter, (req, res) => {
+app.post("/api/blog", submitLimiter, turnstileMiddleware, (req, res) => {
     const { title, excerpt, content, category, image_url } = req.body;
     if (!title || !content) {
         return res.status(400).json({ message: "Title and content are required" });
@@ -314,7 +343,7 @@ app.get("/api/parts", (req, res) => {
     });
 });
 
-app.post("/api/parts/orders", submitLimiter, (req, res) => {
+app.post("/api/parts/orders", submitLimiter, turnstileMiddleware, (req, res) => {
     const { name, email, phone, items, total } = req.body;
     if (!name || !email || !phone || !items) {
         return res.status(400).json({ message: "Name, email, phone, and items are required" });
@@ -330,7 +359,7 @@ app.post("/api/parts/orders", submitLimiter, (req, res) => {
 // ==========================================
 // TICKETS API
 // ==========================================
-app.post("/api/tickets", submitLimiter, (req, res) => {
+app.post("/api/tickets", submitLimiter, turnstileMiddleware, (req, res) => {
     const { name, email, phone, department, subject, message } = req.body;
     if (!name || !email || !subject || !message) {
         return res.status(400).json({ message: "Name, email, subject, and message are required" });
@@ -352,7 +381,7 @@ app.get("/api/tickets", (req, res) => {
 // ==========================================
 // EXISTING USERS / ORDERS API
 // ==========================================
-app.post("/api/users", submitLimiter, (req, res) => {
+app.post("/api/users", submitLimiter, turnstileMiddleware, (req, res) => {
     const { name, email, phoneNo, location } = req.body;
     if (!name || !email || !phoneNo || !location) {
         return res.status(400).json({ message: "All fields required" });
