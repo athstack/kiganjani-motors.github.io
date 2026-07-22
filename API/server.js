@@ -446,6 +446,62 @@ app.delete("/api/admin/reviews/:id", adminAuth, (req, res) => {
 });
 
 // ==========================================
+// ADMIN - GENERIC STATUS UPDATE + DELETE
+// ==========================================
+const adminTables = {
+    bookings: { table: "bookings", statuses: ["pending","confirmed","completed","cancelled"] },
+    services: { table: "service_records", statuses: ["pending","in_progress","completed"] },
+    rentals: { table: "rentals", statuses: ["reserved","active","returned","cancelled"] },
+    parts: { table: "part_orders", statuses: ["pending","processing","shipped","delivered"] },
+    tickets: { table: "tickets", statuses: ["open","in_progress","resolved","closed"] },
+    blog: { table: "blog_posts", statuses: ["published","unpublished"] },
+    users: { table: "users", statuses: [] }
+};
+
+Object.keys(adminTables).forEach(function(key) {
+    var cfg = adminTables[key];
+
+    app.get("/api/admin/" + key, adminAuth, (req, res) => {
+        db.query("SELECT * FROM " + cfg.table + " ORDER BY created_at DESC", (err, results) => {
+            if (err) return res.status(500).json({ message: err.message });
+            res.json(results);
+        });
+    });
+
+    if (key === "blog") {
+        app.post("/api/admin/blog/:id/toggle", adminAuth, (req, res) => {
+            db.query("UPDATE blog_posts SET published = NOT published WHERE id = ?", [req.params.id], (err, result) => {
+                if (err) return res.status(500).json({ message: err.message });
+                if (result.affectedRows === 0) return res.status(404).json({ message: "Post not found" });
+                res.json({ message: "Post updated" });
+            });
+        });
+    }
+
+    if (cfg.statuses.length > 0 && key !== "blog") {
+        app.post("/api/admin/" + key + "/:id/status", adminAuth, (req, res) => {
+            const { status } = req.body;
+            if (!cfg.statuses.includes(status)) {
+                return res.status(400).json({ message: "Invalid status" });
+            }
+            db.query("UPDATE " + cfg.table + " SET status = ? WHERE id = ?", [status, req.params.id], (err, result) => {
+                if (err) return res.status(500).json({ message: err.message });
+                if (result.affectedRows === 0) return res.status(404).json({ message: "Record not found" });
+                res.json({ message: "Status updated" });
+            });
+        });
+    }
+
+    app.delete("/api/admin/" + key + "/:id", adminAuth, (req, res) => {
+        db.query("DELETE FROM " + cfg.table + " WHERE id = ?", [req.params.id], (err, result) => {
+            if (err) return res.status(500).json({ message: err.message });
+            if (result.affectedRows === 0) return res.status(404).json({ message: "Record not found" });
+            res.json({ message: "Deleted successfully" });
+        });
+    });
+});
+
+// ==========================================
 // START SERVER (local dev only)
 // ==========================================
 if (process.env.VERCEL !== "1") {

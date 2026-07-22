@@ -10,11 +10,19 @@
 body{background:#f4f6f9;font-family:Arial,sans-serif}
 .login-box{max-width:380px;margin:12% auto}
 .table th{white-space:nowrap}
-.badge-approved{background:#198754}
-.badge-pending{background:#ffc107;color:#212529}
+.badge-approved,.badge-completed,.badge-confirmed,.badge-delivered,.badge-resolved,.badge-published{background:#198754;color:#fff}
+.badge-pending,.badge-open,.badge-reserved{background:#ffc107;color:#212529}
+.badge-processing,.badge-in_progress{background:#0dcaf0;color:#212529}
+.badge-shipped{background:#0d6efd;color:#fff}
+.badge-cancelled,.badge-closed,.badge-unpublished{background:#dc3545;color:#fff}
+.badge-active,.badge-returned{background:#198754;color:#fff}
 .stars{color:#198754}
 .back-link{display:block;text-align:center;margin-top:15px;color:#6c757d;text-decoration:none;font-size:.9rem;transition:color .2s}
 .back-link:hover{color:#198754}
+.tab-btn{padding:10px 18px;border:none;background:transparent;color:#6c757d;font-weight:600;font-size:.9rem;border-bottom:3px solid transparent;cursor:pointer;transition:all .2s}
+.tab-btn:hover{color:#198754}
+.tab-btn.active{color:#198754;border-bottom-color:#198754}
+.tab-count{background:#198754;color:#fff;border-radius:50%;padding:2px 7px;font-size:.7rem;margin-left:5px}
 </style>
 </head>
 <body>
@@ -40,36 +48,37 @@ body{background:#f4f6f9;font-family:Arial,sans-serif}
 
 <!-- Dashboard -->
 <div id="dashboardScreen" style="display:none;">
-  <nav class="navbar navbar-dark bg-dark mb-4">
+  <nav class="navbar navbar-dark bg-dark mb-0">
     <div class="container-fluid">
       <span class="navbar-brand fw-bold"><i class="bi bi-speedometer2 me-2"></i>Admin Dashboard</span>
       <button class="btn btn-outline-light btn-sm" onclick="doLogout()">Logout</button>
     </div>
   </nav>
-  <div class="container">
+
+  <!-- Tab Bar -->
+  <div class="bg-white border-bottom px-3 py-1 d-flex gap-1 flex-wrap" id="tabBar">
+    <button class="tab-btn active" onclick="switchTab('reviews',this)"><i class="bi bi-star me-1"></i>Reviews<span class="tab-count" id="count-reviews">0</span></button>
+    <button class="tab-btn" onclick="switchTab('bookings',this)"><i class="bi bi-calendar-check me-1"></i>Bookings<span class="tab-count" id="count-bookings">0</span></button>
+    <button class="tab-btn" onclick="switchTab('services',this)"><i class="bi bi-tools me-1"></i>Services<span class="tab-count" id="count-services">0</span></button>
+    <button class="tab-btn" onclick="switchTab('rentals',this)"><i class="bi bi-car-front me-1"></i>Rentals<span class="tab-count" id="count-rentals">0</span></button>
+    <button class="tab-btn" onclick="switchTab('parts',this)"><i class="bi bi-cart3 me-1"></i>Part Orders<span class="tab-count" id="count-parts">0</span></button>
+    <button class="tab-btn" onclick="switchTab('tickets',this)"><i class="bi bi-headset me-1"></i>Tickets<span class="tab-count" id="count-tickets">0</span></button>
+    <button class="tab-btn" onclick="switchTab('blog',this)"><i class="bi bi-journal-text me-1"></i>Blog<span class="tab-count" id="count-blog">0</span></button>
+    <button class="tab-btn" onclick="switchTab('users',this)"><i class="bi bi-people me-1"></i>Orders<span class="tab-count" id="count-users">0</span></button>
+  </div>
+
+  <div class="container-fluid px-4 py-4">
     <div class="d-flex justify-content-between align-items-center mb-3">
-      <h4 class="fw-bold mb-0">Customer Reviews</h4>
-      <button class="btn btn-success btn-sm" onclick="loadReviews()"><i class="bi bi-arrow-clockwise me-1"></i>Refresh</button>
+      <h5 class="fw-bold mb-0" id="sectionTitle">Reviews</h5>
+      <button class="btn btn-outline-success btn-sm" onclick="loadSection()"><i class="bi bi-arrow-clockwise me-1"></i>Refresh</button>
     </div>
-    <div id="reviewStats" class="row g-3 mb-4"></div>
     <div id="dashboardMsg"></div>
     <div class="card shadow-sm border-0">
       <div class="card-body p-0">
         <div class="table-responsive">
           <table class="table table-hover align-middle mb-0">
-            <thead class="table-dark">
-              <tr>
-                <th>#</th>
-                <th>Name</th>
-                <th>Vehicle</th>
-                <th>Rating</th>
-                <th>Review</th>
-                <th>Status</th>
-                <th>Date</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody id="reviewsBody">
+            <thead class="table-dark" id="tableHead"></thead>
+            <tbody id="tableBody">
               <tr><td colspan="8" class="text-center text-muted py-4">Loading...</td></tr>
             </tbody>
           </table>
@@ -82,6 +91,8 @@ body{background:#f4f6f9;font-family:Arial,sans-serif}
 <script>
 var API_BASE = "https://kiganjani-api.vercel.app";
 var adminPassword = "";
+var currentTab = "reviews";
+var currentData = [];
 
 function doLogin() {
   var pw = document.getElementById("adminPassword").value.trim();
@@ -99,7 +110,7 @@ function doLogin() {
       adminPassword = pw;
       document.getElementById("loginScreen").style.display = "none";
       document.getElementById("dashboardScreen").style.display = "block";
-      loadReviews();
+      loadSection();
     } else {
       msg.innerHTML = '<div class="alert alert-danger py-2 small">' + (resp.data.message || "Login failed") + '</div>';
     }
@@ -116,97 +127,174 @@ function doLogout() {
   document.getElementById("loginMsg").innerHTML = "";
 }
 
+function switchTab(tab, el) {
+  currentTab = tab;
+  document.querySelectorAll(".tab-btn").forEach(function(b) { b.classList.remove("active"); });
+  el.classList.add("active");
+  var titles = {reviews:"Customer Reviews",bookings:"Appointments",services:"Service Records",rentals:"Car Rentals",parts:"Part Orders",tickets:"Support Tickets",blog:"Blog Posts",users:"Car Orders"};
+  document.getElementById("sectionTitle").textContent = titles[tab] || tab;
+  loadSection();
+}
+
+function esc(str) { var d = document.createElement("div"); d.textContent = str || ""; return d.innerHTML; }
+
 function makeStars(n) {
   var s = "";
-  for (var i = 0; i < 5; i++) {
-    s += '<i class="bi bi-star' + (i < n ? '-fill' : '') + '"></i>';
-  }
+  for (var i = 0; i < 5; i++) s += '<i class="bi bi-star' + (i < n ? '-fill' : '') + '"></i>';
   return '<span class="stars">' + s + '</span>';
 }
 
-function formatDate(d) {
+function fmtDate(d) {
   if (!d) return "-";
-  var dt = new Date(d);
-  return dt.toLocaleDateString("en-US", { year: "numeric", month: "short", day: "numeric" });
+  return new Date(d).toLocaleDateString("en-US", { year:"numeric", month:"short", day:"numeric" });
 }
 
-function loadReviews() {
-  document.getElementById("reviewsBody").innerHTML = '<tr><td colspan="8" class="text-center py-4"><div class="spinner-border text-success"></div></td></tr>';
-  fetch(API_BASE + "/api/admin/reviews?password=" + encodeURIComponent(adminPassword))
+function statusBadge(status) {
+  var cls = "badge bg-secondary";
+  var map = { approved:"badge-approved",pending:"badge-pending",confirmed:"badge-confirmed",completed:"badge-completed",cancelled:"badge-cancelled",reserved:"badge-reserved",active:"badge-active",returned:"badge-returned",processing:"badge-processing",shipped:"badge-shipped",delivered:"badge-delivered",open:"badge-open",in_progress:"badge-in_progress",resolved:"badge-resolved",closed:"badge-closed",published:"badge-published",unpublished:"badge-unpublished"};
+  return '<span class="badge ' + (map[status] || cls) + '">' + esc(status) + '</span>';
+}
+
+function loadSection() {
+  document.getElementById("tableBody").innerHTML = '<tr><td colspan="10" class="text-center py-4"><div class="spinner-border text-success"></div></td></tr>';
+  fetch(API_BASE + "/api/admin/" + currentTab + "?password=" + encodeURIComponent(adminPassword))
     .then(function(r) { return r.json(); })
     .then(function(data) {
       if (!Array.isArray(data)) {
-        document.getElementById("reviewsBody").innerHTML = '<tr><td colspan="8" class="text-center text-danger py-4">' + (data.message || "Error loading") + '</td></tr>';
+        document.getElementById("tableBody").innerHTML = '<tr><td colspan="10" class="text-center text-danger py-4">' + esc(data.message) + '</td></tr>';
         return;
       }
-      var total = data.length;
-      var approved = data.filter(function(r) { return r.approved; }).length;
-      var pending = total - approved;
-      document.getElementById("reviewStats").innerHTML =
-        '<div class="col-md-4"><div class="card shadow-sm border-0 text-center p-3"><h5 class="fw-bold text-primary mb-0">' + total + '</h5><small class="text-muted">Total Reviews</small></div></div>' +
-        '<div class="col-md-4"><div class="card shadow-sm border-0 text-center p-3"><h5 class="fw-bold text-success mb-0">' + approved + '</h5><small class="text-muted">Approved</small></div></div>' +
-        '<div class="col-md-4"><div class="card shadow-sm border-0 text-center p-3"><h5 class="fw-bold text-warning mb-0">' + pending + '</h5><small class="text-muted">Pending</small></div></div>';
-
-      if (data.length === 0) {
-        document.getElementById("reviewsBody").innerHTML = '<tr><td colspan="8" class="text-center text-muted py-4">No reviews yet</td></tr>';
-        return;
-      }
-      var html = "";
-      data.forEach(function(r) {
-        html += '<tr>' +
-          '<td class="fw-bold">' + r.id + '</td>' +
-          '<td>' + esc(r.name) + '<br><small class="text-muted">' + esc(r.email || '') + '</small></td>' +
-          '<td>' + esc(r.vehicle || '-') + '</td>' +
-          '<td>' + makeStars(r.rating) + '</td>' +
-          '<td style="max-width:250px;">' + esc(r.review_text) + '</td>' +
-          '<td><span class="badge ' + (r.approved ? 'badge-approved' : 'badge-pending') + '">' + r.status + '</span></td>' +
-          '<td><small>' + formatDate(r.created_at) + '</small></td>' +
-          '<td style="white-space:nowrap;">';
-        if (!r.approved) {
-          html += '<button class="btn btn-sm btn-success me-1" onclick="approveReview(' + r.id + ')"><i class="bi bi-check-lg"></i></button>';
-        }
-        html += '<button class="btn btn-sm btn-danger" onclick="deleteReview(' + r.id + ')"><i class="bi bi-trash"></i></button>';
-        html += '</td></tr>';
-      });
-      document.getElementById("reviewsBody").innerHTML = html;
+      currentData = data;
+      document.getElementById("count-" + currentTab).textContent = data.length;
+      renderTable(data);
     }).catch(function() {
-      document.getElementById("reviewsBody").innerHTML = '<tr><td colspan="8" class="text-center text-danger py-4">Failed to load reviews</td></tr>';
+      document.getElementById("tableBody").innerHTML = '<tr><td colspan="10" class="text-center text-danger py-4">Failed to load</td></tr>';
     });
 }
 
+function renderTable(data) {
+  var head = "";
+  var rows = "";
+  switch(currentTab) {
+    case "reviews":
+      head = '<tr><th>#</th><th>Name</th><th>Vehicle</th><th>Rating</th><th>Review</th><th>Status</th><th>Date</th><th>Actions</th></tr>';
+      data.forEach(function(r) {
+        rows += '<tr><td>' + r.id + '</td><td>' + esc(r.name) + '<br><small class="text-muted">' + esc(r.email||'') + '</small></td><td>' + esc(r.vehicle||'-') + '</td><td>' + makeStars(r.rating) + '</td><td style="max-width:250px;font-size:.85rem;">' + esc(r.review_text) + '</td><td>' + (r.approved ? statusBadge('approved') : statusBadge('pending')) + '</td><td><small>' + fmtDate(r.created_at) + '</small></td><td style="white-space:nowrap">';
+        if (!r.approved) rows += '<button class="btn btn-sm btn-success me-1" onclick="approveReview(' + r.id + ')"><i class="bi bi-check-lg"></i></button>';
+        rows += '<button class="btn btn-sm btn-danger" onclick="deleteRecord(\'reviews\',' + r.id + ')"><i class="bi bi-trash"></i></button></td></tr>';
+      });
+      break;
+    case "bookings":
+      head = '<tr><th>#</th><th>Name</th><th>Email</th><th>Phone</th><th>Service</th><th>Date</th><th>Vehicle</th><th>Status</th><th>Actions</th></tr>';
+      data.forEach(function(r) {
+        rows += '<tr><td>' + r.id + '</td><td>' + esc(r.name) + '</td><td><small>' + esc(r.email) + '</small></td><td>' + esc(r.phone) + '</td><td>' + esc(r.service_type) + '</td><td><small>' + fmtDate(r.preferred_date) + ' ' + esc(r.preferred_time||'') + '</small></td><td>' + esc(r.vehicle||'-') + '</td><td>' + statusBadge(r.status) + '</td><td style="white-space:nowrap">';
+        if (r.status === 'pending') rows += '<button class="btn btn-sm btn-success me-1" onclick="updateStatus(\'bookings\',' + r.id + ',\'confirmed\')">Confirm</button>';
+        if (r.status === 'confirmed') rows += '<button class="btn btn-sm btn-info text-white me-1" onclick="updateStatus(\'bookings\',' + r.id + ',\'completed\')">Complete</button>';
+        if (r.status !== 'cancelled' && r.status !== 'completed') rows += '<button class="btn btn-sm btn-warning me-1" onclick="updateStatus(\'bookings\',' + r.id + ',\'cancelled\')">Cancel</button>';
+        rows += '<button class="btn btn-sm btn-danger" onclick="deleteRecord(\'bookings\',' + r.id + ')"><i class="bi bi-trash"></i></button></td></tr>';
+      });
+      break;
+    case "services":
+      head = '<tr><th>#</th><th>Name</th><th>Phone</th><th>Service</th><th>Vehicle</th><th>Notes</th><th>Status</th><th>Date</th><th>Actions</th></tr>';
+      data.forEach(function(r) {
+        rows += '<tr><td>' + r.id + '</td><td>' + esc(r.name) + '</td><td>' + esc(r.phone) + '</td><td>' + esc(r.service_type) + '</td><td>' + esc(r.vehicle||'-') + '</td><td style="max-width:150px;font-size:.85rem;">' + esc(r.notes||'-') + '</td><td>' + statusBadge(r.status) + '</td><td><small>' + fmtDate(r.created_at) + '</small></td><td style="white-space:nowrap">';
+        if (r.status === 'pending') rows += '<button class="btn btn-sm btn-info text-white me-1" onclick="updateStatus(\'services\',' + r.id + ',\'in_progress\')">Start</button>';
+        if (r.status === 'in_progress') rows += '<button class="btn btn-sm btn-success me-1" onclick="updateStatus(\'services\',' + r.id + ',\'completed\')">Complete</button>';
+        rows += '<button class="btn btn-sm btn-danger" onclick="deleteRecord(\'services\',' + r.id + ')"><i class="bi bi-trash"></i></button></td></tr>';
+      });
+      break;
+    case "rentals":
+      head = '<tr><th>#</th><th>Name</th><th>Email</th><th>Vehicle</th><th>Class</th><th>From</th><th>To</th><th>Price</th><th>Status</th><th>Actions</th></tr>';
+      data.forEach(function(r) {
+        rows += '<tr><td>' + r.id + '</td><td>' + esc(r.name) + '</td><td><small>' + esc(r.email) + '</small></td><td>' + esc(r.vehicle) + '</td><td>' + esc(r.rental_class||'-') + '</td><td><small>' + fmtDate(r.start_date) + '</small></td><td><small>' + fmtDate(r.end_date) + '</small></td><td>$' + (r.total_price||0) + '</td><td>' + statusBadge(r.status) + '</td><td style="white-space:nowrap">';
+        if (r.status === 'reserved') rows += '<button class="btn btn-sm btn-success me-1" onclick="updateStatus(\'rentals\',' + r.id + ',\'active\')">Activate</button>';
+        if (r.status === 'active') rows += '<button class="btn btn-sm btn-info text-white me-1" onclick="updateStatus(\'rentals\',' + r.id + ',\'returned\')">Return</button>';
+        if (r.status !== 'cancelled' && r.status !== 'returned') rows += '<button class="btn btn-sm btn-warning me-1" onclick="updateStatus(\'rentals\',' + r.id + ',\'cancelled\')">Cancel</button>';
+        rows += '<button class="btn btn-sm btn-danger" onclick="deleteRecord(\'rentals\',' + r.id + ')"><i class="bi bi-trash"></i></button></td></tr>';
+      });
+      break;
+    case "parts":
+      head = '<tr><th>#</th><th>Name</th><th>Email</th><th>Phone</th><th>Items</th><th>Total</th><th>Status</th><th>Date</th><th>Actions</th></tr>';
+      data.forEach(function(r) {
+        var items = r.items;
+        if (typeof items === 'string') { try { items = JSON.parse(items); } catch(e){} }
+        var itemStr = Array.isArray(items) ? items.map(function(i){return i.name;}).join(', ') : esc(String(items||''));
+        rows += '<tr><td>' + r.id + '</td><td>' + esc(r.name) + '</td><td><small>' + esc(r.email) + '</small></td><td>' + esc(r.phone) + '</td><td style="max-width:200px;font-size:.85rem;">' + itemStr + '</td><td>$' + (r.total||0) + '</td><td>' + statusBadge(r.status) + '</td><td><small>' + fmtDate(r.created_at) + '</small></td><td style="white-space:nowrap">';
+        if (r.status === 'pending') rows += '<button class="btn btn-sm btn-info text-white me-1" onclick="updateStatus(\'parts\',' + r.id + ',\'processing\')">Process</button>';
+        if (r.status === 'processing') rows += '<button class="btn btn-sm btn-primary me-1" onclick="updateStatus(\'parts\',' + r.id + ',\'shipped\')">Ship</button>';
+        if (r.status === 'shipped') rows += '<button class="btn btn-sm btn-success me-1" onclick="updateStatus(\'parts\',' + r.id + ',\'delivered\')">Deliver</button>';
+        rows += '<button class="btn btn-sm btn-danger" onclick="deleteRecord(\'parts\',' + r.id + ')"><i class="bi bi-trash"></i></button></td></tr>';
+      });
+      break;
+    case "tickets":
+      head = '<tr><th>#</th><th>Name</th><th>Email</th><th>Dept</th><th>Subject</th><th>Message</th><th>Status</th><th>Date</th><th>Actions</th></tr>';
+      data.forEach(function(r) {
+        rows += '<tr><td>' + r.id + '</td><td>' + esc(r.name) + '</td><td><small>' + esc(r.email) + '</small></td><td>' + esc(r.department||'-') + '</td><td>' + esc(r.subject) + '</td><td style="max-width:200px;font-size:.85rem;">' + esc(r.message) + '</td><td>' + statusBadge(r.status) + '</td><td><small>' + fmtDate(r.created_at) + '</small></td><td style="white-space:nowrap">';
+        if (r.status === 'open') rows += '<button class="btn btn-sm btn-info text-white me-1" onclick="updateStatus(\'tickets\',' + r.id + ',\'in_progress\')">In Progress</button>';
+        if (r.status === 'in_progress') rows += '<button class="btn btn-sm btn-success me-1" onclick="updateStatus(\'tickets\',' + r.id + ',\'resolved\')">Resolve</button>';
+        if (r.status !== 'closed') rows += '<button class="btn btn-sm btn-secondary me-1" onclick="updateStatus(\'tickets\',' + r.id + ',\'closed\')">Close</button>';
+        rows += '<button class="btn btn-sm btn-danger" onclick="deleteRecord(\'tickets\',' + r.id + ')"><i class="bi bi-trash"></i></button></td></tr>';
+      });
+      break;
+    case "blog":
+      head = '<tr><th>#</th><th>Title</th><th>Category</th><th>Published</th><th>Date</th><th>Actions</th></tr>';
+      data.forEach(function(r) {
+        rows += '<tr><td>' + r.id + '</td><td>' + esc(r.title) + '</td><td>' + esc(r.category||'-') + '</td><td>' + (r.published ? statusBadge('published') : statusBadge('unpublished')) + '</td><td><small>' + fmtDate(r.created_at) + '</small></td><td style="white-space:nowrap">';
+        rows += '<button class="btn btn-sm btn-outline-success me-1" onclick="toggleBlog(' + r.id + ')"><i class="bi bi-eye' + (r.published ? '-slash' : '') + '"></i></button>';
+        rows += '<button class="btn btn-sm btn-danger" onclick="deleteRecord(\'blog\',' + r.id + ')"><i class="bi bi-trash"></i></button></td></tr>';
+      });
+      break;
+    case "users":
+      head = '<tr><th>#</th><th>Name</th><th>Email</th><th>Phone</th><th>Location</th><th>Date</th><th>Actions</th></tr>';
+      data.forEach(function(r) {
+        rows += '<tr><td>' + r.id + '</td><td>' + esc(r.name) + '</td><td>' + esc(r.email) + '</td><td>' + esc(r.phoneNo||'-') + '</td><td>' + esc(r.location||'-') + '</td><td><small>' + fmtDate(r.created_at) + '</small></td><td>';
+        rows += '<button class="btn btn-sm btn-danger" onclick="deleteRecord(\'users\',' + r.id + ')"><i class="bi bi-trash"></i></button></td></tr>';
+      });
+      break;
+  }
+  document.getElementById("tableHead").innerHTML = head;
+  document.getElementById("tableBody").innerHTML = rows || '<tr><td colspan="10" class="text-center text-muted py-4">No records found</td></tr>';
+}
+
+function showMsg(text, type) {
+  var msg = document.getElementById("dashboardMsg");
+  msg.innerHTML = '<div class="alert alert-' + type + ' py-2 small">' + text + '</div>';
+  setTimeout(function() { msg.innerHTML = ""; }, 2500);
+}
+
 function approveReview(id) {
-  var msg = document.getElementById("dashboardMsg");
   fetch(API_BASE + "/api/admin/reviews/" + id + "/approve", {
+    method: "POST", headers: { "X-Admin-Password": adminPassword }
+  }).then(function(r) { return r.json(); }).then(function(d) {
+    showMsg(d.message, "success"); loadSection();
+  }).catch(function() { showMsg("Failed", "danger"); });
+}
+
+function updateStatus(section, id, status) {
+  fetch(API_BASE + "/api/admin/" + section + "/" + id + "/status", {
     method: "POST",
-    headers: { "X-Admin-Password": adminPassword }
+    headers: { "Content-Type": "application/json", "X-Admin-Password": adminPassword },
+    body: JSON.stringify({ status: status })
   }).then(function(r) { return r.json(); }).then(function(d) {
-    msg.innerHTML = '<div class="alert alert-success py-2 small">' + d.message + '</div>';
-    loadReviews();
-    setTimeout(function() { msg.innerHTML = ""; }, 2000);
-  }).catch(function() {
-    msg.innerHTML = '<div class="alert alert-danger py-2 small">Failed</div>';
-  });
+    showMsg(d.message, "success"); loadSection();
+  }).catch(function() { showMsg("Failed", "danger"); });
 }
 
-function deleteReview(id) {
-  if (!confirm("Delete this review?")) return;
-  var msg = document.getElementById("dashboardMsg");
-  fetch(API_BASE + "/api/admin/reviews/" + id, {
-    method: "DELETE",
-    headers: { "X-Admin-Password": adminPassword }
+function toggleBlog(id) {
+  fetch(API_BASE + "/api/admin/blog/" + id + "/toggle", {
+    method: "POST", headers: { "X-Admin-Password": adminPassword }
   }).then(function(r) { return r.json(); }).then(function(d) {
-    msg.innerHTML = '<div class="alert alert-success py-2 small">' + d.message + '</div>';
-    loadReviews();
-    setTimeout(function() { msg.innerHTML = ""; }, 2000);
-  }).catch(function() {
-    msg.innerHTML = '<div class="alert alert-danger py-2 small">Failed</div>';
-  });
+    showMsg(d.message, "success"); loadSection();
+  }).catch(function() { showMsg("Failed", "danger"); });
 }
 
-function esc(str) {
-  var div = document.createElement("div");
-  div.textContent = str;
-  return div.innerHTML;
+function deleteRecord(section, id) {
+  if (!confirm("Delete this record permanently?")) return;
+  fetch(API_BASE + "/api/admin/" + section + "/" + id, {
+    method: "DELETE", headers: { "X-Admin-Password": adminPassword }
+  }).then(function(r) { return r.json(); }).then(function(d) {
+    showMsg(d.message, "success"); loadSection();
+  }).catch(function() { showMsg("Failed", "danger"); });
 }
 </script>
 
