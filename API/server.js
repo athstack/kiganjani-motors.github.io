@@ -29,9 +29,7 @@ const dbConfig = {
     queueLimit: 0
 };
 
-if (process.env.DB_SSL_CA) {
-    dbConfig.ssl = { ca: process.env.DB_SSL_CA };
-}
+dbConfig.ssl = {};
 
 const db = mysql.createPool(dbConfig);
 
