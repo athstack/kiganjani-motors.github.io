@@ -8,7 +8,7 @@ const SRC = path.join(ROOT, 'src-html');
 const HTML_FILES = [
   'index.html','about.html','rental.html','services.html',
   'booking.html','finance.html','reviews.html','blog.html',
-  'parts.html','support.html'
+  'parts.html','support.html','admin.html'
 ];
 
 const OBF = {
@@ -55,6 +55,8 @@ console.log('Step 3: Processing HTML files...');
 HTML_FILES.forEach(function(file) {
   let html = fs.readFileSync(path.join(SRC, file), 'utf8');
 
+  var isAdmin = (file === 'admin.html');
+
   // Extract inline <script>...</script> content
   const re = /<script>\s*([\s\S]*?)\s*<\/script>/;
   const m = html.match(re);
@@ -64,15 +66,26 @@ HTML_FILES.forEach(function(file) {
       const obf = JavaScriptObfuscator.obfuscate(js, OBF).getObfuscatedCode();
       const jsFile = file.replace('.html', '.min.js');
       fs.writeFileSync(path.join(ROOT, 'dist', jsFile), obf);
-      html = html.replace(re, '<script src="common.min.js"></script>\n<script src="dist/' + jsFile + '"></script>');
+      if (isAdmin) {
+        html = html.replace(re, '<script src="dist/' + jsFile + '"></script>');
+      } else {
+        html = html.replace(re, '<script src="common.min.js"></script>\n<script src="dist/' + jsFile + '"></script>');
+      }
       console.log('  ' + file + ' -> dist/' + jsFile + ' (' + obf.length + ' bytes)');
-    } else {
+    } else if (!isAdmin) {
       html = html.replace(re, '<script src="common.min.js"></script>');
     }
   }
 
-  // Inline minified CSS
-  html = html.replace(/<link rel="stylesheet" href="style\.css\?v=\d+">/g, '<style>' + cssMin.styles + '</style>');
+  if (isAdmin) {
+    // Minify admin's inline <style> block
+    html = html.replace(/<style>([\s\S]*?)<\/style>/g, function(match, cssContent) {
+      return '<style>' + new CleanCSS({level:2}).minify(cssContent).styles + '</style>';
+    });
+  } else {
+    // Inline minified CSS (replace style.css link)
+    html = html.replace(/<link rel="stylesheet" href="style\.css\?v=\d+">/g, '<style>' + cssMin.styles + '</style>');
+  }
 
   // Minify HTML whitespace
   html = html.replace(/>\s+</g, '><');
