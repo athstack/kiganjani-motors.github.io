@@ -450,13 +450,17 @@ function submitBlogPost(e) {
     }
   }).catch(function() { result.innerHTML = '<div class="alert alert-danger py-1 small">Server error</div>'; });
 }
+</script>
 
-if (sessionStorage.getItem("isAdminLoggedIn") === "true" && sessionStorage.getItem("adminPassword")) {
-  adminPassword = sessionStorage.getItem("adminPassword");
-  document.getElementById("loginOverlay").classList.add("hidden");
-  document.getElementById("dashboardOverlay").classList.add("active");
-  loadSection();
-}
+<script>
+(function() {
+  if (sessionStorage.getItem("isAdminLoggedIn") === "true" && sessionStorage.getItem("adminPassword")) {
+    adminPassword = sessionStorage.getItem("adminPassword");
+    document.getElementById("loginOverlay").classList.add("hidden");
+    document.getElementById("dashboardOverlay").classList.add("active");
+    loadSection();
+  }
+})();
 </script>
 
 <!-- Add Service Record Modal -->
