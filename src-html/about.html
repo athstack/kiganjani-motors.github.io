@@ -261,17 +261,6 @@ function toggleSidebar() {
   }
 }
 
-function filterCars(category) {
-  var cars = document.querySelectorAll(".car");
-  cars.forEach(function(car) {
-    if (category === "all") {
-      car.style.display = "block";
-    } else {
-      car.style.display = car.classList.contains(category) ? "block" : "none";
-    }
-  });
-}
-
 document.getElementById("sidebarOverlay").addEventListener("click", closeSidebar);
 
 document.addEventListener("keydown", function(e) {

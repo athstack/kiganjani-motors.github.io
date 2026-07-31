@@ -55,12 +55,12 @@
 <!-- Category Filters -->
 <section class="py-5">
   <div class="container">
-    <div class="filter-buttons mb-4">
-      <button class="btn btn-success" onclick="filterPosts('all', this)">All</button>
-      <button class="btn btn-outline-success" onclick="filterPosts('tips', this)">Tips</button>
-      <button class="btn btn-outline-success" onclick="filterPosts('reviews', this)">Reviews</button>
-      <button class="btn btn-outline-success" onclick="filterPosts('industry', this)">Industry</button>
-      <button class="btn btn-outline-success" onclick="filterPosts('guides', this)">Guides</button>
+    <div class="filter-buttons mb-4" role="group" aria-label="Filter posts">
+      <button type="button" class="filter-btn is-active" onclick="filterPosts('all', this)" aria-pressed="true">All</button>
+      <button type="button" class="filter-btn" onclick="filterPosts('tips', this)" aria-pressed="false">Tips</button>
+      <button type="button" class="filter-btn" onclick="filterPosts('reviews', this)" aria-pressed="false">Reviews</button>
+      <button type="button" class="filter-btn" onclick="filterPosts('industry', this)" aria-pressed="false">Industry</button>
+      <button type="button" class="filter-btn" onclick="filterPosts('guides', this)" aria-pressed="false">Guides</button>
     </div>
 
     <div id="blogGrid" style="display:grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem;">
@@ -141,10 +141,11 @@ function renderBlog(data) {
 function esc(s) { var d = document.createElement("div"); d.textContent = s || ""; return d.innerHTML; }
 
 function filterPosts(category, btn) {
-  var btns = document.querySelectorAll(".filter-buttons .btn");
-  btns.forEach(function(b) { b.classList.remove("btn-success"); b.classList.add("btn-outline-success"); });
-  btn.classList.remove("btn-outline-success");
-  btn.classList.add("btn-success");
+  document.querySelectorAll(".filter-buttons .filter-btn").forEach(function(b) {
+    var active = b === btn;
+    b.classList.toggle("is-active", active);
+    b.setAttribute("aria-pressed", active ? "true" : "false");
+  });
   if (category === "all") { renderBlog(blogData); return; }
   renderBlog(blogData.filter(function(p) { return p.category === category; }));
 }

@@ -83,17 +83,17 @@ style="background:url('IMAGES/top_nav.jpg') center/cover;">
 <div class="container">
 <h2 class="text-center mb-4 fw-bold text-dark">Available Cars</h2>
 
-<div class="filter-buttons">
-  <button class="btn btn-success" onclick="filterCars('all')">All</button>
-  <button class="btn btn-outline-success" onclick="filterCars('sedan')">Sedan</button>
-  <button class="btn btn-outline-success" onclick="filterCars('suv')">SUV</button>
-  <button class="btn btn-outline-success" onclick="filterCars('Sports')">Sports</button>
-  <button class="btn btn-outline-success" onclick="filterCars('Tesla')">Tesla</button>
-  <button class="btn btn-outline-success" onclick="filterCars('Truck')">Truck</button>
-  <button class="btn btn-outline-success" onclick="filterCars('Minivan')">Minivan</button>
-  <button class="btn btn-outline-success" onclick="filterCars('Luxury')">Luxury</button>
-  <button class="btn btn-outline-success" onclick="filterCars('Hatchback')">Hatchback</button>
-  <button class="btn btn-outline-success" onclick="filterCars('Convertible')">Convertible</button>
+<div class="filter-buttons" role="group" aria-label="Filter vehicles">
+  <button type="button" class="filter-btn is-active" onclick="filterCars('all', this)" aria-pressed="true">All</button>
+  <button type="button" class="filter-btn" onclick="filterCars('sedan', this)" aria-pressed="false">Sedan</button>
+  <button type="button" class="filter-btn" onclick="filterCars('suv', this)" aria-pressed="false">SUV</button>
+  <button type="button" class="filter-btn" onclick="filterCars('Sports', this)" aria-pressed="false">Sports</button>
+  <button type="button" class="filter-btn" onclick="filterCars('Tesla', this)" aria-pressed="false">Tesla</button>
+  <button type="button" class="filter-btn" onclick="filterCars('Truck', this)" aria-pressed="false">Truck</button>
+  <button type="button" class="filter-btn" onclick="filterCars('Minivan', this)" aria-pressed="false">Minivan</button>
+  <button type="button" class="filter-btn" onclick="filterCars('Luxury', this)" aria-pressed="false">Luxury</button>
+  <button type="button" class="filter-btn" onclick="filterCars('Hatchback', this)" aria-pressed="false">Hatchback</button>
+  <button type="button" class="filter-btn" onclick="filterCars('Convertible', this)" aria-pressed="false">Convertible</button>
 </div>
 
 <div id="carList">
@@ -420,7 +420,12 @@ function toggleSidebar() {
   }
 }
 
-function filterCars(category) {
+function filterCars(category, btn) {
+  document.querySelectorAll(".filter-buttons .filter-btn").forEach(function(b) {
+    var active = b === btn;
+    b.classList.toggle("is-active", active);
+    b.setAttribute("aria-pressed", active ? "true" : "false");
+  });
   var cars = document.querySelectorAll(".car");
   cars.forEach(function(car) {
     if (category === "all") {

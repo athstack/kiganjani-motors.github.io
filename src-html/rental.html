@@ -56,12 +56,12 @@
 <div class="container">
 <h2 class="text-center mb-4 fw-bold text-dark">Our Rental Fleet</h2>
 
-<div class="filter-buttons">
-  <button class="btn btn-success" onclick="filterRental('all')">All</button>
-  <button class="btn btn-outline-success" onclick="filterRental('economy')">Economy</button>
-  <button class="btn btn-outline-success" onclick="filterRental('suv')">SUV</button>
-  <button class="btn btn-outline-success" onclick="filterRental('luxury')">Luxury</button>
-  <button class="btn btn-outline-success" onclick="filterRental('van')">Van</button>
+<div class="filter-buttons" role="group" aria-label="Filter rental fleet">
+  <button type="button" class="filter-btn is-active" onclick="filterRental('all', this)" aria-pressed="true">All</button>
+  <button type="button" class="filter-btn" onclick="filterRental('economy', this)" aria-pressed="false">Economy</button>
+  <button type="button" class="filter-btn" onclick="filterRental('suv', this)" aria-pressed="false">SUV</button>
+  <button type="button" class="filter-btn" onclick="filterRental('luxury', this)" aria-pressed="false">Luxury</button>
+  <button type="button" class="filter-btn" onclick="filterRental('van', this)" aria-pressed="false">Van</button>
 </div>
 
 <div id="rentalList" style="display:grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem;">
@@ -305,7 +305,12 @@
 var API_BASE = (location.hostname === 'localhost' || location.hostname === '127.0.0.1') ? 'http://localhost:3000' : 'https://kiganjani-api.vercel.app';
 var rentalModal = null;
 var currentRate = 0;
-function filterRental(category) {
+function filterRental(category, btn) {
+  document.querySelectorAll(".filter-buttons .filter-btn").forEach(function(b) {
+    var active = b === btn;
+    b.classList.toggle("is-active", active);
+    b.setAttribute("aria-pressed", active ? "true" : "false");
+  });
   var rentals = document.querySelectorAll(".rental");
   rentals.forEach(function(r) {
     if (category === "all") { r.style.display = "block"; }

@@ -264,12 +264,52 @@ section {
   margin-bottom: 1.5rem;
 }
 
-.filter-buttons .btn {
+/* --- Category Filter Buttons --- */
+.filter-btn {
   min-height: 44px;
   min-width: 44px;
-  padding: 8px 14px;
+  padding: 8px 16px;
+  font-family: inherit;
   font-size: clamp(0.75rem, 1.5vw, 0.9rem);
+  font-weight: 600;
+  line-height: 1.2;
   white-space: nowrap;
+  color: #198754;
+  background: #ffffff;
+  border: 1px solid #198754;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.filter-btn:hover {
+  background-color: rgba(25, 135, 84, 0.08);
+  border-color: #198754;
+}
+
+.filter-btn:focus {
+  outline: none;
+}
+
+.filter-btn:focus-visible {
+  outline: 2px solid #198754;
+  outline-offset: 2px;
+  background-color: rgba(25, 135, 84, 0.08);
+}
+
+.filter-btn.is-active {
+  color: #ffffff;
+  background-color: #198754;
+  border-color: #198754;
+  box-shadow: 0 2px 8px rgba(25, 135, 84, 0.35);
+}
+
+.filter-btn.is-active:hover {
+  background-color: #157347;
+}
+
+.filter-btn.is-active:focus-visible {
+  outline-color: #ffffff;
 }
 
 /* ============================================
@@ -520,7 +560,7 @@ section {
     padding: 2rem 1rem;
   }
 
-  .filter-buttons .btn {
+  .filter-btn {
     padding: 10px 12px;
     font-size: 0.8rem;
   }
@@ -549,7 +589,7 @@ section {
     font-size: 0.85rem;
   }
 
-  .filter-buttons .btn {
+  .filter-btn {
     padding: 8px 10px;
     font-size: 0.75rem;
   }
@@ -565,7 +605,7 @@ section {
     gap: 4px;
   }
 
-  .filter-buttons .btn {
+  .filter-btn {
     padding: 8px 8px;
     font-size: 0.7rem;
     min-height: 44px;

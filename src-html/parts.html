@@ -65,14 +65,14 @@
       </div>
     </div>
 
-    <div class="filter-buttons mb-4">
-      <button class="btn btn-success" onclick="filterParts('all', this)">All</button>
-      <button class="btn btn-outline-success" onclick="filterParts('engine', this)">Engine</button>
-      <button class="btn btn-outline-success" onclick="filterParts('brakes', this)">Brakes</button>
-      <button class="btn btn-outline-success" onclick="filterParts('electrical', this)">Electrical</button>
-      <button class="btn btn-outline-success" onclick="filterParts('body', this)">Body</button>
-      <button class="btn btn-outline-success" onclick="filterParts('interior', this)">Interior</button>
-      <button class="btn btn-outline-success" onclick="filterParts('tires', this)">Tires</button>
+    <div class="filter-buttons mb-4" role="group" aria-label="Filter parts">
+      <button type="button" class="filter-btn is-active" onclick="filterParts('all', this)" aria-pressed="true">All</button>
+      <button type="button" class="filter-btn" onclick="filterParts('engine', this)" aria-pressed="false">Engine</button>
+      <button type="button" class="filter-btn" onclick="filterParts('brakes', this)" aria-pressed="false">Brakes</button>
+      <button type="button" class="filter-btn" onclick="filterParts('electrical', this)" aria-pressed="false">Electrical</button>
+      <button type="button" class="filter-btn" onclick="filterParts('body', this)" aria-pressed="false">Body</button>
+      <button type="button" class="filter-btn" onclick="filterParts('interior', this)" aria-pressed="false">Interior</button>
+      <button type="button" class="filter-btn" onclick="filterParts('tires', this)" aria-pressed="false">Tires</button>
     </div>
 
     <div class="row">
@@ -350,13 +350,11 @@ function toggleSidebar() {
 }
 
 function filterParts(category, btn) {
-  var btns = document.querySelectorAll(".filter-buttons .btn");
-  btns.forEach(function(b) {
-    b.classList.remove("btn-success");
-    b.classList.add("btn-outline-success");
+  document.querySelectorAll(".filter-buttons .filter-btn").forEach(function(b) {
+    var active = b === btn;
+    b.classList.toggle("is-active", active);
+    b.setAttribute("aria-pressed", active ? "true" : "false");
   });
-  btn.classList.remove("btn-outline-success");
-  btn.classList.add("btn-success");
   var parts = document.querySelectorAll(".part-item");
   parts.forEach(function(part) {
     if (category === "all") {
