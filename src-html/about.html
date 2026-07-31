@@ -59,13 +59,14 @@
 
 <div id="content" class="content">
 <!-- Top Bar -->
-<nav class="navbar navbar-dark bg-dark position-relative shadow-sm" role="banner">
-  <div class="container-fluid">
-    <button class="btn btn-outline-success hamburger-btn" onclick="toggleSidebar()" aria-label="Toggle navigation menu" aria-controls="sidebar">&#9776;</button>
+<nav class="navbar site-navbar" role="banner">
+  <div class="navbar-side">
+    <button type="button" class="hamburger-btn" onclick="toggleSidebar()" aria-label="Toggle navigation menu" aria-controls="sidebar" aria-expanded="false">&#9776;</button>
   </div>
-  <span class="navbar-brand text-success fw-bold">
+  <div class="site-brand">
     <h2 class="mb-0 header-title">Kiganjani Motors</h2>
-  </span>
+  </div>
+  <div class="navbar-side" aria-hidden="true"></div>
 </nav>
 
 <!-- Hero Section -->

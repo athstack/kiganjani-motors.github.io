@@ -122,40 +122,100 @@ img {
 /* ============================================
    NAVBAR
    ============================================ */
-.navbar {
-  background: #111 !important;
+.site-navbar {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  height: 76px;
+  padding: 0;
+  background: #111;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
 }
 
-.navbar-brand {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+/* Equal-width side columns keep the brand perfectly centered
+   (the empty right column balances the hamburger button) */
+.navbar-side {
+  flex: 1 1 0;
+  min-width: 0;
+  display: flex;
+  align-items: center;
 }
 
-.navbar h2 {
-  font-size: clamp(1rem, 2vw, 1.5rem);
-  white-space: nowrap;
+.site-navbar .navbar-side:first-child {
+  padding-left: 20px;
 }
 
-/* Add this to your header title to make it pop */
+.site-brand {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+  line-height: 1;
+}
+
 .header-title {
+  margin: 0;
   color: #ffffff;
   font-family: 'Poppins', sans-serif;
-  font-weight: 700;
-  letter-spacing: 1px;
-  text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7);
+  font-weight: 800;
+  font-size: 28px;
+  letter-spacing: 1.5px;
+  white-space: nowrap;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
 }
 
-/* --- Hamburger Button (hidden on desktop) --- */
+/* --- Hamburger Menu Button (mobile / tablet only) --- */
 .hamburger-btn {
-  min-width: 44px;
-  min-height: 44px;
   display: none;
+  width: 48px;
+  height: 48px;
+  padding: 0;
   align-items: center;
   justify-content: center;
-  font-size: 1.25rem;
-  padding: 8px 12px;
+  font-size: 1.5rem;
+  line-height: 1;
+  color: #198754;
+  background: transparent;
+  border: 1px solid #198754;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+
+.hamburger-btn:hover {
+  color: #ffffff;
+  background-color: #198754;
+  transform: scale(1.05);
+}
+
+.hamburger-btn:active {
+  transform: scale(0.96);
+}
+
+.hamburger-btn:focus-visible {
+  outline: 2px solid #ffffff;
+  outline-offset: 3px;
+}
+
+@media (min-width: 768px) {
+  .header-title {
+    font-size: 32px;
+  }
+}
+
+@media (min-width: 992px) {
+  .header-title {
+    font-size: 36px;
+  }
+}
+
+@media (max-width: 991px) {
+  .hamburger-btn {
+    display: inline-flex;
+  }
 }
 
 /* ============================================
@@ -396,37 +456,6 @@ section {
 
 /* --- Desktop (>= 992px): clean header row above hero --- */
 @media (min-width: 992px) {
-  .navbar {
-    min-height: 64px;
-    position: relative;
-    z-index: 10;
-  }
-
-  .navbar-brand {
-    position: relative;
-    top: auto;
-    left: auto;
-    transform: none;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    padding: 0;
-  }
-
-  .header-title {
-    color: #ffffff;
-    text-shadow: none;
-  }
-
-  .navbar h2 {
-    font-size: clamp(1rem, 1.5vw, 1.4rem);
-  }
-
-  .hamburger-btn {
-    display: none !important;
-  }
-
   .content {
     margin-left: 220px;
   }
@@ -466,18 +495,9 @@ section {
     margin-left: 0;
   }
 
-  /* Show hamburger */
-  .hamburger-btn {
-    display: flex;
-  }
-
   /* Grid adjustments */
   #carList {
     grid-template-columns: repeat(2, 1fr);
-  }
-
-  .navbar h2 {
-    font-size: clamp(0.9rem, 2.5vw, 1.3rem);
   }
 }
 
@@ -505,10 +525,6 @@ section {
     font-size: 0.8rem;
   }
 
-  .navbar h2 {
-    font-size: 0.95rem;
-  }
-
   .order-card {
     margin: 0 auto;
   }
@@ -521,10 +537,6 @@ section {
 
 /* --- Small Mobile (<= 576px) --- */
 @media (max-width: 576px) {
-  .navbar h2 {
-    font-size: 0.85rem;
-  }
-
   #home {
     min-height: 35vh;
   }
@@ -545,10 +557,6 @@ section {
 
 /* --- Very Small Mobile (<= 400px) --- */
 @media (max-width: 400px) {
-  .navbar h2 {
-    font-size: 0.78rem;
-  }
-
   .sidebar {
     width: 240px;
   }

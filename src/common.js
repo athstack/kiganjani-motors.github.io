@@ -5,18 +5,22 @@ function isMobile() {
 function openSidebar() {
   var sidebar = document.getElementById("sidebar");
   var overlay = document.getElementById("sidebarOverlay");
+  var btn = document.querySelector(".hamburger-btn");
   sidebar.classList.add("mobile-open");
   overlay.classList.add("active");
   overlay.setAttribute("aria-hidden", "false");
+  if (btn) btn.setAttribute("aria-expanded", "true");
   document.body.style.overflow = "hidden";
 }
 
 function closeSidebar() {
   var sidebar = document.getElementById("sidebar");
   var overlay = document.getElementById("sidebarOverlay");
+  var btn = document.querySelector(".hamburger-btn");
   sidebar.classList.remove("mobile-open");
   overlay.classList.remove("active");
   overlay.setAttribute("aria-hidden", "true");
+  if (btn) btn.setAttribute("aria-expanded", "false");
   document.body.style.overflow = "";
 }
 
