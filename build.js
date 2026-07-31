@@ -1,7 +1,14 @@
 const fs = require('fs');
 const path = require('path');
+const crypto = require('crypto');
 const JavaScriptObfuscator = require('javascript-obfuscator');
 const CleanCSS = require('clean-css');
+
+// Short content hash used to cache-bust the generated JS files
+function jsVersion(filePath) {
+  const content = fs.readFileSync(filePath);
+  return crypto.createHash('md5').update(content).digest('hex').slice(0, 10);
+}
 
 const ROOT = __dirname;
 const SRC = path.join(ROOT, 'src-html');
@@ -48,6 +55,7 @@ console.log('Step 2: Obfuscating common.js...');
 const commonJS = fs.readFileSync(path.join(ROOT, 'src', 'common.js'), 'utf8');
 const commonObf = JavaScriptObfuscator.obfuscate(commonJS, OBF).getObfuscatedCode();
 fs.writeFileSync(path.join(ROOT, 'common.min.js'), commonObf);
+const commonSrc = 'common.min.js?v=' + jsVersion(path.join(ROOT, 'common.min.js'));
 console.log('  common.min.js (' + commonObf.length + ' bytes)');
 
 // Step 3: Process each HTML
@@ -65,15 +73,17 @@ HTML_FILES.forEach(function(file) {
     if (js.length > 10) {
       const obf = JavaScriptObfuscator.obfuscate(js, OBF).getObfuscatedCode();
       const jsFile = file.replace('.html', '.min.js');
-      fs.writeFileSync(path.join(ROOT, 'dist', jsFile), obf);
+      const jsPath = path.join(ROOT, 'dist', jsFile);
+      fs.writeFileSync(jsPath, obf);
+      const jsSrc = 'dist/' + jsFile + '?v=' + jsVersion(jsPath);
       if (isAdmin) {
-        html = html.replace(re, '<script src="dist/' + jsFile + '"></script>');
+        html = html.replace(re, '<script src="' + jsSrc + '"></script>');
       } else {
-        html = html.replace(re, '<script src="common.min.js"></script>\n<script src="dist/' + jsFile + '"></script>');
+        html = html.replace(re, '<script src="' + commonSrc + '"></script>\n<script src="' + jsSrc + '"></script>');
       }
       console.log('  ' + file + ' -> dist/' + jsFile + ' (' + obf.length + ' bytes)');
     } else if (!isAdmin) {
-      html = html.replace(re, '<script src="common.min.js"></script>');
+      html = html.replace(re, '<script src="' + commonSrc + '"></script>');
     }
   }
 
