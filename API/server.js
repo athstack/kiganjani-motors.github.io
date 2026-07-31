@@ -88,6 +88,10 @@ db.on('connection', function (connection) {
     connection.query("SET time_zone = '+03:00'");
 });
 
+db.on('error', function (err) {
+    console.error('MySQL pool error:', err.message);
+});
+
 function eatNow() {
     return new Date().toLocaleString('sv-SE', { timeZone: 'Africa/Dar_es_Salaam' }).replace(' ', 'T');
 }
@@ -537,5 +541,10 @@ if (process.env.VERCEL !== "1") {
         console.log("Server running on port " + PORT);
     });
 }
+
+app.use(function (err, req, res, next) {
+    console.error('Unhandled error:', err);
+    res.status(500).json({ message: err.message || "Internal server error" });
+});
 
 module.exports = app;
